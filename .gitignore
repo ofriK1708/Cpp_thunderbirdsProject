@@ -1,6 +1,17 @@
 # Prerequisites
 *.d
 
+# Visual Studio editor files #
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio files #
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
 # Compiled Object files
 *.slo
 *.lo
@@ -30,3 +41,7 @@
 *.exe
 *.out
 *.app
+
+thunder/.vs/
+
+thunder/x64/
