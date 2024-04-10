@@ -8,7 +8,6 @@
 *.sln.docstates
 
 # Visual Studio files #
-*.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
 
