@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+thunder/.vs/
+
+thunder/x64/
+
+thunder/thunder.vcxproj.filters
+
+thunder/thunder.vcxproj.user
