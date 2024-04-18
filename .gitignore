@@ -31,10 +31,16 @@
 *.out
 *.app
 
-thunder/.vs/
+thunder/.vs
 
-thunder/x64/
+x64/
 
 thunder/thunder.vcxproj.filters
 
 thunder/thunder.vcxproj.user
+
+exercise1/.vs/
+
+*.filters
+
+*.user
