@@ -1,6 +1,13 @@
 #include <iostream>
+#include "test.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
+using namespace std;
+
+int main() 
+{
+    //cout << "Hello, World!" << endl;
+    //cout << "testing" << endl;
+    // testKbhitAndGetch();
+    movingKey('$');
     return 0;
 }
