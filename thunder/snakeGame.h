@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SNAKE_GAME_H
+#define SNAKE_GAME_H
 
 #include <stdlib.h>
 #include <iostream>
@@ -25,3 +26,4 @@ public:
 
 };
 
+#endif
