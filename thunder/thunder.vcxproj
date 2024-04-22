@@ -127,11 +127,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="point.cpp" />
+    <ClCompile Include="snake.cpp" />
+    <ClCompile Include="snakeGame.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gameConfig.h" />
+    <ClInclude Include="point.h" />
+    <ClInclude Include="snake.h" />
+    <ClInclude Include="snakeGame.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

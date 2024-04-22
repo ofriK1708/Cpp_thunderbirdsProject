@@ -1,7 +1,4 @@
-#include <windows.h> // for gotoxy
-#include <process.h> // for system
-#include <iostream>
-using namespace std;
+#include "utils.h"
 
 void gotoxy(int x, int y)
 {
