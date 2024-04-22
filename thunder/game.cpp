@@ -48,7 +48,10 @@ void Game::run()
 		{
 			keyPressed = _getch();
 			if (keyPressed == (int)GameConfig::eKeys::ESC)
+			{
+				gotoxy(0, GameConfig::GAME_HEIGHT + GameConfig::MIN_Y + 1);
 				break;
+			}
 		}
 		Sleep(100);
 		for (int i = 0; i < numOfSnakes; i++)
