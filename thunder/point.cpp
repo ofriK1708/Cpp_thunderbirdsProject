@@ -1,10 +1,5 @@
 #include "point.h"
-#include "gameConfig.h"
-#include "utils.h"
 
-#include <iostream>
-#include <Windows.h>
-using namespace std;
 
 void Point::init(int x, int y)
 {
