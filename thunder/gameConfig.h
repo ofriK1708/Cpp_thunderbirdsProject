@@ -8,8 +8,8 @@ class GameConfig
 {
 public:
 	enum class eKeys { LEFT = 'a', RIGHT = 's', UP = 'w', DOWN = 'z', ESC = 27 };
-	static constexpr int GAME_WIDTH = 20;
-	static constexpr int GAME_HEIGHT = 20;
+	static constexpr int GAME_WIDTH = 80;
+	static constexpr int GAME_HEIGHT = 25;
 
 	static constexpr int MIN_X = 10;
 	static constexpr int MIN_Y = 3;
