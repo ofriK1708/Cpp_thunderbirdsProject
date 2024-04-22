@@ -41,6 +41,6 @@
 *.out
 *.app
 
-thunder/.vs/
+.vs/
 
-thunder/x64/
+x64/
