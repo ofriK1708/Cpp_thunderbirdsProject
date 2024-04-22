@@ -13,7 +13,7 @@ using namespace std;
 
 class Snake;
 
-class SnakesGame
+class Game
 {
 	Snake* allSnakes;
 	int numOfSnakes;

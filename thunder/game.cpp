@@ -1,6 +1,6 @@
-#include "snakeGame.h"
+#include "game.h"
 
-void SnakesGame::init(int num)
+void Game::init(int num)
 {
 	drawBorder();
 
@@ -13,12 +13,12 @@ void SnakesGame::init(int num)
 		allSnakes[i].init(head, '#', GameConfig::COLORS[(i % (GameConfig::NUM_OF_COLORS - 1)) + 1]);
 	}
 }
-void SnakesGame::freeMemory()
+void Game::freeMemory()
 {
 	delete[]allSnakes;
 }
 
-void SnakesGame::drawBorder()
+void Game::drawBorder()
 {
 	for (int col = GameConfig::MIN_X; col < GameConfig::GAME_WIDTH + GameConfig::MIN_X; col++)
 	{
@@ -39,7 +39,7 @@ void SnakesGame::drawBorder()
 	}
 }
 
-void SnakesGame::run()
+void Game::run()
 {
 	while (true)
 	{

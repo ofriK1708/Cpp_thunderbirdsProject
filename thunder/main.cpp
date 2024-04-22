@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "test.h"
-#include "snakeGame.h"
+#include "game.h"
 #include "gameConfig.h"
 
 using namespace std;
@@ -22,7 +22,7 @@ int main()
 
 void testSnakeGame()   
 {
-    SnakesGame theGame;
+    Game theGame;
 
     theGame.init(5);
     theGame.run();
