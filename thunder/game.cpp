@@ -50,7 +50,7 @@ void Game::run()
 			if (keyPressed == (int)GameConfig::eKeys::ESC)
 				break;
 		}
-		Sleep(500);
+		Sleep(100);
 		for (int i = 0; i < numOfSnakes; i++)
 			allSnakes[i].move((GameConfig::eKeys)keyPressed);
 	}
