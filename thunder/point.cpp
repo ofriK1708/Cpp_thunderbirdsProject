@@ -1,9 +1,21 @@
 #include "point.h"
+#include "gameConfig.h"
+#include "utils.h"
 
+#include <iostream>
+#include <Windows.h>
+using namespace std;
 
+void Point::init(int x, int y)
+{
+	this->x = x;
+	this->y = y;
+	diff_x = 1;
+	diff_y = 0;
+}
 void Point::draw(char ch, int backcolor)
 {
-	// SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), backcolor);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), backcolor);
 	gotoxy(x + GameConfig::MIN_X - 1, y + GameConfig::MIN_Y - 1);
 	cout << ch;
 }
@@ -41,5 +53,3 @@ void Point::move(GameConfig::eKeys key)
 	else if (y == 0)
 		y = GameConfig::GAME_HEIGHT;
 }
-
-
