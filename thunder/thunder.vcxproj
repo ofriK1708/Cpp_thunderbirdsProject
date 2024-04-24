@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="ship.h" />

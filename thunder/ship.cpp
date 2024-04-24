@@ -1,5 +1,5 @@
 #include "ship.h"
-
+#include "utils.h"
 #include <cstring>
 
 
@@ -20,6 +20,7 @@ void Ship::move(GameConfig::eKeys direction)
 		pos[i].draw(symbol, backgroundcolor);
 	}
 	delTrace(lastPos);
+	hideCursor();
 }
 
 void Ship::delTrace(Point lastPos[]) {
