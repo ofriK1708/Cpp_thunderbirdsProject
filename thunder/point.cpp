@@ -1,12 +1,14 @@
 #include "point.h"
 
+#include <iostream>
+#include <Windows.h>
+#include "utils.h"
 
-void Point::init(int x, int y)
+
+void Point::set(int x, int y)
 {
 	this->x = x;
 	this->y = y;
-	diff_x = 1;
-	diff_y = 0;
 }
 void Point::draw(char ch, int backcolor)
 {

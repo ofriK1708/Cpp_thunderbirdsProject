@@ -1,26 +1,22 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <iostream>
-#include <Windows.h>
-
 #include "gameConfig.h"
-#include "utils.h"
 
 using namespace std;
 
 
 class Point
 {
-	int x;
-	int y;
-	int diff_x;
-	int diff_y;
+	int x = -1, y = -1;
+	int diff_x = 0;
+	int diff_y = 0;
 
 public:
-	void init(int x, int y);
+	void set(int x, int y);
 	void draw(char ch, int backcolor);
 	void move(GameConfig::eKeys key);
+	void getCoordinate(int& x, int& y) {x = this->x; y = this->y;}
 };
 
 #endif
