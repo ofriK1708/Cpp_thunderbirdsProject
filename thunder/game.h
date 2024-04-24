@@ -7,17 +7,17 @@
 #include <conio.h>
 #include <Windows.h>
 
-#include "snake.h"
+#include "ship.h"
 #include "utils.h"
 #include  <stdbool.h>
 
 using namespace std;
 
-class Snake;
+class Ship;
 
 class Game
 {
-	Snake* allSnakes;
+	Ship* allSnakes;
 	int numOfSnakes;
 	bool colorSet = false; 
 	void drawBorder();
