@@ -1,13 +1,8 @@
 #ifndef SNAKE_GAME_H
 #define SNAKE_GAME_H
 
-
-#include <stdlib.h>
-#include <iostream>
-#include <conio.h>
-#include <Windows.h>
-
 #include "ship.h"
+#include "board.h"
 #include "utils.h"
 #include  <stdbool.h>
 
@@ -17,14 +12,13 @@ class Ship;
 
 class Game
 {
-	Ship* allSnakes;
-	int numOfSnakes;
+	Board board;
+	Ship ships[2];
 	bool colorSet = false; 
-	void drawBorder();
+	//activeShip
 public:
-	void init(int num);
+	void init();
 	void run();
-	void freeMemory();
 	void mainMenu();
 };
 
