@@ -17,6 +17,12 @@ public:
 	void draw(char symbol, int backcolor);
 	void move(GameConfig::eKeys key);
 	void getCoordinate(int& x, int& y) {x = this->x; y = this->y;}
+	bool operator==(const Point& other) const {
+		if ((this->x == other.x) && (this->y == other.y))
+			return true;
+		else
+			return false;
+	}
 };
 
 #endif

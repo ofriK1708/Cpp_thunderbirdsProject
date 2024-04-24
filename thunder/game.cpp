@@ -67,8 +67,8 @@ void Game::run()
 				break;
 			}
 		}
-		Sleep(100);
-		ships[0].move((GameConfig::eKeys)keyPressed);
+		Sleep(30);
+		board.ships[0].move((GameConfig::eKeys)keyPressed);
 	}
 }
 

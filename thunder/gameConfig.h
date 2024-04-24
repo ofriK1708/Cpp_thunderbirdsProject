@@ -16,5 +16,8 @@ public:
 
 	static const int COLORS[];
 	static const int NUM_OF_COLORS;
+
+	static const size_t NUM_SHIPS = 2;
+	static const char SHIPS_SYMBOLS[NUM_SHIPS];
 };
 #endif

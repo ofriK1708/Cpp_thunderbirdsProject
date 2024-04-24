@@ -1,25 +1,37 @@
 #include "ship.h"
 
-void Ship::init(const Point& head, char symbol, int color)
+#include <cstring>
+
+
+void Ship::init(char symbol, int color)
 {
 	this->symbol = symbol;
 	this->backgroundcolor = color;
-	pos[0] = head;
-	pos[0].draw(symbol, backgroundcolor);
-	for (int i = 1; i < 7; i++)
-	{
-		pos[i] = pos[i - 1];
-		pos[i].move((GameConfig::eKeys)0);
-		pos[i].draw(symbol, backgroundcolor);
-	}
 }
+
 void Ship::move(GameConfig::eKeys direction)
 {
-	pos[6].draw(' ', GameConfig::COLORS[0]);
-	for (int i = 6; i > 0; i--)
+	Point lastPos[MAX_SHIP_SIZE];
+	std::memcpy(lastPos, pos, sizeof(pos));
+	for (size_t i = 0; i<size; i++)
 	{
-		pos[i] = pos[i - 1];
+		
+		pos[i].move(direction);
+		pos[i].draw(symbol, backgroundcolor);
 	}
-	pos[0].move(direction);
-	pos[0].draw(symbol, backgroundcolor);
+	delTrace(lastPos);
+}
+
+void Ship::delTrace(Point lastPos[]) {
+	bool toDel;
+	for (int i = 0; i < size; i++) {
+		toDel = true;
+		for (int j = 0; j < size; j++) {
+			if ((lastPos[i] == pos[j]))
+				toDel = false;
+		}
+		if(toDel)
+			lastPos[i].draw(' ', GameConfig::COLORS[0]);
+	}
+
 }

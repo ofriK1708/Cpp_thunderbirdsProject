@@ -13,7 +13,6 @@ class Ship;
 class Game
 {
 	Board board;
-	Ship ships[2];
 	bool colorSet = false; 
 	//activeShip
 public:
