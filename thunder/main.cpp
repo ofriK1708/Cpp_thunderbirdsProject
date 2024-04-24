@@ -25,7 +25,6 @@ void testSnakeGame()
     Game theGame;
 
     theGame.mainMenu();
-    theGame.init(1);
+    theGame.init();
     theGame.run();
-    theGame.freeMemory();
 }

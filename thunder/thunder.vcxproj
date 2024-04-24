@@ -127,18 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="board.cpp" />
     <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="point.cpp" />
-    <ClCompile Include="snake.cpp" />
+    <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="block.h" />
+    <ClInclude Include="board.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="point.h" />
-    <ClInclude Include="snake.h" />
+    <ClInclude Include="ship.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="utils.h" />
