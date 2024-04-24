@@ -1,18 +1,20 @@
 #include "point.h"
 
+#include <iostream>
+#include <Windows.h>
+#include "utils.h"
 
-void Point::init(int x, int y)
+
+void Point::set(int x, int y)
 {
 	this->x = x;
 	this->y = y;
-	diff_x = 1;
-	diff_y = 0;
 }
-void Point::draw(char ch, int backcolor)
+void Point::draw(char symbol, int backcolor)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), backcolor);
 	gotoxy(x + GameConfig::MIN_X - 1, y + GameConfig::MIN_Y - 1);
-	cout << ch;
+	cout << symbol;
 }
 void Point::move(GameConfig::eKeys key)
 {
