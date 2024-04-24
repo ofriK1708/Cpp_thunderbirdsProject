@@ -1,16 +1,16 @@
 #include "ship.h"
 
-void Ship::init(const Point& head, char ch, int color)
+void Ship::init(const Point& head, char symbol, int color)
 {
-	this->ch = ch;
+	this->symbol = symbol;
 	this->backgroundcolor = color;
 	pos[0] = head;
-	pos[0].draw(ch, backgroundcolor);
+	pos[0].draw(symbol, backgroundcolor);
 	for (int i = 1; i < 7; i++)
 	{
 		pos[i] = pos[i - 1];
 		pos[i].move((GameConfig::eKeys)0);
-		pos[i].draw(ch, backgroundcolor);
+		pos[i].draw(symbol, backgroundcolor);
 	}
 }
 void Ship::move(GameConfig::eKeys direction)
@@ -21,5 +21,5 @@ void Ship::move(GameConfig::eKeys direction)
 		pos[i] = pos[i - 1];
 	}
 	pos[0].move(direction);
-	pos[0].draw(ch, backgroundcolor);
+	pos[0].draw(symbol, backgroundcolor);
 }

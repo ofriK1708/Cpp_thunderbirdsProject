@@ -10,11 +10,11 @@ void Point::set(int x, int y)
 	this->x = x;
 	this->y = y;
 }
-void Point::draw(char ch, int backcolor)
+void Point::draw(char symbol, int backcolor)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), backcolor);
 	gotoxy(x + GameConfig::MIN_X - 1, y + GameConfig::MIN_Y - 1);
-	cout << ch;
+	cout << symbol;
 }
 void Point::move(GameConfig::eKeys key)
 {
