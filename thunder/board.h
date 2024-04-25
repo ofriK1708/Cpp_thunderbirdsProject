@@ -52,6 +52,7 @@ public:
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
+	bool checkCullision(ObjPos op);
 };
 
 // this is a test

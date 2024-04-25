@@ -68,3 +68,13 @@ void Board::updateGamePieces(){
 		}
 	}
 }
+
+
+bool Board::checkCullision(ObjPos op) {
+	for(int i=0; i< op.len; i++){
+		if (board[op.pos[i].getY()][op.pos[i].getX()] != ' ')
+			if (board[op.pos[i].getY()][op.pos[i].getX()] != op.symbol)
+				return true;
+	}
+	return false;
+}

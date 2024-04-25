@@ -74,8 +74,10 @@ void Game::run()
 				break;
 			}
 		}
-		Sleep(150);
-		board.ships[0].move((GameConfig::eKeys)keyPressed);
+		Sleep(20);
+		ObjPos op = board.ships[0].getNextPos((GameConfig::eKeys)keyPressed);
+		if(!board.checkCullision(op))
+			board.ships[0].move();
 	}
 }
 
