@@ -24,7 +24,7 @@ void Ship::move(GameConfig::eKeys direction)
 	{
 		pos[i].move(direction);
 		pos[i].draw(symbol, backgroundcolor);
-		board[pos[i].getX()][pos[i].getY()] = symbol;
+		board[pos[i].getY()][pos[i].getX()] = symbol;
 	}
 	delTrace(lastPos);
 	hideCursor();
@@ -46,7 +46,7 @@ void Ship::delTrace(Point lastPos[]) {
 		}
 		if (toDel) {
 			lastPos[i].draw(' ', GameConfig::BLACK);
-			board[pos[i].getX()][pos[i].getY()] = ' ';
+			board[pos[i].getY()][pos[i].getX()] = ' ';
 		}
 	}
 }
