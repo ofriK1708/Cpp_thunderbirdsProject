@@ -1,6 +1,14 @@
 #include "board.h"
 #include "gameConfig.h"
 
+
+/**
+ * Initializes the game board and its components.
+ *
+ * This function initializes the game board and its components, including ships, blocks,
+ * the exit, and the legend position. It then updates the game pieces on the board and
+ * prints the initial state of the game screen.
+ */
 void Board::init(){
 
 	for (size_t i=0; i<NUM_SHIPS; i++) 
@@ -9,6 +17,10 @@ void Board::init(){
 	printScreen();
 }
 
+
+/**
+ * Prints the current state of the game board on the screen with appropriate indentation.
+ */
 void Board::printScreen() {
 	for (size_t j = 0; j < GameConfig::MIN_Y; j++)
 		std::cout << endl;
@@ -19,6 +31,13 @@ void Board::printScreen() {
 	}
 }
 
+
+/**
+ * Updates the game pieces on the board based on the current state.
+ *
+ * This function updates the positions of various game pieces such as ships, blocks, exit,
+ * and legend position on the board according to the current state of the game.
+ */
 void Board::updateGamePieces(){
 	std::memcpy(board, original_board, sizeof(original_board));
 	for (int i = 0; i < HEIGHT; i++) {

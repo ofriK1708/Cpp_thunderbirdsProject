@@ -12,6 +12,10 @@ void Game::init()
 	board.init();
 }
 
+
+/**
+* Manages the main menu interface and user interaction.
+*/
 void Game::mainMenu()  
 {
 	int userChoice;
@@ -53,6 +57,9 @@ void Game::mainMenu()
 }
 
 
+/**
+ * Runs the game loop, handling player input.
+ */
 void Game::run()
 {
 	while (true)

@@ -4,6 +4,7 @@
 
 class Board;
 
+
 class Block {
 	constexpr static size_t MAX_BlOCK_SIZE = 6;
 	Point pos[MAX_BlOCK_SIZE];
