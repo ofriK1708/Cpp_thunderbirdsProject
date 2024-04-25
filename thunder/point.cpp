@@ -10,12 +10,31 @@ void Point::set(int x, int y)
 	this->x = x;
 	this->y = y;
 }
+
+
+/**
+ * Draws the point on the screen.
+ *
+ * @param symbol The character representing the point.
+ * @param backcolor The background color of the point.
+ */
 void Point::draw(char symbol, int backcolor)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), backcolor);
 	gotoxy(x + GameConfig::MIN_X - 1, y + GameConfig::MIN_Y - 1);
 	cout << symbol;
 }
+
+
+/**
+ * Moves the point based on the provided direction key.
+ * 
+ * If the point exceeds the boundaries of the game area,
+ * it wraps around to the opposite side.
+ *
+ * @param key: indicating the movement direction.
+ */
+
 void Point::move(GameConfig::eKeys key)
 {
 	switch (key)
