@@ -10,14 +10,15 @@
  * prints the initial state of the game screen.
  */
 
-void Board::init(bool colorSet){
+void Board::init(bool colorSet)
+{
 	
 	size_t colorShift = 0;
 	if (colorSet)
 		colorShift++;
 
 	for (size_t i = 0; i < NUM_SHIPS; i++)
-		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i]);
+		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i], board);
 
 	updateGamePieces();
 	printScreen();

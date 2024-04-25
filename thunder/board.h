@@ -42,16 +42,16 @@ class Board {
 			"W                                                                              W", // 23
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
-	// the actual board that will be modified
-	char board[HEIGHT][WIDTH + 1];
 	Block blocks[NUM_BLOCKS];
 	Point legend_pos;
-	Point exit_pos;
+	Point exit_pos;	
 public:
+	// the actual board that will be modified
+	char board[HEIGHT][WIDTH + 1];
 	Ship ships[NUM_SHIPS];
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
 };
 
-
+// this is a test

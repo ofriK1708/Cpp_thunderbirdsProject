@@ -34,7 +34,6 @@ void Point::draw(char symbol, int backcolor)
  *
  * @param key: indicating the movement direction.
  */
-
 void Point::move(GameConfig::eKeys key)
 {
 	switch (key)

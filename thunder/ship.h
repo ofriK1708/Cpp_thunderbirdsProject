@@ -3,8 +3,6 @@
 
 #include "point.h"
 
-class Board;
-
 class Ship
 {
 private:
@@ -13,11 +11,10 @@ private:
 	char symbol;
 	size_t size = 0;
 	int backgroundcolor;
-	Board* board = nullptr; // pointer to the board
+	char (*board)[81]; // pointer to the board
 public:
-	void init(char symbol, int color);
+	void init(char symbol, int color, char(*board)[81]);
 	void move(GameConfig::eKeys direction);
-	void setBoard(Board* board)		{this->board = board;}
 	void addPoint(int x, int y) { pos[size++].set(x, y);}
 	size_t getSize() const			{return size;}
 	Point getPos(size_t i) const	{return pos[i];}

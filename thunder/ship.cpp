@@ -3,10 +3,11 @@
 #include <cstring>
 
 
-void Ship::init(char symbol, int color)
+void Ship::init(char symbol, int color, char (*board)[81])
 {
 	this->symbol = symbol;
 	this->backgroundcolor = color;
+	this->board = board;
 }
 
 
@@ -21,9 +22,9 @@ void Ship::move(GameConfig::eKeys direction)
 	std::memcpy(lastPos, pos, sizeof(pos));
 	for (size_t i = 0; i<size; i++)
 	{
-		
 		pos[i].move(direction);
 		pos[i].draw(symbol, backgroundcolor);
+		board[pos[i].getX()][pos[i].getY()] = symbol;
 	}
 	delTrace(lastPos);
 	hideCursor();
@@ -43,8 +44,9 @@ void Ship::delTrace(Point lastPos[]) {
 			if ((lastPos[i] == pos[j]))
 				toDel = false;
 		}
-		if(toDel)
+		if (toDel) {
 			lastPos[i].draw(' ', GameConfig::BLACK);
+			board[pos[i].getX()][pos[i].getY()] = ' ';
+		}
 	}
-
 }
