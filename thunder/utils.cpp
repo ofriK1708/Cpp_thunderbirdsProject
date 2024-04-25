@@ -11,7 +11,24 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);
 }
 
-void clrscr()
+/*
+void setTextColor(Color colorToSet) 
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)colorToSet);
+}
+*/
+
+void hideCursor()
+{
+	HANDLE myconsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO CURSOR;
+	CURSOR.dwSize = 1;
+	CURSOR.bVisible = FALSE;
+	SetConsoleCursorInfo(myconsole, &CURSOR);//second argument need pointer
+}
+
+
+void clrscr() // clear_screen
 {
 	system("cls");
 }

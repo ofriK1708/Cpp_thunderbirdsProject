@@ -49,7 +49,7 @@ class Board {
 	Point exit_pos;
 public:
 	Ship ships[NUM_SHIPS];
-	void init();
+	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
 };

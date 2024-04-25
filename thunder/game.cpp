@@ -9,7 +9,7 @@ void Game::init()
 {
 	//head.set(rand() % GameConfig::GAME_WIDTH, rand() % GameConfig::GAME_HEIGHT);
 	//allSnakes[i].init(head, '#', GameConfig::COLORS[(i % (GameConfig::NUM_OF_COLORS - 1)) + 1]);
-	board.init();
+	board.init(colorSet);
 }
 
 
@@ -74,7 +74,7 @@ void Game::run()
 				break;
 			}
 		}
-		Sleep(30);
+		Sleep(150);
 		board.ships[0].move((GameConfig::eKeys)keyPressed);
 	}
 }

@@ -8,6 +8,8 @@ using namespace std;
 
 
 void gotoxy(int, int);
+//void setTextColor(Color);
+void hideCursor();
 void clrscr();
 
 #endif // __GENERAL_H

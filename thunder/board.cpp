@@ -9,10 +9,16 @@
  * the exit, and the legend position. It then updates the game pieces on the board and
  * prints the initial state of the game screen.
  */
-void Board::init(){
 
-	for (size_t i=0; i<NUM_SHIPS; i++) 
-		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::COLORS[i+1]);
+void Board::init(bool colorSet){
+	
+	size_t colorShift = 0;
+	if (colorSet)
+		colorShift++;
+
+	for (size_t i = 0; i < NUM_SHIPS; i++)
+		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i]);
+
 	updateGamePieces();
 	printScreen();
 }
