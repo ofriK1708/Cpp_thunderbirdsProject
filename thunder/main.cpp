@@ -15,7 +15,7 @@ int main()
     // testKbhitAndGetch();
     testSnakeGame();
 
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::COLORS[0]);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
     gotoxy(0, GameConfig::GAME_HEIGHT + GameConfig::MIN_Y + 2);
     return 0;
 }

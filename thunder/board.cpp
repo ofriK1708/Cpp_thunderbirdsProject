@@ -1,17 +1,16 @@
 #include "board.h"
 #include "gameConfig.h"
-#include "Color.h"
-void Board::init(bool colorSet){
 
-	int smallShipColor = WHITE;
-	int bigShipColor = WHITE;
-	if(colorSet)
-	{
-		smallShipColor = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
-		bigShipColor = BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY;
-	}
-    ships[0].init(GameConfig::SHIPS_SYMBOLS[0], bigShipColor); // setting big ship
-	ships[1].init(GameConfig::SHIPS_SYMBOLS[1], smallShipColor); // setting small ship
+
+void Board::init(bool colorSet){
+	
+	size_t colorShift = 0;
+	if (colorSet)
+		colorShift++;
+
+	for (size_t i = 0; i < NUM_SHIPS; i++)
+		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i]);
+
 	updateGamePieces();
 	printScreen();
 }

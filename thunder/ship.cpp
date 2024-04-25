@@ -32,7 +32,7 @@ void Ship::delTrace(Point lastPos[]) {
 				toDel = false;
 		}
 		if(toDel)
-			lastPos[i].draw(' ', GameConfig::COLORS[0]);
+			lastPos[i].draw(' ', GameConfig::BLACK);
 	}
 
 }

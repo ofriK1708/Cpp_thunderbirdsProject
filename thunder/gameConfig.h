@@ -14,10 +14,33 @@ public:
 	static constexpr int MIN_X = 10;
 	static constexpr int MIN_Y = 3;
 
-	static const int COLORS[];
-	static const int NUM_OF_COLORS;
+	enum Color
+	{
+		BLACK = 0,
+		BLUE = 1,
+		GREEN = 2,
+		CYAN = 3,
+		RED = 4,
+		MAGENTA = 5,
+		BROWN = 6,
+		LIGHTGREY = 7,
+		DARKGREY = 8,
+		LIGHTBLUE = 9,
+		LIGHTGREEN = 10,
+		LIGHTCYAN = 11,
+		LIGHTRED = 12,
+		LIGHTMAGENTA = 13,
+		YELLOW = 14,
+		WHITE = 15, 
+		PURPLE = BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY,
+		TURQUOISE = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY
+
+	};
+
 
 	static const size_t NUM_SHIPS = 2;
 	static const char SHIPS_SYMBOLS[NUM_SHIPS];
+	static const int SHIPS_COLORS[NUM_SHIPS][NUM_SHIPS];
+	
 };
 #endif
