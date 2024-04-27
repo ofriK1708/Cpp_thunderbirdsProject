@@ -70,10 +70,15 @@ void Board::updateGamePieces(){
 }
 
 
-bool Board::checkCullision(ObjPos op) {
-	for(int i=0; i< op.len; i++){
-		if (board[op.pos[i].getY()][op.pos[i].getX()] != ' ')
-			if (board[op.pos[i].getY()][op.pos[i].getX()] != op.symbol)
+bool Board::checkCollision(Point * nextPos,size_t size,char idSymbol)
+{
+	int currY, currX;
+	for(int i=0; i< size; i++)
+	{
+		currY = nextPos[i].getY();
+		currX = nextPos[i].getX();
+		if (board[currY][currX] != ' ')
+			if (board[currY][currX] != idSymbol)
 				return true;
 	}
 	return false;

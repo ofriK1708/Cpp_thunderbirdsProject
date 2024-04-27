@@ -3,12 +3,6 @@
 
 #include "point.h"
 
-struct ObjPos {
-	const Point* pos = nullptr;
-	size_t len = 0;
-	char symbol = ' ';
-};
-
 class Ship
 {
 private:
@@ -25,8 +19,11 @@ public:
 	void addPoint(int x, int y) { pos[size++].set(x, y);}
 	size_t getSize() const			{return size;}
 	Point getPos(size_t i) const	{return pos[i];}
+	Point* getNextPos() { return nextPos; }
+	char getSymbol() { return symbol; }
 	void delTrace();
-	ObjPos getNextPos(GameConfig::eKeys direction);
+	void setNextPos(GameConfig::eKeys direction);
+	
 	//bool checkCollision(int x, int y); // placed here for a lack of better option, would move in the future
 };
 

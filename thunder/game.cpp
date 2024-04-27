@@ -10,6 +10,7 @@ void Game::init()
 	//head.set(rand() % GameConfig::GAME_WIDTH, rand() % GameConfig::GAME_HEIGHT);
 	//allSnakes[i].init(head, '#', GameConfig::COLORS[(i % (GameConfig::NUM_OF_COLORS - 1)) + 1]);
 	board.init(colorSet);
+	board.getShips(ships);
 }
 
 
@@ -62,6 +63,9 @@ void Game::mainMenu()
  */
 void Game::run()
 {
+	char activeShipSymbol;
+	Point* activeShipNextPos;
+	int activeShipSize;
 	while (true)
 	{
 		int keyPressed = 0;
@@ -74,10 +78,14 @@ void Game::run()
 				break;
 			}
 		}
-		Sleep(20);
-		ObjPos op = board.ships[0].getNextPos((GameConfig::eKeys)keyPressed);
-		if(!board.checkCullision(op))
-			board.ships[0].move();
+		Sleep(30);
+		activeShipSymbol = ships[activeShip].getSymbol();
+		activeShipNextPos = ships[activeShip].getNextPos();
+		activeShipSize = ships[activeShip].getSize();
+		ships[activeShip].setNextPos((GameConfig::eKeys)keyPressed);
+		if (!(board.checkCollision(activeShipNextPos, activeShipSize, activeShipSymbol)))
+			ships[activeShip].move();
 	}
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }
 

@@ -21,7 +21,7 @@ void Point::set(int x, int y)
 void Point::draw(char symbol, int backcolor)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), backcolor);
-	gotoxy(x + GameConfig::MIN_X - 1, y + GameConfig::MIN_Y - 1);
+	gotoxy(x + GameConfig::MIN_X, y + GameConfig::MIN_Y);
 	cout << symbol;
 }
 
