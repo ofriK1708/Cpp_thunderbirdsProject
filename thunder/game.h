@@ -4,9 +4,8 @@
 #include "ship.h"
 #include "board.h"
 #include "utils.h"
+#include "gameConfig.h"
 #include  <stdbool.h>
-
-#define NUM_OF_SHIPS 2
 
 using namespace std;
 
@@ -16,8 +15,8 @@ class Game
 {
 	Board board;
 	bool colorSet = false; 
-	Ship ships[NUM_OF_SHIPS];
-	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship
+	Ship ships[GameConfig::NUM_SHIPS];
+	int activeShip = 1; // 0 - Big Ship, 1 - Small Ship
 public:
 	void init();
 	void run();
