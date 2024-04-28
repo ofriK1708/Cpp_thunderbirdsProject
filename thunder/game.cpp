@@ -13,6 +13,10 @@ void Game::init()
 	ships = board.getShips();
 }
 
+void clear() {
+	gotoxy(0, 0);
+	clrscr();
+}
 
 /**
 * Manages the main menu interface and user interaction.
@@ -57,19 +61,23 @@ void Game::mainMenu()
 }
 
 void Game::pauseMenu() {
+	
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
 	cout << "Press ESC again to continue or 9 to Exit" << endl;
-	cin >> userChoice;
-	switch (userChoice)
+	while (!_kbhit())
+		Sleep(100);
+	setKey(_getch());
+	switch (keyPressed)
 	{
 	case (int)GameConfig::eKeys::ESC:
+		clear();
 		cout << "Returning to the game, get ready" << endl;;
 		Sleep(2000);
-		pause = false;
 		break;
-	case 9:
+	case (int)GameConfig::eKeys::EXIT:
+		clear();
 		cout << "Finished game, Thank you for playing :D" << endl;;
-		cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*";
+		cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
 		stopGame = true;
 		break;
 	}
@@ -81,7 +89,8 @@ void Game::setGameStatus() {
 	switch (keyPressed)
 	{
 	case (int)GameConfig::eKeys::ESC:
-		pause = true;
+		clear();
+		pauseMenu();
 		break;
 
 	case (int)GameConfig::eKeys::SWITCH_TO_BIG_S:
@@ -124,15 +133,13 @@ void Game::gameLoop()
 		keyPressed = 0;
 		if (_kbhit())
 			setKey(_getch());
-		if (!pause) {
-			setGameStatus();
-			if(running)
-				play();
-		}
-		else
-			pauseMenu();
+		setGameStatus();
+		if(running)
+			play();
 		Sleep(30);
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }
+
+
 

@@ -11,7 +11,6 @@ void startGame();
 int main()
 {
     startGame();
-    gotoxy(0, GameConfig::GAME_HEIGHT + GameConfig::MIN_Y + 1);
     return 0;
 }
 

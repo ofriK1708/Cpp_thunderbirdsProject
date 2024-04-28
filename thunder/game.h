@@ -18,7 +18,6 @@ class Game
 	Ship* ships;
 	int activeShip = 1; // 0 - Big Ship, 1 - Small Ship
 	bool running = false;
-	bool pause = false;
 	bool stopGame = false;
 	int keyPressed;
 	int userChoice;
