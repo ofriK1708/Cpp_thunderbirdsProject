@@ -16,7 +16,7 @@ class Game
 	Board board;
 	bool colorSet = false; 
 	Ship* ships;
-	int activeShip = 1; // 0 - Big Ship, 1 - Small Ship
+	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship
 	bool running = false;
 	bool stopGame = false;
 	int keyPressed;
