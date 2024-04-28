@@ -19,7 +19,7 @@ void Ship::init(char symbol, int color, char (*board)[81])
 void Ship::move()
 {
 	delTrace();
-	std::memcpy(pos, nextPos, sizeof(pos));
+	std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 	int currY,currX;
 	for (size_t i = 0; i<size; i++)
 	{
@@ -34,7 +34,7 @@ void Ship::move()
 
 void Ship::setNextPos(GameConfig::eKeys direction) {
 
-	std::memcpy(nextPos, pos, sizeof(pos));
+	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
 	for (size_t i = 0; i < size; i++)
 		nextPos[i].move(direction);
 }

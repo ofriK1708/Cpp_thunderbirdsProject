@@ -65,7 +65,7 @@ void Game::run()
 {
 	char activeShipSymbol;
 	Point* activeShipNextPos;
-	int activeShipSize;
+	size_t activeShipSize;
 	while (true)
 	{
 		int keyPressed = 0;
