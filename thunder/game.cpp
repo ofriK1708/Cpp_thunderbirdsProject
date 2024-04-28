@@ -73,6 +73,8 @@ void Game::pauseMenu() {
 		clear();
 		cout << "Returning to the game, get ready" << endl;;
 		Sleep(2000);
+		clear();
+		board.printScreen();
 		break;
 	case (int)GameConfig::eKeys::EXIT:
 		clear();
@@ -82,8 +84,6 @@ void Game::pauseMenu() {
 		break;
 	}
 }
-
-
 
 void Game::setGameStatus() {
 	switch (keyPressed)
@@ -122,7 +122,6 @@ void Game::play() {
 		ships[activeShip].move();
 }
 
-
 /**
  * Runs the game loop, handling player input.
  */
@@ -140,6 +139,3 @@ void Game::gameLoop()
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }
-
-
-

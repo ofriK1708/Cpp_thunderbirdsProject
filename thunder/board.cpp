@@ -38,7 +38,6 @@ void Board::printScreen() {
 	}
 }
 
-
 /**
  * Updates the game pieces on the board based on the current state.
  *
