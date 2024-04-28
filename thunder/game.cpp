@@ -77,14 +77,21 @@ void Game::run()
 				gotoxy(0, GameConfig::GAME_HEIGHT + GameConfig::MIN_Y + 1);
 				break;
 			}
+			keyPressed = tolower(keyPressed);
+			if ((keyPressed == (int)GameConfig::eKeys::SWITCH_TO_BIG_S && activeShip == 0) || (keyPressed == (int)GameConfig::eKeys::SWITCH_TO_SMALL_S && activeShip == 1))
+				keyPressed = (int)GameConfig::eKeys::STOP;
+				
 		}
-		Sleep(30);
-		activeShipSymbol = ships[activeShip].getSymbol();
-		activeShipNextPos = ships[activeShip].getNextPos();
-		activeShipSize = ships[activeShip].getSize();
-		ships[activeShip].setNextPos((GameConfig::eKeys)keyPressed);
-		if (!(board.checkCollision(activeShipNextPos, activeShipSize, activeShipSymbol)))
-			ships[activeShip].move();
+		if (keyPressed != (int)GameConfig::eKeys::STOP)
+		{
+			Sleep(30);
+			activeShipSymbol = ships[activeShip].getSymbol();
+			activeShipNextPos = ships[activeShip].getNextPos();
+			activeShipSize = ships[activeShip].getSize();
+			ships[activeShip].setNextPos((GameConfig::eKeys)keyPressed);
+			if (!(board.checkCollision(activeShipNextPos, activeShipSize, activeShipSymbol)))
+				ships[activeShip].move();
+		}
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }
