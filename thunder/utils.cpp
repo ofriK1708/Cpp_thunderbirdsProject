@@ -11,12 +11,11 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);
 }
 
-/*
-void setTextColor(Color colorToSet) 
+void setTextColor(GameConfig::Color color) 
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)colorToSet);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)color);
 }
-*/
+
 
 void hideCursor()
 {

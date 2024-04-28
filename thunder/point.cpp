@@ -3,6 +3,7 @@
 #include <iostream>
 #include <Windows.h>
 #include "utils.h"
+#include "gameConfig.h"
 
 
 void Point::set(int x, int y)
@@ -18,11 +19,12 @@ void Point::set(int x, int y)
  * @param symbol The character representing the point.
  * @param backcolor The background color of the point.
  */
-void Point::draw(char symbol, int backcolor)
+void Point::draw(char symbol,GameConfig::Color backcolor)
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), backcolor);
-	gotoxy(x + GameConfig::MIN_X - 1, y + GameConfig::MIN_Y - 1);
+	setTextColor(backcolor);
+	gotoxy(x + GameConfig::MIN_X, y + GameConfig::MIN_Y);
 	cout << symbol;
+	setTextColor(GameConfig::WHITE);
 }
 
 
@@ -34,7 +36,6 @@ void Point::draw(char symbol, int backcolor)
  *
  * @param key: indicating the movement direction.
  */
-
 void Point::move(GameConfig::eKeys key)
 {
 	switch (key)
