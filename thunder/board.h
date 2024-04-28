@@ -45,14 +45,18 @@ class Board {
 	Block blocks[NUM_BLOCKS];
 	Point legend_pos;
 	Point exit_pos;	
+	Ship ships[NUM_SHIPS];
+
 public:
 	// the actual board that will be modified
 	char board[HEIGHT][WIDTH + 1];
-	Ship ships[NUM_SHIPS];
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
-	bool checkCullision(ObjPos op);
+	bool checkCollision(LocationInfo& objectLoction);
+	//void getShips(Ship*& ships) const { return ships; }
+	Ship* getShips() {return ships;}
+	void getBlocks(Block blocks[]) const { memcpy(blocks, this->blocks, sizeof(this->blocks)); }
 };
 
 // this is a test

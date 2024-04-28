@@ -7,7 +7,7 @@
 class GameConfig
 {
 public:
-	enum class eKeys { LEFT = 'a', RIGHT = 'd', UP = 'w', DOWN = 's', ESC = 27 };
+	enum class eKeys { LEFT = 'a', RIGHT = 'd', UP = 'w', DOWN = 'x', SWITCH_TO_SMALL_S = 's', SWITCH_TO_BIG_S = 'b', ESC = 27, EXIT = (int)'9' };
 	static constexpr int GAME_WIDTH = 80;
 	static constexpr int GAME_HEIGHT = 25;
 
@@ -40,7 +40,11 @@ public:
 
 	static const size_t NUM_SHIPS = 2;
 	static const char SHIPS_SYMBOLS[NUM_SHIPS];
-	static const int SHIPS_COLORS[NUM_SHIPS][NUM_SHIPS];
+	static const Color SHIPS_COLORS[NUM_SHIPS][NUM_SHIPS];
+	enum ShipID {
+		BIG = 0,
+		SMALL = 1
+	};
 	
 };
 #endif

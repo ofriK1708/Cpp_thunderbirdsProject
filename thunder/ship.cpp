@@ -3,7 +3,7 @@
 #include <cstring>
 
 
-void Ship::init(char symbol, int color, char (*board)[81])
+void Ship::init(char symbol, GameConfig::Color color, char (*board)[81])
 {
 	this->symbol = symbol;
 	this->backgroundcolor = color;
@@ -19,26 +19,25 @@ void Ship::init(char symbol, int color, char (*board)[81])
 void Ship::move()
 {
 	delTrace();
-	std::memcpy(pos, nextPos, sizeof(pos));
+	std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
+	int currY,currX;
 	for (size_t i = 0; i<size; i++)
 	{
+		currY = pos[i].getY();
+		currX = pos[i].getX();
 		pos[i].draw(symbol, backgroundcolor);
-		board[pos[i].getY()][pos[i].getX()] = symbol;
+		board[currY][currX] = symbol;
 	}
 	hideCursor();
 }
 
 
-ObjPos Ship::getNextPos(GameConfig::eKeys direction) {
-	ObjPos op;
-
-	std::memcpy(nextPos, pos, sizeof(pos));
+LocationInfo& Ship::checkNextObjLocation(GameConfig::eKeys direction) {
+	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
 	for (size_t i = 0; i < size; i++)
 		nextPos[i].move(direction);
-	op.pos = this->nextPos;
-	op.len = this->size;
-	op.symbol = this->symbol;
-	return op;
+	shipLocationinfo = { nextPos, symbol, size };
+	return shipLocationinfo;
 }
 
 
@@ -48,8 +47,12 @@ ObjPos Ship::getNextPos(GameConfig::eKeys direction) {
  * @param lastPos An array of Points representing the previous positions of the ship.
  */
 void Ship::delTrace() {
-	for (int i = 0; i < size; i++) {
+	int currY, currX;
+	for (int i = 0; i < size; i++) 
+	{
+		currY = pos[i].getY();
+		currX = pos[i].getX();
 		pos[i].draw(' ', GameConfig::BLACK);
-		board[pos[i].getY()][pos[i].getX()] = ' ';
+		board[currY][currX] = ' ';
 	}
 }

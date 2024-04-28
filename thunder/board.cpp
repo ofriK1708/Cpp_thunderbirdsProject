@@ -1,5 +1,6 @@
 #include "board.h"
 #include "gameConfig.h"
+#include "utils.h"
 
 
 /**
@@ -24,6 +25,15 @@ void Board::init(bool colorSet)
 	printScreen();
 }
 
+int isShip(char ch) {
+	int res = -1;
+	
+	for (int i = 0; i < GameConfig::NUM_SHIPS; i++)
+		if (GameConfig::SHIPS_SYMBOLS[i] == ch)
+			res = i;
+	return res;
+}
+
 
 /**
  * Prints the current state of the game board on the screen with appropriate indentation.
@@ -34,10 +44,19 @@ void Board::printScreen() {
 	for (int i = 0; i < HEIGHT; i++) {
 		for (size_t j = 0; j < GameConfig::MIN_X; j++)
 			std::cout << " ";
-		std::cout << board[i] << std::endl;
+		for (size_t j = 0; j < WIDTH; j++){
+			int shipIndex = isShip(board[i][j]);
+			if (shipIndex != -1) {
+				setTextColor(ships[shipIndex].getBackgroundColor());
+				std::cout << board[i][j];
+				setTextColor(GameConfig::WHITE);
+			}
+			else
+				std::cout << board[i][j];
+		}
+		std::cout << endl;
 	}
 }
-
 
 /**
  * Updates the game pieces on the board based on the current state.
@@ -70,10 +89,15 @@ void Board::updateGamePieces(){
 }
 
 
-bool Board::checkCullision(ObjPos op) {
-	for(int i=0; i< op.len; i++){
-		if (board[op.pos[i].getY()][op.pos[i].getX()] != ' ')
-			if (board[op.pos[i].getY()][op.pos[i].getX()] != op.symbol)
+bool Board::checkCollision(LocationInfo &ol)
+{
+	int currY, currX;
+	for(int i=0; i<ol.objSize; i++)
+	{
+		currY = ol.nextPos[i].getY();
+		currX = ol.nextPos[i].getX();
+		if (board[currY][currX] != ' ')
+			if (board[currY][currX] != ol.objSymbol)
 				return true;
 	}
 	return false;

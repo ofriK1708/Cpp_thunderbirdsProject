@@ -3,11 +3,13 @@
 
 #include "point.h"
 
-struct ObjPos {
-	const Point* pos = nullptr;
-	size_t len = 0;
-	char symbol = ' ';
+
+struct LocationInfo {
+	Point* nextPos = nullptr;
+	char objSymbol = ' ';
+	size_t objSize = 0;
 };
+
 
 class Ship
 {
@@ -17,17 +19,20 @@ private:
 	Point nextPos[MAX_SHIP_SIZE];
 	char symbol;
 	size_t size = 0;
-	int backgroundcolor;
+	GameConfig::Color backgroundcolor;
 	char (*board)[81]; // pointer to the board
+	LocationInfo shipLocationinfo;
 public:
-	void init(char symbol, int color, char(*board)[81]);
+	void init(char symbol, GameConfig::Color color, char(*board)[81]);
 	void move();
 	void addPoint(int x, int y) { pos[size++].set(x, y);}
 	size_t getSize() const			{return size;}
 	Point getPos(size_t i) const	{return pos[i];}
+	char getSymbol() { return symbol; }
 	void delTrace();
-	ObjPos getNextPos(GameConfig::eKeys direction);
-	//bool checkCollision(int x, int y); // placed here for a lack of better option, would move in the future
+	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction);
+	GameConfig::Color getBackgroundColor() { return backgroundcolor;}
+
 };
 
 #endif

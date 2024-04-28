@@ -14,13 +14,13 @@ class Point
 
 public:
 	void set(int x, int y);
-	void draw(char symbol, int backcolor);
+	void draw(char symbol, GameConfig::Color backcolor);
 	void move(GameConfig::eKeys key);
 	void getCoordinate(int& x, int& y) {x = this->x; y = this->y;}
-	int getX() const { return this->x - 1; }
-	int getY() const { return this->y - 1; }
+	int getX() const { return this->x; }
+	int getY() const { return this->y; }
 	bool operator==(const Point& other) const {
-		if ((this->x == other.x - 1) && (this->y == other.y - 1))
+		if ((this->x == other.x) && (this->y == other.y))
 			return true;
 		else
 			return false;

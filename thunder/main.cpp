@@ -6,25 +6,19 @@
 
 using namespace std;
 
-void testSnakeGame();
+void startGame();
 
-int main() 
+int main()
 {
-    //cout << "Hello, World!" << endl;
-    //cout << "testing" << endl;
-    // testKbhitAndGetch();
-    testSnakeGame();
-
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
-    gotoxy(0, GameConfig::GAME_HEIGHT + GameConfig::MIN_Y + 2);
+    startGame();
     return 0;
 }
 
-void testSnakeGame()   
+void startGame()
 {
     Game theGame;
 
     theGame.mainMenu();
     theGame.init();
-    theGame.run();
+    theGame.gameLoop();
 }
