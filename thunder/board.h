@@ -53,8 +53,9 @@ public:
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
-	bool checkCollision(Point * nextPos,size_t size, char idSymbol);
-	void getShips(Ship ships[]) const { memcpy(ships, this->ships, sizeof(this->ships)); }
+	bool checkCollision(LocationInfo& objectLoction);
+	//void getShips(Ship*& ships) const { return ships; }
+	Ship* getShips() {return ships;}
 	void getBlocks(Block blocks[]) const { memcpy(blocks, this->blocks, sizeof(this->blocks)); }
 };
 

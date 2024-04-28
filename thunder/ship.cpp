@@ -32,11 +32,12 @@ void Ship::move()
 }
 
 
-void Ship::setNextPos(GameConfig::eKeys direction) {
-
+LocationInfo& Ship::checkNextObjLocation(GameConfig::eKeys direction) {
 	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
 	for (size_t i = 0; i < size; i++)
 		nextPos[i].move(direction);
+	shipLocationinfo = { nextPos, symbol, size };
+	return shipLocationinfo;
 }
 
 

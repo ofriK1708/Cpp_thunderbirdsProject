@@ -70,15 +70,15 @@ void Board::updateGamePieces(){
 }
 
 
-bool Board::checkCollision(Point * nextPos,size_t size,char idSymbol)
+bool Board::checkCollision(LocationInfo &ol)
 {
 	int currY, currX;
-	for(int i=0; i< size; i++)
+	for(int i=0; i<ol.objSize; i++)
 	{
-		currY = nextPos[i].getY();
-		currX = nextPos[i].getX();
+		currY = ol.nextPos[i].getY();
+		currX = ol.nextPos[i].getX();
 		if (board[currY][currX] != ' ')
-			if (board[currY][currX] != idSymbol)
+			if (board[currY][currX] != ol.objSymbol)
 				return true;
 	}
 	return false;

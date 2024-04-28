@@ -15,7 +15,7 @@ class Game
 {
 	Board board;
 	bool colorSet = false; 
-	Ship ships[GameConfig::NUM_SHIPS];
+	Ship* ships;
 	int activeShip = 1; // 0 - Big Ship, 1 - Small Ship
 public:
 	void init();
