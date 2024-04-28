@@ -1,5 +1,6 @@
 #include "board.h"
 #include "gameConfig.h"
+#include "utils.h"
 
 
 /**
@@ -24,6 +25,15 @@ void Board::init(bool colorSet)
 	printScreen();
 }
 
+int isShip(char ch) {
+	int res = -1;
+	
+	for (int i = 0; i < GameConfig::NUM_SHIPS; i++)
+		if (GameConfig::SHIPS_SYMBOLS[i] == ch)
+			res = i;
+	return res;
+}
+
 
 /**
  * Prints the current state of the game board on the screen with appropriate indentation.
@@ -34,7 +44,17 @@ void Board::printScreen() {
 	for (int i = 0; i < HEIGHT; i++) {
 		for (size_t j = 0; j < GameConfig::MIN_X; j++)
 			std::cout << " ";
-		std::cout << board[i] << std::endl;
+		for (size_t j = 0; j < WIDTH; j++){
+			int shipIndex = isShip(board[i][j]);
+			if (shipIndex != -1) {
+				setTextColor(ships[shipIndex].getBackgroundColor());
+				std::cout << board[i][j];
+				setTextColor(GameConfig::WHITE);
+			}
+			else
+				std::cout << board[i][j];
+		}
+		std::cout << endl;
 	}
 }
 

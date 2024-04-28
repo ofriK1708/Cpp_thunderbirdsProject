@@ -31,6 +31,8 @@ public:
 	char getSymbol() { return symbol; }
 	void delTrace();
 	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction);
+	GameConfig::Color getBackgroundColor() { return backgroundcolor;}
+
 };
 
 #endif
