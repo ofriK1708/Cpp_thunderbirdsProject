@@ -41,6 +41,10 @@ public:
 	static const size_t NUM_SHIPS = 2;
 	static const char SHIPS_SYMBOLS[NUM_SHIPS];
 	static const int SHIPS_COLORS[NUM_SHIPS][NUM_SHIPS];
+	enum ShipID {
+		BIG = 0,
+		SMALL = 1
+	};
 	
 };
 #endif

@@ -11,6 +11,7 @@ void startGame();
 int main()
 {
     startGame();
+    gotoxy(0, GameConfig::GAME_HEIGHT + GameConfig::MIN_Y + 1);
     return 0;
 }
 
@@ -20,5 +21,5 @@ void startGame()
 
     theGame.mainMenu();
     theGame.init();
-    theGame.run();
+    theGame.gameLoop();
 }

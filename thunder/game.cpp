@@ -19,7 +19,6 @@ void Game::init()
 */
 void Game::mainMenu()  
 {
-	int userChoice;
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
 	do {
 		cout << "Please enter your choice" << endl;
@@ -57,36 +56,82 @@ void Game::mainMenu()
 	clrscr();
 }
 
+void Game::pauseMenu() {
+	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
+	cout << "Press ESC again to continue or 9 to Exit" << endl;
+	cin >> userChoice;
+	switch (userChoice)
+	{
+	case (int)GameConfig::eKeys::ESC:
+		cout << "Returning to the game, get ready" << endl;;
+		Sleep(2000);
+		pause = false;
+		break;
+	case 9:
+		cout << "Finished game, Thank you for playing :D" << endl;;
+		cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*";
+		stopGame = true;
+		break;
+	}
+}
+
+
+
+void Game::setGameStatus() {
+	switch (keyPressed)
+	{
+	case (int)GameConfig::eKeys::ESC:
+		pause = true;
+		break;
+
+	case (int)GameConfig::eKeys::SWITCH_TO_BIG_S:
+		if (activeShip == GameConfig::ShipID::SMALL)
+			activeShip = GameConfig::ShipID::BIG;
+		else
+			running = false;
+		break;
+
+	case (int)GameConfig::eKeys::SWITCH_TO_SMALL_S:
+		if (activeShip == GameConfig::ShipID::BIG)
+			activeShip = GameConfig::ShipID::SMALL;
+		else
+			running = false;
+		break;
+
+	case (int)GameConfig::eKeys::UP:
+	case (int)GameConfig::eKeys::DOWN:
+	case (int)GameConfig::eKeys::LEFT:
+	case (int)GameConfig::eKeys::RIGHT:
+		running = true;
+		break;
+	};
+}
+
+void Game::play() {
+	LocationInfo& objectLocation = ships[activeShip].checkNextObjLocation((GameConfig::eKeys)keyPressed);
+	if (!(board.checkCollision(objectLocation)))
+		ships[activeShip].move();
+}
+
 
 /**
  * Runs the game loop, handling player input.
  */
-void Game::run()
+void Game::gameLoop()
 {
-
-	while (true)
+	while (!stopGame)
 	{
-		int keyPressed = 0;
+		keyPressed = 0;
 		if (_kbhit())
-		{
-			keyPressed = _getch();
-			if (keyPressed == (int)GameConfig::eKeys::ESC)
-			{
-				gotoxy(0, GameConfig::GAME_HEIGHT + GameConfig::MIN_Y + 1);
-				break;
-			}
-			keyPressed = tolower(keyPressed);
-			if ((keyPressed == (int)GameConfig::eKeys::SWITCH_TO_BIG_S && activeShip == 0) || (keyPressed == (int)GameConfig::eKeys::SWITCH_TO_SMALL_S && activeShip == 1))
-				keyPressed = (int)GameConfig::eKeys::STOP;
-				
+			setKey(_getch());
+		if (!pause) {
+			setGameStatus();
+			if(running)
+				play();
 		}
-		if (keyPressed != (int)GameConfig::eKeys::STOP)
-		{
-			Sleep(30);
-			LocationInfo& objectLocation = ships[activeShip].checkNextObjLocation((GameConfig::eKeys)keyPressed);
-			if (!(board.checkCollision(objectLocation)))
-				ships[activeShip].move();
-		}
+		else
+			pauseMenu();
+		Sleep(30);
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }
