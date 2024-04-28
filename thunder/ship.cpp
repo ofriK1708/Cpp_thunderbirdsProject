@@ -3,7 +3,7 @@
 #include <cstring>
 
 
-void Ship::init(char symbol, int color, char (*board)[81])
+void Ship::init(char symbol, GameConfig::Color color, char (*board)[81])
 {
 	this->symbol = symbol;
 	this->backgroundcolor = color;

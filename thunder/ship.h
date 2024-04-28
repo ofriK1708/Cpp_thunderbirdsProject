@@ -19,11 +19,11 @@ private:
 	Point nextPos[MAX_SHIP_SIZE];
 	char symbol;
 	size_t size = 0;
-	int backgroundcolor;
+	GameConfig::Color backgroundcolor;
 	char (*board)[81]; // pointer to the board
 	LocationInfo shipLocationinfo;
 public:
-	void init(char symbol, int color, char(*board)[81]);
+	void init(char symbol, GameConfig::Color color, char(*board)[81]);
 	void move();
 	void addPoint(int x, int y) { pos[size++].set(x, y);}
 	size_t getSize() const			{return size;}
