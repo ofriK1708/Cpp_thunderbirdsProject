@@ -13,7 +13,7 @@
 
 void Board::init(bool colorSet)
 {
-	
+	this->colorSet = colorSet;
 	size_t colorShift = 0;
 	if (colorSet)
 		colorShift++;
@@ -51,7 +51,13 @@ void Board::printScreen() {
 				std::cout << board[i][j];
 				setTextColor(GameConfig::WHITE);
 			}
-			else
+			else if(board[i][j] == 'W' && colorSet)
+			{
+				setTextColor(GameConfig::BACKGROUND_GREY);
+				std::cout << board[i][j];
+				setTextColor(GameConfig::WHITE); 
+			}
+			else	
 				std::cout << board[i][j];
 		}
 		std::cout << endl;
@@ -68,8 +74,11 @@ void Board::updateGamePieces(){
 	std::memcpy(board, original_board, sizeof(original_board));
 	for (int i = 0; i < HEIGHT; i++) {
 		for (int j = 0; j < WIDTH; j++) {
-			if (board[i][j] == '&') {
-				legend_pos.set(j, i);
+			if (board[i][j] == 'T') {
+				time_pos.set(j, i);
+			}
+			if (board[i][j] == 'L') {
+				lifes_pos.set(j, i);
 			}
 			else if (board[i][j] == GameConfig::SHIPS_SYMBOLS[0]) {
 				ships[0].addPoint(j, i);
