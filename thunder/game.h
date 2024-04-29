@@ -4,6 +4,7 @@
 #include "ship.h"
 #include "board.h"
 #include "utils.h"
+#include "time.h"
 #include "gameConfig.h"
 #include  <stdbool.h>
 
@@ -15,7 +16,11 @@ class Game
 {
 	Board board;
 	bool colorSet = false; 
+	Time time;
+	int gameTime = 500;
+	int gameSpeed = 30; // for sleep function, low values make the game run faster
 	Ship* ships;
+	Point timelocation;
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship
 	bool running = false;
 	bool stopGame = false;

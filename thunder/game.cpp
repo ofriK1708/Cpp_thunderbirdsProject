@@ -11,6 +11,8 @@ void Game::init()
 	//allSnakes[i].init(head, '#', GameConfig::COLORS[(i % (GameConfig::NUM_OF_COLORS - 1)) + 1]);
 	board.init(colorSet);
 	ships = board.getShips();
+	time = board.getTime();
+	time.setTimeSettings(gameTime, colorSet);
 }
 
 void clear() {
@@ -127,15 +129,23 @@ void Game::play() {
  */
 void Game::gameLoop()
 {
-	while (!stopGame)
+	bool timeOver = false;
+	while (!stopGame && !timeOver)
 	{
 		keyPressed = 0;
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();
-		if(running)
+		if (running) {
 			play();
-		Sleep(30);
+			timeOver = time.checkAndupdateTime();
+		}
+		Sleep(gameSpeed);
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
+	if (timeOver)
+	{
+		clear();
+		cout << "!-!-!-!-!-!-!-! Time's Up !-!-!-!-!-!-!-!" << endl;
+	}
 }

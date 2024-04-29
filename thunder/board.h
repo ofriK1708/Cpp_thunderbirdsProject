@@ -4,6 +4,7 @@
 #include "ship.h"
 #include "block.h"
 #include "gameConfig.h"
+#include "time.h"
 
 #include <iostream>
 #include <cstring>
@@ -17,9 +18,9 @@ class Board {
 	char original_board[HEIGHT][WIDTH + 1] = {
 		//   01234567890123456789012345678901234567890123456789012345678901234567890123456789
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 0
-			"W                                                                              W", // 1
-			"W        &                                                                     W", // 2
-			"W                                                                              W", // 3
+			"W        T                                                                     W", // 1
+			"W                                                                              W", // 2
+			"W        L                                                                     W", // 3
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 4
 			"W         @@                                                                   W", // 5
 			"W         ##                                                                   W", // 6
@@ -43,7 +44,8 @@ class Board {
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
 	Block blocks[NUM_BLOCKS];
-	Point legend_pos;
+	Time time;
+	Point life_pos;
 	Point exit_pos;	
 	Ship ships[NUM_SHIPS];
 
@@ -57,6 +59,7 @@ public:
 	//void getShips(Ship*& ships) const { return ships; }
 	Ship* getShips() {return ships;}
 	void getBlocks(Block blocks[]) const { memcpy(blocks, this->blocks, sizeof(this->blocks)); }
+	Time& getTime() { return time; }
 };
 
 // this is a test
