@@ -17,7 +17,9 @@ class Game
 	Board board;
 	bool colorSet = false; 
 	Time time;
-	int gameTime = 500;
+	int gameTime = GameConfig::GAME_TIME;
+	bool timeOver = false;
+	size_t lives = GameConfig::LIVES;
 	int gameSpeed = 30; // for sleep function, low values make the game run faster
 	Ship* ships;
 	Point timelocation;
@@ -34,6 +36,8 @@ public:
 	void gameLoop();
 	void play();
 	void pauseMenu();
+	void resetBoard();
+	void afterDeath();
 
 };
 
