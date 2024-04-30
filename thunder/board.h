@@ -5,6 +5,8 @@
 #include "block.h"
 #include "gameConfig.h"
 #include "time.h"
+#include "health.h"
+#include "utils.h"
 
 #include <iostream>
 #include <cstring>
@@ -45,6 +47,7 @@ class Board {
 	};
 	Block blocks[NUM_BLOCKS];
 	Time time;
+	Coord health;
 	Point life_pos;
 	Point exit_pos;	
 	Ship ships[NUM_SHIPS];
@@ -60,6 +63,7 @@ public:
 	Ship* getShips() {return ships;}
 	void getBlocks(Block blocks[]) const { memcpy(blocks, this->blocks, sizeof(this->blocks)); }
 	Time& getTime() { return time; }
+	Coord getHealthLocation() { return this->health; }
 };
 
 // this is a testa

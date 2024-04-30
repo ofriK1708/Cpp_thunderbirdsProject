@@ -12,8 +12,7 @@
  */
 
 void Board::init(bool colorSet)
-{
-	
+{	
 	size_t colorShift = 0;
 	if (colorSet)
 		colorShift++;
@@ -72,26 +71,20 @@ void Board::updateGamePieces()
 		for (int j = 0; j < WIDTH; j++) 
 		{
 			if (board[i][j] == 'T') 
-			{
-				time.setLocation(j, i);
-			}
+				time.setLocation( j, i );
+			if (board[i][j] == GameConfig::HEALTH_SYMBOL)
+				health = { j, i };
 			else if (board[i][j] == GameConfig::SHIPS_SYMBOLS[0]) 
-			{
 				ships[0].addPoint(j, i);
-			}
 			else if (board[i][j] == GameConfig::SHIPS_SYMBOLS[1]) 
-			{
 				ships[1].addPoint(j, i);
-			}
 			else if (board[i][j] >= '0' && board[i][j] <= '9') 
 			{
 				size_t block_index = board[i][j] - '0';
 				blocks[block_index].addPoint(j, i);
 			}
 			else if (board[i][j] == 'X') 
-			{
 				exit_pos.set(j, i);
-			}
 		}
 	}
 }

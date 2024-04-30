@@ -16,6 +16,7 @@ public:
 
 	static constexpr size_t GAME_TIME = 400;
 	static constexpr size_t LIVES = 3;
+	static constexpr char HEALTH_SYMBOL = 'L';
 
 
 	enum Color

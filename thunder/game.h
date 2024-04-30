@@ -16,10 +16,10 @@ class Game
 {
 	Board board;
 	bool colorSet = false; 
+	Health health;
 	Time time;
 	int gameTime = GameConfig::GAME_TIME;
 	bool timeOver = false;
-	size_t lives = GameConfig::LIVES;
 	int gameSpeed = 30; // for sleep function, low values make the game run faster
 	Ship* ships;
 	Point timelocation;

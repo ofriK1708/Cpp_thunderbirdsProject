@@ -7,16 +7,19 @@
 
 void Game::init()
 {
-	board.init(colorSet);
-	ships = board.getShips();
-	time = board.getTime();
-	time.setTimeSettings(gameTime, colorSet);
+	resetBoard();
+	health.setLocation(board.getHealthLocation());
+	health.setColor(colorSet);
+	health.printHealth();
 }
 
 void Game::resetBoard()
 {
 	this->board = Board(); 
-	init();
+	board.init(colorSet);
+	ships = board.getShips();
+	time = board.getTime();
+	time.setTimeSettings(gameTime, colorSet);
 }
 
 void clear() {
@@ -132,13 +135,18 @@ void Game::play() {
 void Game::afterDeath() {
 	clear();
 	cout << "!-!-!-!-!-!-!-! Sorry for that, Maybe try again !-!-!-!-!-!-!-!" << endl;
-	this->lives--;
+	health.decreaseLife();
 	this->timeOver = false;
-	Sleep(2000);
+	Sleep(3000);
 	clear();
-	if (this->lives > 0) {
+	if (health.isAlive()) {
 		resetBoard();
+		health.printHealth();
 		this->running = false;
+		
+		//clean all clicks fron last round
+		while (_kbhit())
+			_getch();
 	}
 }
 
@@ -148,7 +156,7 @@ void Game::afterDeath() {
  */
 void Game::gameLoop()
 {
-	while (!stopGame && !timeOver && lives>0)
+	while (!stopGame && !timeOver && health.isAlive())
 	{
 		keyPressed = 0;
 		if (_kbhit())

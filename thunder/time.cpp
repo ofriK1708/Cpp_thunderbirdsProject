@@ -2,6 +2,8 @@
 #include "iostream"
 #include "utils.h"
 #include "gameConfig.h"
+
+
 void Time::setTimeSettings(const int totalTime, const bool isColor)
 {
 	this->totalTime = timeLeft = totalTime;
