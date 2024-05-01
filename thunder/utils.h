@@ -13,4 +13,9 @@ void setTextColor(GameConfig::Color color);
 void hideCursor();
 void clrscr();
 
+struct Coord {
+	int x = -1;
+	int y = -1;
+};
+
 #endif // __GENERAL_H

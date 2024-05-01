@@ -14,6 +14,11 @@ public:
 	static constexpr int MIN_X = 10;
 	static constexpr int MIN_Y = 3;
 
+	static constexpr size_t GAME_TIME = 400;
+	static constexpr size_t LIVES = 3;
+	static constexpr char HEALTH_SYMBOL = 'L';
+
+
 	enum Color
 	{
 		BLACK = 0,

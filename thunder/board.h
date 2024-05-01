@@ -4,6 +4,9 @@
 #include "ship.h"
 #include "block.h"
 #include "gameConfig.h"
+#include "time.h"
+#include "health.h"
+#include "utils.h"
 
 #include <iostream>
 #include <cstring>
@@ -43,8 +46,9 @@ class Board {
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
 	Block blocks[NUM_BLOCKS];
-	Point time_pos;
-	Point lifes_pos;
+	Time time;
+	Coord health;
+	Point life_pos;
 	Point exit_pos;	
 	Ship ships[NUM_SHIPS];
 	bool colorSet = false;
@@ -59,6 +63,8 @@ public:
 	//void getShips(Ship*& ships) const { return ships; }
 	Ship* getShips() {return ships;}
 	void getBlocks(Block blocks[]) const { memcpy(blocks, this->blocks, sizeof(this->blocks)); }
+	Time& getTime() { return time; }
+	Coord getHealthLocation() { return this->health; }
 };
 
-// this is a test
+// this is a testa

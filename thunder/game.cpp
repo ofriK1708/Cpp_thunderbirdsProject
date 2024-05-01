@@ -7,10 +7,19 @@
 
 void Game::init()
 {
-	//head.set(rand() % GameConfig::GAME_WIDTH, rand() % GameConfig::GAME_HEIGHT);
-	//allSnakes[i].init(head, '#', GameConfig::COLORS[(i % (GameConfig::NUM_OF_COLORS - 1)) + 1]);
+	resetBoard();
+	health.setLocation(board.getHealthLocation());
+	health.setColor(colorSet);
+	health.printHealth();
+}
+
+void Game::resetBoard()
+{
+	this->board = Board(); 
 	board.init(colorSet);
 	ships = board.getShips();
+	time = board.getTime();
+	time.setTimeSettings(gameTime, colorSet);
 }
 
 void clear() {
@@ -122,20 +131,45 @@ void Game::play() {
 		ships[activeShip].move();
 }
 
+
+void Game::afterDeath() {
+	clear();
+	cout << "!-!-!-!-!-!-!-! Sorry for that, Maybe try again !-!-!-!-!-!-!-!" << endl;
+	health.decreaseLife();
+	this->timeOver = false;
+	Sleep(3000);
+	clear();
+	if (health.isAlive()) {
+		resetBoard();
+		health.printHealth();
+		this->running = false;
+		
+		//clean all clicks fron last round
+		while (_kbhit())
+			_getch();
+	}
+}
+
+
 /**
  * Runs the game loop, handling player input.
  */
 void Game::gameLoop()
 {
-	while (!stopGame)
+	while (!stopGame && !timeOver && health.isAlive())
 	{
 		keyPressed = 0;
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();
-		if(running)
+		if (running) {
 			play();
-		Sleep(30);
+			timeOver = time.checkAndupdateTime();
+		}
+		Sleep(gameSpeed);
+		if (timeOver)
+			afterDeath();
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
+	
 }
