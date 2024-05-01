@@ -12,7 +12,7 @@ private:
 	Board* board;
 	Point pos[GameConfig::MAX_BLOCK_SIZE];
 	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
-	char symbol;
+	char symbol = '/0';
 	GameConfig::gamePieceType type = GameConfig::PRIMARY;
 	size_t size = 0;
 	GameConfig::Color backgroundcolor;
@@ -20,7 +20,6 @@ private:
 
 	size_t getSize() const { return size; }
 	Point getPos(size_t i) const { return pos[i]; }
-	char getSymbol() { return symbol; }
 	void delTrace();
 	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction);
 
@@ -30,6 +29,7 @@ public:
 	void addPoint(int x, int y) { pos[size++].set(x, y); }
 	void move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN);
 	GameConfig::gamePieceType getType() { return type; }
+	char getSymbol() { return symbol; }
 };
 
 #endif
