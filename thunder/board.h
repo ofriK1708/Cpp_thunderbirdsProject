@@ -52,6 +52,7 @@ class Board {
 	Point exit_pos;	
 	Ship ships[NUM_SHIPS];
 	bool colorSet = false;
+	bool moveable(Coord coord, char symbol);
 
 public:
 	// the actual board that will be modified

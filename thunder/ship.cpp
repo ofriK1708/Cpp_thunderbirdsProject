@@ -17,19 +17,21 @@ void Ship::init(char symbol, GameConfig::Color color, Board *board)
  *
  * @param direction The direction in which to move the ship.
  */
-void Ship::move()
+void Ship::move(GameConfig::eKeys direction)
 {
-	delTrace();
-	std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
-	int currY,currX;
-	for (size_t i = 0; i<size; i++)
-	{
-		currY = pos[i].getY();
-		currX = pos[i].getX();
-		pos[i].draw(symbol, backgroundcolor);
-		board->board[currY][currX] = symbol;
+	if (!(board->checkCollision(checkNextObjLocation(direction)))) {
+		delTrace();
+		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
+		int currY, currX;
+		for (size_t i = 0; i < size; i++)
+		{
+			currY = pos[i].getY();
+			currX = pos[i].getX();
+			pos[i].draw(symbol, backgroundcolor);
+			board->board[currY][currX] = symbol;
+		}
+		hideCursor();
 	}
-	hideCursor();
 }
 
 

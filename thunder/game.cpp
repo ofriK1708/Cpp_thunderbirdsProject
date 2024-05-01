@@ -126,9 +126,7 @@ void Game::setGameStatus() {
 }
 
 void Game::play() {
-	LocationInfo& objectLocation = ships[activeShip].checkNextObjLocation((GameConfig::eKeys)keyPressed);
-	if (!(board.checkCollision(objectLocation)))
-		ships[activeShip].move();
+	ships[activeShip].move((GameConfig::eKeys)keyPressed);
 }
 
 

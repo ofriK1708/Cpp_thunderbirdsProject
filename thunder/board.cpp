@@ -1,6 +1,7 @@
 #include "board.h"
 #include "gameConfig.h"
 #include "utils.h"
+#include "vector"
 
 
 /**
@@ -100,13 +101,30 @@ void Board::updateGamePieces()
 bool Board::checkCollision(LocationInfo &ol)
 {
 	int currY, currX;
+	bool newObsticle;
+	vector <Coord> coords;
 	for(int i=0; i<ol.objSize; i++)
 	{
 		currY = ol.nextPos[i].getY();
 		currX = ol.nextPos[i].getX();
-		if (board[currY][currX] != ' ')
-			if (board[currY][currX] != ol.objSymbol)
+		if (board[currY][currX] != ' ' && board[currY][currX] != ol.objSymbol)
+			if (!moveable({ currX, currY }, ol.objSymbol))
 				return true;
+			else {
+				newObsticle = true;
+				for (int i = 0; i < coords.size() && newObsticle; i++) {
+					if (board[coords.at(i).y][coords.at(i).x] == board[currY][currX])
+						false;
+				}
+				if (newObsticle)
+					coords.push_back({ currX, currY });
+			}
 	}
 	return false;
+}
+
+bool Board::moveable(Coord coord, char symbol) {
+	if (board[coord.y][coord.x] != symbol)
+		return false;
+	return true;
 }
