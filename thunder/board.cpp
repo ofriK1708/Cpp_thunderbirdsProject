@@ -110,13 +110,15 @@ bool Board::checkCollision(LocationInfo &ol)
 		currY = ol.nextPos[i].getY();
 		currX = ol.nextPos[i].getX();
 		if (board[currY][currX] != ' ' && board[currY][currX] != ol.objSymbol)
-			if (!moveable({ currX, currY }, ol.objSymbol))
+			if (!isGamePiece(board[currY][currX])) {
 				return true;
+			}
 			else {
+				//check if it is a new obsticle or not
 				newObsticle = true;
 				for (int i = 0; i < coords.size() && newObsticle; i++) {
 					if (board[coords.at(i).y][coords.at(i).x] == board[currY][currX])
-						false;
+						newObsticle = false;
 				}
 				if (newObsticle)
 					coords.push_back({ currX, currY });
@@ -125,8 +127,22 @@ bool Board::checkCollision(LocationInfo &ol)
 	return false;
 }
 
+
+
 bool Board::moveable(Coord coord, char symbol) {
 	if (board[coord.y][coord.x] != symbol)
 		return false;
 	return true;
+}
+
+bool Board::isGamePiece(char pieceSymbol) {
+	for (int i = 0; i < GameConfig::MAX_NUM_BLOCKS; i++) {
+		if (pieceSymbol == GameConfig::BLOCK_SYMBOLS[i])
+			return true;
+	}
+	for (int i = 0; i < GameConfig::NUM_SHIPS; i++) {
+		if (pieceSymbol == GameConfig::SHIPS_SYMBOLS[i])
+			return true;
+	}
+	return false;
 }

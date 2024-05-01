@@ -52,6 +52,7 @@ class Board {
 	Block blocks[GameConfig::MAX_NUM_BLOCKS];
 	bool colorSet = false;
 	bool moveable(Coord coord, char symbol);
+	bool isGamePiece(char pieceSymbol);
 
 public:
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
