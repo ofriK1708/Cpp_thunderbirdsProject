@@ -89,7 +89,7 @@ void Board::updateGamePieces()
 			else if (board[i][j] >= '0' && board[i][j] <= '9') 
 			{
 				size_t block_index = board[i][j] - '0';
-				if (blocks[block_index].getSymbol()) // if the bloack hasnt initialized yet
+				if (!blocks[block_index].getSymbol()) // if the bloack hasnt initialized yet
 					blocks[block_index].init(board[i][j], GameConfig::BLOCK_COLOR, this);
 				blocks[block_index].addPoint(j, i);
 			}

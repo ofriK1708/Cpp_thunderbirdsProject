@@ -18,6 +18,7 @@ void Game::resetBoard()
 	this->board = Board(); 
 	board.init(colorSet);
 	ships = board.getShips();
+	blocks = board.getBlocks();
 	time = board.getTime();
 	time.setTimeSettings(gameTime, colorSet);
 }
@@ -127,6 +128,11 @@ void Game::setGameStatus() {
 
 void Game::play() {
 	ships[activeShip].move((GameConfig::eKeys)keyPressed);
+	size_t i = 0;
+	while (blocks[i].getSymbol()) {
+		blocks[i].move();
+		i++;
+	}
 }
 
 

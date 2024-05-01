@@ -12,8 +12,8 @@ private:
 	Board* board;
 	Point pos[GameConfig::MAX_BLOCK_SIZE];
 	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
-	char symbol = '/0';
-	GameConfig::gamePieceType type = GameConfig::PRIMARY;
+	char symbol = NULL;
+	GameConfig::gamePieceType type = GameConfig::SECONDARY;
 	size_t size = 0;
 	GameConfig::Color backgroundcolor;
 	LocationInfo locationInfo;
