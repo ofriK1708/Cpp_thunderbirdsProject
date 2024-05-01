@@ -2,13 +2,7 @@
 #define SHIP_H
 
 #include "point.h"
-
-
-struct LocationInfo {
-	Point* nextPos = nullptr;
-	char objSymbol = ' ';
-	size_t objSize = 0;
-};
+#include "utils.h"
 
 class Board;
 

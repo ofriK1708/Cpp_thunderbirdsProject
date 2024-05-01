@@ -3,8 +3,11 @@
 
 #include <windows.h> // for gotoxy
 #include <process.h> // for system
-#include "gameConfig.h"
 #include <iostream>
+
+#include "gameConfig.h"
+#include "point.h"
+
 using namespace std;
 
 
@@ -16,6 +19,12 @@ void clrscr();
 struct Coord {
 	int x = -1;
 	int y = -1;
+};
+
+struct LocationInfo {
+	Point* nextPos = nullptr;
+	char objSymbol = ' ';
+	size_t objSize = 0;
 };
 
 #endif // __GENERAL_H

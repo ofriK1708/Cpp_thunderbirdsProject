@@ -2,7 +2,7 @@
 #define BLOCK_H
 
 #include "point.h"
-
+#include "utils.h"
 
 class Board;
 
@@ -10,12 +10,12 @@ class Block
 {
 private:
 	Board* board;
-	Point pos[GameConfig::MAX_SHIP_SIZE];
-	Point nextPos[GameConfig::MAX_SHIP_SIZE];
+	Point pos[GameConfig::MAX_BLOCK_SIZE];
+	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
 	char symbol;
 	size_t size = 0;
 	GameConfig::Color backgroundcolor;
-	LocationInfo shipLocationinfo;
+	LocationInfo Locationinfo;
 
 	size_t getSize() const { return size; }
 	Point getPos(size_t i) const { return pos[i]; }
