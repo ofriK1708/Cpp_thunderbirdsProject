@@ -10,20 +10,21 @@ struct LocationInfo {
 	size_t objSize = 0;
 };
 
+class Board;
 
 class Ship
 {
 private:
+	Board* board;
 	constexpr static size_t MAX_SHIP_SIZE = 4;
 	Point pos[MAX_SHIP_SIZE];
 	Point nextPos[MAX_SHIP_SIZE];
 	char symbol;
 	size_t size = 0;
 	GameConfig::Color backgroundcolor;
-	char (*board)[81]; // pointer to the board
 	LocationInfo shipLocationinfo;
 public:
-	void init(char symbol, GameConfig::Color color, char(*board)[81]);
+	void init(char symbol, GameConfig::Color color, Board *Board);
 	void move();
 	void addPoint(int x, int y) { pos[size++].set(x, y);}
 	size_t getSize() const			{return size;}

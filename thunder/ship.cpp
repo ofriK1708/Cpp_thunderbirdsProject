@@ -1,9 +1,10 @@
 #include "ship.h"
 #include "utils.h"
 #include <cstring>
+#include "board.h"
 
 
-void Ship::init(char symbol, GameConfig::Color color, char (*board)[81])
+void Ship::init(char symbol, GameConfig::Color color, Board *board)
 {
 	this->symbol = symbol;
 	this->backgroundcolor = color;
@@ -26,7 +27,7 @@ void Ship::move()
 		currY = pos[i].getY();
 		currX = pos[i].getX();
 		pos[i].draw(symbol, backgroundcolor);
-		board[currY][currX] = symbol;
+		board->board[currY][currX] = symbol;
 	}
 	hideCursor();
 }
@@ -53,6 +54,6 @@ void Ship::delTrace() {
 		currY = pos[i].getY();
 		currX = pos[i].getX();
 		pos[i].draw(' ', GameConfig::BLACK);
-		board[currY][currX] = ' ';
+		board->board[currY][currX] = ' ';
 	}
 }

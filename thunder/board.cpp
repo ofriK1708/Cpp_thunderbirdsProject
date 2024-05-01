@@ -19,7 +19,7 @@ void Board::init(bool colorSet)
 		colorShift++;
 
 	for (size_t i = 0; i < NUM_SHIPS; i++)
-		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i], board);
+		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
 
 	updateGamePieces();
 	printScreen();
