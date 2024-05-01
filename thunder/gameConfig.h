@@ -44,6 +44,12 @@ public:
 	};
 
 
+	enum gamePieceType {
+		PRIMARY = 0,
+		SECONDARY = 1
+	};
+
+
 	static const size_t NUM_SHIPS = 2;
 	static constexpr size_t MAX_SHIP_SIZE = 4;
 	static const char SHIPS_SYMBOLS[NUM_SHIPS];

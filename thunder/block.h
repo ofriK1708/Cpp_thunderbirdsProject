@@ -13,6 +13,7 @@ private:
 	Point pos[GameConfig::MAX_BLOCK_SIZE];
 	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
 	char symbol;
+	GameConfig::gamePieceType type = GameConfig::PRIMARY;
 	size_t size = 0;
 	GameConfig::Color backgroundcolor;
 	LocationInfo locationInfo;
@@ -28,6 +29,7 @@ public:
 	GameConfig::Color getBackgroundColor() { return backgroundcolor; }
 	void addPoint(int x, int y) { pos[size++].set(x, y); }
 	void move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN);
+	GameConfig::gamePieceType getType() { return type; }
 };
 
 #endif
