@@ -1,5 +1,5 @@
-#ifndef SNAKE_H
-#define SNAKE_H
+#ifndef SHIP_H
+#define SHIP_H
 
 #include "point.h"
 

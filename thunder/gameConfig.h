@@ -53,5 +53,10 @@ public:
 		SMALL = 1
 	};
 	
+
+	static constexpr size_t MAX_NUM_BLOCKS = 10;
+	static constexpr size_t MAX_BLOCK_SIZE = 6;
+	static const char BLOCK_SYMBOLS[MAX_NUM_BLOCKS];
+	static const Color BLOCK_COLOR = LIGHTBLUE;
 };
 #endif
