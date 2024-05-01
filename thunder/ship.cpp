@@ -12,11 +12,6 @@ void Ship::init(char symbol, GameConfig::Color color, Board *board)
 }
 
 
-/**
- * Moves the ship in the specified direction.
- *
- * @param direction The direction in which to move the ship.
- */
 void Ship::move(GameConfig::eKeys direction)
 {
 	if (!(board->checkCollision(checkNextObjLocation(direction)))) {
@@ -44,11 +39,6 @@ LocationInfo& Ship::checkNextObjLocation(GameConfig::eKeys direction) {
 }
 
 
-/**
- * Deletes the trace of the ship.
- *
- * @param lastPos An array of Points representing the previous positions of the ship.
- */
 void Ship::delTrace() {
 	int currY, currX;
 	for (int i = 0; i < size; i++) 
