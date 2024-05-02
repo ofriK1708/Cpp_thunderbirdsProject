@@ -11,9 +11,9 @@ void Ship::init(char symbol, GameConfig::Color color, Board *board)
 }
 
 
-void Ship::move(GameConfig::eKeys direction)
+bool Ship::move(GameConfig::eKeys direction)
 {
-	if (!(board->checkCollision(checkNextObjLocation(direction)))) {
+	if (board->checkMove(checkNextObjLocation(direction))) {
 		delTrace();
 		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 		int currY, currX;
@@ -25,7 +25,9 @@ void Ship::move(GameConfig::eKeys direction)
 			board->board[currY][currX] = symbol;
 		}
 		hideCursor();
+		return true;
 	}
+	return false;
 }
 
 
@@ -33,7 +35,7 @@ LocationInfo& Ship::checkNextObjLocation(GameConfig::eKeys direction) {
 	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
 	for (size_t i = 0; i < size; i++)
 		nextPos[i].move(direction);
-	shipLocationinfo = { nextPos, symbol, size };
+	shipLocationinfo = { nextPos, symbol, size , direction};
 	return shipLocationinfo;
 }
 

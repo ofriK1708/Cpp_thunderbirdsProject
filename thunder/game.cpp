@@ -160,9 +160,10 @@ void Game::afterDeath() {
  */
 void Game::gameLoop()
 {
+	keyPressed = 0;
+
 	while (!stopGame && !timeOver && health.isAlive())
 	{
-		keyPressed = 0;
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();

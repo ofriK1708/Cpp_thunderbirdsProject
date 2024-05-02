@@ -28,7 +28,7 @@ public:
 	void init(char symbol, GameConfig::Color color, Board* Board);
 	GameConfig::Color getBackgroundColor() { return backgroundcolor; }
 	void addPoint(int x, int y) { pos[size++].set(x, y); }
-	void move(GameConfig::eKeys direction);
+	bool move(GameConfig::eKeys direction);
 	GameConfig::gamePieceType getType() { return type; }
 };
 

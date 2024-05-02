@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
+
 
 class Board {
 	constexpr static size_t WIDTH = 80;
@@ -60,11 +62,11 @@ public:
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
-	bool checkCollision(LocationInfo& objectLoction);
+	bool checkMove(LocationInfo& objectLoction);
 	Ship* getShips() {return ships;}
 	Block* getBlocks() { return blocks; }
 	Time& getTime() { return time; }
 	Coord getHealthLocation() { return this->health; }
-};
+	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
 
-// this is a testa
+};

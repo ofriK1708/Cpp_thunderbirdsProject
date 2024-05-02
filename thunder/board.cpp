@@ -1,7 +1,6 @@
 #include "board.h"
 #include "gameConfig.h"
 #include "utils.h"
-#include "vector"
 
 
 /**
@@ -100,32 +99,37 @@ void Board::updateGamePieces()
 }
 
 
-bool Board::checkCollision(LocationInfo &ol)
+bool Board::checkMove(LocationInfo &ol)
 {
 	int currY, currX;
-	bool newObsticle;
-	vector <Coord> coords;
-	for(int i=0; i<ol.objSize; i++)
+	char currSymbol;
+	bool isValid = true;
+	vector <Block*> obsticals;
+	for(int i=0; i<ol.objSize && isValid; i++)
 	{
 		currY = ol.nextPos[i].getY();
 		currX = ol.nextPos[i].getX();
-		if (board[currY][currX] != ' ' && board[currY][currX] != ol.objSymbol)
-			if (!isGamePiece(board[currY][currX])) {
-				return true;
+
+		currSymbol = board[currY][currX];
+		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
+			if (currSymbol == 'W')
+				isValid = false;
+			else if(currSymbol >= '0' && currSymbol<= '9'){ 
+				addObstacle(obsticals, currSymbol, { currX, currY }); 
 			}
 			else {
-				//check if it is a new obsticle or not
-				newObsticle = true;
-				for (int i = 0; i < coords.size() && newObsticle; i++) {
-					if (board[coords.at(i).y][coords.at(i).x] == board[currY][currX])
-						newObsticle = false;
-				}
-				if (newObsticle)
-					coords.push_back({ currX, currY });
+				isValid = false; //if collide with other ship
 			}
 	}
-	return false;
+
+	for (int i = 0; i < obsticals.size() && isValid; i++) {
+		if (!(obsticals.at(i)->move(ol.direction))) {
+			isValid = false;
+		}
+	}
+	return isValid;
 }
+
 
 
 
@@ -135,14 +139,17 @@ bool Board::moveable(Coord coord, char symbol) {
 	return true;
 }
 
-bool Board::isGamePiece(char pieceSymbol) {
-	for (int i = 0; i < GameConfig::MAX_NUM_BLOCKS; i++) {
-		if (pieceSymbol == GameConfig::BLOCK_SYMBOLS[i])
-			return true;
+
+void Board::addObstacle(vector <Block*> &obs, char currSymbol, Coord coord) {
+	//check if it is a new obsticle or not
+	bool newObstacle = true;
+	Block *currBlock;
+	currBlock = &blocks[board[coord.y][coord.x] - '0'];
+	for (int i = 0; i < obs.size() && newObstacle; i++) {
+
+		if (currBlock == obs.at(i))
+			newObstacle = false;
 	}
-	for (int i = 0; i < GameConfig::NUM_SHIPS; i++) {
-		if (pieceSymbol == GameConfig::SHIPS_SYMBOLS[i])
-			return true;
-	}
-	return false;
+	if (newObstacle)
+		obs.push_back(currBlock);
 }

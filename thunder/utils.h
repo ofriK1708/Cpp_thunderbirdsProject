@@ -25,6 +25,8 @@ struct LocationInfo {
 	Point* nextPos = nullptr;
 	char objSymbol = ' ';
 	size_t objSize = 0;
+	GameConfig::eKeys direction;
+	size_t carryWeight = 0;
 };
 
 #endif // __GENERAL_H

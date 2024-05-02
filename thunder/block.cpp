@@ -12,9 +12,9 @@ void Block::init(char symbol, GameConfig::Color color, Board* board)
 }
 
 
-void Block::move(GameConfig::eKeys direction)
+bool Block::move(GameConfig::eKeys direction)
 {
-	if (!(board->checkCollision(checkNextObjLocation(direction)))) {
+	if (board->checkMove(checkNextObjLocation(direction))) {
 		delTrace();
 		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 		int currY, currX;
@@ -26,7 +26,9 @@ void Block::move(GameConfig::eKeys direction)
 			board->board[currY][currX] = symbol;
 		}
 		hideCursor();
+		return true;
 	}
+	return false;
 }
 
 
@@ -34,7 +36,7 @@ LocationInfo& Block::checkNextObjLocation(GameConfig::eKeys direction) {
 	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
 	for (size_t i = 0; i < size; i++)
 		nextPos[i].move(direction);
-	locationInfo = { nextPos, symbol, size };
+	locationInfo = { nextPos, symbol, size, direction};
 	return locationInfo;
 }
 
