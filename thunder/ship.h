@@ -4,6 +4,7 @@
 #include "point.h"
 #include "utils.h"
 
+
 class Board;
 
 class Ship
@@ -18,13 +19,15 @@ private:
 	GameConfig::Color backgroundcolor;
 	LocationInfo shipLocationinfo;
 
-	size_t getSize() const { return size; }
+	
 	Point getPos(size_t i) const { return pos[i]; }
 	char getSymbol() { return symbol; }
 	void delTrace();
-	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction);
+	
 
 public:
+	size_t getSize() const { return size; }
+	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction);
 	void init(char symbol, GameConfig::Color color, Board* Board);
 	GameConfig::Color getBackgroundColor() { return backgroundcolor; }
 	void addPoint(int x, int y) { pos[size++].set(x, y); }

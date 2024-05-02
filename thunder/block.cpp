@@ -14,23 +14,41 @@ void Block::init(char symbol, GameConfig::Color color, Board* board)
 
 void Block::move(GameConfig::eKeys direction)
 {
-	if (!(board->checkCollision(checkNextObjLocation(direction)))) {
-		delTrace();
-		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
-		int currY, currX;
-		for (size_t i = 0; i < size; i++)
-		{
+	
+	delTrace();
+	int currY, currX;
+	Block* blocks = board->getBlocks();
+	std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
+	char currSymbol;
+	for (size_t i = 0; i < size; i++)
+	{
 			currY = pos[i].getY();
 			currX = pos[i].getX();
+			currSymbol = board->board[currY][currX];
+			if ((currSymbol != this->symbol) && (currSymbol >= '0' && currSymbol <= '9'))
+			{
+				blocks[currSymbol - '0'].move(direction);
+			}
+			board->board[currY][currX] = ' ';
 			pos[i].draw(symbol, backgroundcolor);
 			board->board[currY][currX] = symbol;
-		}
-		hideCursor();
+	}
+	hideCursor();
+	
+	
+}
+
+void Block::fallDown() 
+{
+	if ((board->checkCollision(checkNextObjLocation(GameConfig::eKeys::DOWN),GameConfig::eKeys::DOWN)))
+	{
+		move(GameConfig::eKeys::DOWN);
 	}
 }
 
 
-LocationInfo& Block::checkNextObjLocation(GameConfig::eKeys direction) {
+LocationInfo& Block::checkNextObjLocation(GameConfig::eKeys direction) 
+{
 	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
 	for (size_t i = 0; i < size; i++)
 		nextPos[i].move(direction);

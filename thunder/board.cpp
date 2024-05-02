@@ -99,34 +99,77 @@ void Board::updateGamePieces()
 	}
 }
 
-
-bool Board::checkCollision(LocationInfo &ol)
+bool Board::checkCollision(LocationInfo &ol,GameConfig::eKeys direction)
 {
-	int currY, currX;
-	bool newObsticle;
-	vector <Coord> coords;
+	int totalSize = 0;
+	return (checkCollisionHelper(ol, &totalSize, direction));
+}
+
+
+bool Board::checkCollisionHelper(LocationInfo &ol,int * totalSize,GameConfig::eKeys direction)
+{
+	
+	int currX,currY;
+	LocationInfo * nextOL = nullptr;
 	for(int i=0; i<ol.objSize; i++)
 	{
 		currY = ol.nextPos[i].getY();
 		currX = ol.nextPos[i].getX();
 		if (board[currY][currX] != ' ' && board[currY][currX] != ol.objSymbol)
-			if (!isGamePiece(board[currY][currX])) {
-				return true;
+		{
+			if (board[currY][currX] == 'W')
+			{
+				return false;
 			}
-			else {
-				//check if it is a new obsticle or not
-				newObsticle = true;
-				for (int i = 0; i < coords.size() && newObsticle; i++) {
-					if (board[coords.at(i).y][coords.at(i).x] == board[currY][currX])
-						newObsticle = false;
-				}
-				if (newObsticle)
-					coords.push_back({ currX, currY });
+			else if (board[currY][currX] >= '0' && board[currY][currX] <= '9')
+			{
+				if (nextOL == nullptr)
+					nextOL = &blocks[board[currY][currX] - '0'].checkNextObjLocation(direction);
 			}
+			else // another ship
+			{
+				return false;
+			}
+		}
 	}
-	return false;
+	if (nextOL != nullptr)
+	{
+		*totalSize += nextOL->objSize;
+		if (checkCollisionHelper(*nextOL, totalSize,direction) && checkWightLimit(*totalSize, ol.objSymbol))
+		{
+	
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return true;
+	}
 }
 
+bool checkWightLimit(int totalSize,char objId)
+{
+	if (objId == GameConfig::SHIPS_SYMBOLS[0])
+	{
+		if(totalSize > GameConfig::SHIP_MAX_WEIGHT[0])
+			return false;
+
+	}
+	else if (objId == GameConfig::SHIPS_SYMBOLS[1])
+	{
+		if(totalSize > GameConfig::SHIP_MAX_WEIGHT[1])
+			return false;
+	}
+	else // a block
+	{
+		return true; // block doesn't care about weight
+	}
+	return true; // the weight is valid for the ship
+}
 
 
 bool Board::moveable(Coord coord, char symbol) {

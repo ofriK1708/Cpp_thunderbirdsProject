@@ -11,6 +11,8 @@
 #include <iostream>
 #include <cstring>
 
+bool checkWightLimit(int totalSize, char objId);
+
 class Board {
 	constexpr static size_t WIDTH = 80;
 	constexpr static size_t HEIGHT = 25;
@@ -41,7 +43,7 @@ class Board {
 			"W                                                                              W", // 20
 			"W                                                                              W", // 21
 			"W                                                                              W", // 22
-			"W                                                                              W", // 23
+			"W                             2222                                             W", // 23
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
 	Time time;
@@ -60,7 +62,8 @@ public:
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
-	bool checkCollision(LocationInfo& objectLoction);
+	bool checkCollision(LocationInfo& ol, GameConfig::eKeys direction);
+	bool checkCollisionHelper(LocationInfo& ol, int* totalWeight, GameConfig::eKeys direction);
 	Ship* getShips() {return ships;}
 	Block* getBlocks() { return blocks; }
 	Time& getTime() { return time; }

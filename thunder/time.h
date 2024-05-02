@@ -6,7 +6,6 @@ class Time
 	int y;
 	int timeLeft;
 	int totalTime;
-	char timeSymbol;
 	bool isColor = false;
 
 public:

@@ -13,19 +13,25 @@ void Ship::init(char symbol, GameConfig::Color color, Board *board)
 
 void Ship::move(GameConfig::eKeys direction)
 {
-	if (!(board->checkCollision(checkNextObjLocation(direction)))) {
+	
 		delTrace();
 		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
+		Block* blocks = board->getBlocks();
 		int currY, currX;
+		char currSymbol;
 		for (size_t i = 0; i < size; i++)
 		{
 			currY = pos[i].getY();
 			currX = pos[i].getX();
+			currSymbol = board->board[currY][currX];
+			if ((currSymbol >= '0' && currSymbol <= '9'))
+			{
+				blocks[currSymbol - '0'].move(direction);
+			}
 			pos[i].draw(symbol, backgroundcolor);
 			board->board[currY][currX] = symbol;
 		}
 		hideCursor();
-	}
 }
 
 
