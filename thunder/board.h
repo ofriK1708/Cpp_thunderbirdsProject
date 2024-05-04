@@ -42,8 +42,8 @@ class Board {
 			"W                                       WWWWWWWWWWWWWWWWWWWWWWWW               W", // 19
 			"W                                                                              W", // 20
 			"W                                                                              W", // 21
-			"W                                                                              W", // 22
-			"W                                                                              W", // 23
+			"                                                                                ", // 22
+			"                                                                                ", // 23
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
 	Time time;
