@@ -14,20 +14,22 @@ void Ship::init(char symbol, int maxCarryWeight, GameConfig::Color color, Board 
 
 bool Ship::move(GameConfig::eKeys direction)
 {
-	int carryWeight = maxCarryWeight;
-	if (board->checkMove(checkNextObjLocation(direction, &carryWeight))) {
-		delTrace();
-		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
-		int currY, currX;
-		for (size_t i = 0; i < size; i++)
-		{
-			currY = pos[i].getY();
-			currX = pos[i].getX();
-			pos[i].draw(symbol, backgroundcolor);
-			board->board[currY][currX] = symbol;
+	if (!isFinished) {
+		int carryWeight = maxCarryWeight;
+		if (board->checkMove(checkNextObjLocation(direction, &carryWeight))) {
+			delTrace();
+			std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
+			int currY, currX;
+			for (size_t i = 0; i < size; i++)
+			{
+				currY = pos[i].getY();
+				currX = pos[i].getX();
+				pos[i].draw(symbol, backgroundcolor);
+				board->board[currY][currX] = symbol;
+			}
+			hideCursor();
+			return true;
 		}
-		hideCursor();
-		return true;
 	}
 	return false;
 }
@@ -51,4 +53,22 @@ void Ship::delTrace() {
 		pos[i].draw(' ', GameConfig::BLACK);
 		board->board[currY][currX] = ' ';
 	}
+}
+
+void Ship::shipFinishLine()
+{
+	isFinished = true;
+	delTrace();
+	std::copy(std::begin(finishPos), std::end(finishPos), std::begin(pos));
+	int currY, currX;
+	for (size_t i = 0; i < size; i++)
+	{
+		currY = pos[i].getY();
+		currX = pos[i].getX();
+		pos[i].draw(' ', GameConfig::BLACK);
+		board->board[currY][currX] = ' ';
+		pos[i].draw(symbol, backgroundcolor);
+		board->board[currY][currX] = symbol;
+	}
+	hideCursor();
 }

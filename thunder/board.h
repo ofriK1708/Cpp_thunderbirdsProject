@@ -21,9 +21,9 @@ class Board {
 	char original_board[HEIGHT][WIDTH + 1] = {
 		//   01234567890123456789012345678901234567890123456789012345678901234567890123456789
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 0
-			"W       T                                                                      W", // 1
-			"W                                                                              W", // 2
-			"W       L                                                                      W", // 3
+			"W       T                                                                WSSWBBW", // 1
+			"W                                                                        WWWWBBW", // 2
+			"W       L                                                                   WWWW", // 3
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 4
 			"W         @@                                                                   W", // 5
 			"W         ##                                                                   W", // 6
@@ -53,8 +53,6 @@ class Board {
 	Ship ships[GameConfig::NUM_SHIPS];
 	Block blocks[GameConfig::MAX_NUM_BLOCKS];
 	bool colorSet = false;
-	bool moveable(Coord coord, char symbol);
-	bool isGamePiece(char pieceSymbol);
 
 public:
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
@@ -68,5 +66,6 @@ public:
 	Time& getTime() { return time; }
 	Coord getHealthLocation() { return this->health; }
 	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
+	void shipFinishLine(char shipID);
 
 };

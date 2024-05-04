@@ -77,23 +77,39 @@ void Board::updateGamePieces()
 	{
 		for (int j = 0; j < WIDTH; j++) 
 		{
-			if (board[i][j] == 'T') 
-				time.setLocation( j, i );
-			if (board[i][j] == GameConfig::HEALTH_SYMBOL)
-				health = { j, i };
-			else if (board[i][j] == GameConfig::SHIPS_SYMBOLS[0]) 
-				ships[0].addPoint(j, i);
-			else if (board[i][j] == GameConfig::SHIPS_SYMBOLS[1]) 
-				ships[1].addPoint(j, i);
-			else if (board[i][j] >= '0' && board[i][j] <= '9') 
-			{
-				size_t block_index = board[i][j] - '0';
-				if (!blocks[block_index].getSymbol()) // if the bloack hasnt initialized yet
-					blocks[block_index].init(board[i][j], GameConfig::BLOCK_COLOR, this);
-				blocks[block_index].addPoint(j, i);
-			}
-			else if (board[i][j] == 'X') 
-				exit_pos.set(j, i);
+            switch (board[i][j]) {
+                case 'T':
+                    time.setLocation(j, i);
+                    break;
+                case GameConfig::HEALTH_SYMBOL:
+                    health = { j, i };
+                    break;
+				case '#':
+                    ships[0].addPoint(j, i);
+                    break;
+                case '@':
+                    ships[1].addPoint(j, i);
+                    break;
+                case 'X':
+                    exit_pos.set(j, i);
+                    break;
+				case 'B':
+					ships[0].addFinishPoint(j, i);
+					break;
+				case 'S':
+					ships[1].addFinishPoint(j, i);
+					break;
+                default:
+                    if (board[i][j] >= '0' && board[i][j] <= '9') 
+					{
+                        size_t block_index = board[i][j] - '0';
+                        if (!blocks[block_index].getSymbol()) {
+                            blocks[block_index].init(board[i][j], GameConfig::BLOCK_COLOR, this);
+                        }
+                        blocks[block_index].addPoint(j, i);
+                    }
+                    break;
+            }
 		}
 	}
 }
@@ -103,7 +119,7 @@ bool Board::checkMove(LocationInfo &ol)
 {
 	int currY, currX;
 	char currSymbol;
-	bool isValid = true;
+	bool isValid = true,isfinished = false;
 	vector <Block*> obsticals;
 	for(int i=0; i<ol.objSize && isValid; i++)
 	{
@@ -114,6 +130,10 @@ bool Board::checkMove(LocationInfo &ol)
 		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
 			if (currSymbol == 'W')
 				isValid = false;
+			else if(currSymbol == 'X' && (ol.objSymbol == '#' || ol.objSymbol == '@'))
+			{
+				isfinished = true;
+			}
 			else if(currSymbol >= '0' && currSymbol<= '9'){ 
 				addObstacle(obsticals, currSymbol, { currX, currY }); 
 			}
@@ -126,9 +146,27 @@ bool Board::checkMove(LocationInfo &ol)
 		if (!(obsticals.at(i)->move(ol.direction, ol.carryWeight)))
 			isValid = false;
 	}
+	if(isfinished && isValid)
+	{
+		shipFinishLine(ol.objSymbol);
+		isValid = false; // there is no reason to move after we finished 
+	}
 	return isValid;
 }
 
+
+void Board::shipFinishLine(char shipID)
+{
+	switch (shipID)
+	{
+	case '#':
+		ships[0].shipFinishLine();
+		break;
+	case '@':
+		ships[1].shipFinishLine();
+		break;
+	}
+}
 
 void Board::addObstacle(vector <Block*> &obs, char currSymbol, Coord coord) {
 	//check if it is a new obsticle or not
