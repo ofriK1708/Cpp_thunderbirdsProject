@@ -10,12 +10,13 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
+
 
 class Board {
 	constexpr static size_t WIDTH = 80;
 	constexpr static size_t HEIGHT = 25;
-	constexpr static size_t NUM_SHIPS = GameConfig::NUM_SHIPS;
-	constexpr static size_t NUM_BLOCKS = 1;
+	size_t num_blocks = 0;
 	// the original board that will be copied to the actual board
 	char original_board[HEIGHT][WIDTH + 1] = {
 		//   01234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -29,9 +30,9 @@ class Board {
 			"W         ##                                                                   W", // 7
 			"W                                                                              W", // 8
 			"W                                                                              W", // 9
-			"W                                                                              W", // 10
-			"W                                                                              W", // 11
-			"W                                                                              W", // 12
+			"W                              11                                              W", // 10
+			"W                              1111                                            W", // 11
+			"W                 22                                                           W", // 12
 			"W                                                 WWWWWWWWWWWW                 W", // 13
 			"W                                                                              W", // 14
 			"W                                                 W         WWWW               W", // 15
@@ -45,26 +46,27 @@ class Board {
 			"W                                                                              W", // 23
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
-	Block blocks[NUM_BLOCKS];
 	Time time;
 	Coord health;
 	Point life_pos;
 	Point exit_pos;	
-	Ship ships[NUM_SHIPS];
+	Ship ships[GameConfig::NUM_SHIPS];
+	Block blocks[GameConfig::MAX_NUM_BLOCKS];
 	bool colorSet = false;
+	bool moveable(Coord coord, char symbol);
+	bool isGamePiece(char pieceSymbol);
 
 public:
-	// the actual board that will be modified
-	char board[HEIGHT][WIDTH + 1];
+	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
+	
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
-	bool checkCollision(LocationInfo& objectLoction);
-	//void getShips(Ship*& ships) const { return ships; }
+	bool checkMove(LocationInfo& objectLoction);
 	Ship* getShips() {return ships;}
-	void getBlocks(Block blocks[]) const { memcpy(blocks, this->blocks, sizeof(this->blocks)); }
+	Block* getBlocks() { return blocks; }
 	Time& getTime() { return time; }
 	Coord getHealthLocation() { return this->health; }
-};
+	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
 
-// this is a testa
+};

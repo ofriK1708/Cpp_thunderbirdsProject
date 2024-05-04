@@ -1,38 +1,36 @@
-#ifndef SNAKE_H
-#define SNAKE_H
+#ifndef SHIP_H
+#define SHIP_H
 
 #include "point.h"
+#include "utils.h"
 
-
-struct LocationInfo {
-	Point* nextPos = nullptr;
-	char objSymbol = ' ';
-	size_t objSize = 0;
-};
-
+class Board;
 
 class Ship
 {
 private:
-	constexpr static size_t MAX_SHIP_SIZE = 4;
-	Point pos[MAX_SHIP_SIZE];
-	Point nextPos[MAX_SHIP_SIZE];
+	Board* board;
+	Point pos[GameConfig::MAX_SHIP_SIZE];
+	Point nextPos[GameConfig::MAX_SHIP_SIZE];
 	char symbol;
+	GameConfig::gamePieceType type = GameConfig::PRIMARY;
 	size_t size = 0;
+	int maxCarryWeight;
 	GameConfig::Color backgroundcolor;
-	char (*board)[81]; // pointer to the board
 	LocationInfo shipLocationinfo;
-public:
-	void init(char symbol, GameConfig::Color color, char(*board)[81]);
-	void move();
-	void addPoint(int x, int y) { pos[size++].set(x, y);}
-	size_t getSize() const			{return size;}
-	Point getPos(size_t i) const	{return pos[i];}
+
+	size_t getSize() const { return size; }
+	Point getPos(size_t i) const { return pos[i]; }
 	char getSymbol() { return symbol; }
 	void delTrace();
-	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction);
-	GameConfig::Color getBackgroundColor() { return backgroundcolor;}
+	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction, int* carryWeight);
 
+public:
+	void init(char symbol, int maxCarryWeight, GameConfig::Color color, Board* Board);
+	GameConfig::Color getBackgroundColor() { return backgroundcolor; }
+	void addPoint(int x, int y) { pos[size++].set(x, y); }
+	bool move(GameConfig::eKeys direction);
+	GameConfig::gamePieceType getType() { return type; }
 };
 
 #endif

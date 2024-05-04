@@ -18,7 +18,7 @@ void Health::printHealth() {
 	cout << "Remaining Lives: ";
 	
 	if (isColor)
-		setTextColor(GameConfig::RED);
+		setTextColor(GameConfig::LIGHTRED);
  
 	std::cout << this->livesLeft;
 

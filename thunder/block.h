@@ -1,21 +1,35 @@
-#pragma once
+#ifndef BLOCK_H
+#define BLOCK_H
 
 #include "point.h"
+#include "utils.h"
 
 class Board;
 
-
-class Block {
-	constexpr static size_t MAX_BlOCK_SIZE = 6;
-	Point pos[MAX_BlOCK_SIZE];
-	char symbol;
+class Block
+{
+private:
+	Board* board;
+	Point pos[GameConfig::MAX_BLOCK_SIZE];
+	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
+	char symbol = NULL;
+	GameConfig::gamePieceType type = GameConfig::SECONDARY;
 	size_t size = 0;
-	Board* board = nullptr; // pointer to the board
-	int backgroundcolor;
+	GameConfig::Color backgroundcolor;
+	LocationInfo locationInfo;
+
+	size_t getSize() const { return size; }
+	Point getPos(size_t i) const { return pos[i]; }
+	void delTrace();
+	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction, int* carryWeight);
+
 public:
-	void setBoard(Board* board)		{this->board = board;}
-	void addPoint(int x, int y)		{pos[size++].set(x, y);}
-	size_t getSize() const			{return size;}
-	Point getPos(size_t i) const	{return pos[i];}
-	void move(GameConfig::eKeys direction);
+	void init(char symbol, GameConfig::Color color, Board* Board);
+	GameConfig::Color getBackgroundColor() { return backgroundcolor; }
+	void addPoint(int x, int y) { pos[size++].set(x, y); }
+	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr);
+	GameConfig::gamePieceType getType() { return type; }
+	char getSymbol() { return symbol; }
 };
+
+#endif

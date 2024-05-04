@@ -20,8 +20,9 @@ class Game
 	Time time;
 	int gameTime = GameConfig::GAME_TIME;
 	bool timeOver = false;
-	int gameSpeed = 30; // for sleep function, low values make the game run faster
+	int gameSpeed = 80; // for sleep function, low values make the game run faster
 	Ship* ships;
+	Block* blocks;
 	Point timelocation;
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship
 	bool running = false;

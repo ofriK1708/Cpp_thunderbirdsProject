@@ -44,13 +44,26 @@ public:
 	};
 
 
+	enum gamePieceType {
+		PRIMARY = 0,
+		SECONDARY = 1
+	};
+
+
 	static const size_t NUM_SHIPS = 2;
+	static constexpr size_t MAX_SHIP_SIZE = 4;
 	static const char SHIPS_SYMBOLS[NUM_SHIPS];
+	static const int SHIPS_CARRY_WEIGHT[NUM_SHIPS];
 	static const Color SHIPS_COLORS[NUM_SHIPS][NUM_SHIPS];
 	enum ShipID {
 		BIG = 0,
 		SMALL = 1
 	};
 	
+
+	static constexpr size_t MAX_NUM_BLOCKS = 10;
+	static constexpr size_t MAX_BLOCK_SIZE = 6;
+	static const char BLOCK_SYMBOLS[MAX_NUM_BLOCKS];
+	static const Color BLOCK_COLOR = LIGHTBLUE;
 };
 #endif

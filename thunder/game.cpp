@@ -18,6 +18,7 @@ void Game::resetBoard()
 	this->board = Board(); 
 	board.init(colorSet);
 	ships = board.getShips();
+	blocks = board.getBlocks();
 	time = board.getTime();
 	time.setTimeSettings(gameTime, colorSet);
 }
@@ -126,9 +127,12 @@ void Game::setGameStatus() {
 }
 
 void Game::play() {
-	LocationInfo& objectLocation = ships[activeShip].checkNextObjLocation((GameConfig::eKeys)keyPressed);
-	if (!(board.checkCollision(objectLocation)))
-		ships[activeShip].move();
+	ships[activeShip].move((GameConfig::eKeys)keyPressed);
+	size_t i = 0;
+	while (blocks[i].getSymbol()) {
+		blocks[i].move();
+		i++;
+	}
 }
 
 
@@ -156,9 +160,10 @@ void Game::afterDeath() {
  */
 void Game::gameLoop()
 {
+	keyPressed = 0;
+
 	while (!stopGame && !timeOver && health.isAlive())
 	{
-		keyPressed = 0;
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();

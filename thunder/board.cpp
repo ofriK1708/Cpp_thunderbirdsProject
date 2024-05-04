@@ -18,8 +18,8 @@ void Board::init(bool colorSet)
 	if (colorSet)
 		colorShift++;
 
-	for (size_t i = 0; i < NUM_SHIPS; i++)
-		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i], board);
+	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
+		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_CARRY_WEIGHT[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
 
 	updateGamePieces();
 	printScreen();
@@ -88,6 +88,8 @@ void Board::updateGamePieces()
 			else if (board[i][j] >= '0' && board[i][j] <= '9') 
 			{
 				size_t block_index = board[i][j] - '0';
+				if (!blocks[block_index].getSymbol()) // if the bloack hasnt initialized yet
+					blocks[block_index].init(board[i][j], GameConfig::BLOCK_COLOR, this);
 				blocks[block_index].addPoint(j, i);
 			}
 			else if (board[i][j] == 'X') 
@@ -97,16 +99,47 @@ void Board::updateGamePieces()
 }
 
 
-bool Board::checkCollision(LocationInfo &ol)
+bool Board::checkMove(LocationInfo &ol)
 {
 	int currY, currX;
-	for(int i=0; i<ol.objSize; i++)
+	char currSymbol;
+	bool isValid = true;
+	vector <Block*> obsticals;
+	for(int i=0; i<ol.objSize && isValid; i++)
 	{
 		currY = ol.nextPos[i].getY();
 		currX = ol.nextPos[i].getX();
-		if (board[currY][currX] != ' ')
-			if (board[currY][currX] != ol.objSymbol)
-				return true;
+
+		currSymbol = board[currY][currX];
+		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
+			if (currSymbol == 'W')
+				isValid = false;
+			else if(currSymbol >= '0' && currSymbol<= '9'){ 
+				addObstacle(obsticals, currSymbol, { currX, currY }); 
+			}
+			else {
+				isValid = false; //if collide with other ship
+			}
 	}
-	return false;
+
+	for (int i = 0; i < obsticals.size() && isValid; i++) {
+		if (!(obsticals.at(i)->move(ol.direction, ol.carryWeight)))
+			isValid = false;
+	}
+	return isValid;
+}
+
+
+void Board::addObstacle(vector <Block*> &obs, char currSymbol, Coord coord) {
+	//check if it is a new obsticle or not
+	bool newObstacle = true;
+	Block *currBlock;
+	currBlock = &blocks[board[coord.y][coord.x] - '0'];
+	for (int i = 0; i < obs.size() && newObstacle; i++) {
+
+		if (currBlock == obs.at(i))
+			newObstacle = false;
+	}
+	if (newObstacle)
+		obs.push_back(currBlock);
 }
