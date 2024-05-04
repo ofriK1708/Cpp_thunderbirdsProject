@@ -26,7 +26,8 @@ struct LocationInfo {
 	char objSymbol = ' ';
 	size_t objSize = 0;
 	GameConfig::eKeys direction;
-	size_t carryWeight = 0;
+	int* carryWeight = nullptr;
+
 };
 
 #endif // __GENERAL_H

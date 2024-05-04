@@ -19,7 +19,7 @@ void Board::init(bool colorSet)
 		colorShift++;
 
 	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
-		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
+		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_CARRY_WEIGHT[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
 
 	updateGamePieces();
 	printScreen();
@@ -123,20 +123,10 @@ bool Board::checkMove(LocationInfo &ol)
 	}
 
 	for (int i = 0; i < obsticals.size() && isValid; i++) {
-		if (!(obsticals.at(i)->move(ol.direction))) {
+		if (!(obsticals.at(i)->move(ol.direction, ol.carryWeight)))
 			isValid = false;
-		}
 	}
 	return isValid;
-}
-
-
-
-
-bool Board::moveable(Coord coord, char symbol) {
-	if (board[coord.y][coord.x] != symbol)
-		return false;
-	return true;
 }
 
 

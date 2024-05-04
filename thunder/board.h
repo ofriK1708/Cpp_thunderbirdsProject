@@ -32,7 +32,7 @@ class Board {
 			"W                                                                              W", // 9
 			"W                              11                                              W", // 10
 			"W                              1111                                            W", // 11
-			"W                                                                              W", // 12
+			"W                 22                                                           W", // 12
 			"W                                                 WWWWWWWWWWWW                 W", // 13
 			"W                                                                              W", // 14
 			"W                                                 W         WWWW               W", // 15

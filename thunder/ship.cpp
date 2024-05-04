@@ -3,9 +3,10 @@
 #include "board.h"
 
 
-void Ship::init(char symbol, GameConfig::Color color, Board *board)
+void Ship::init(char symbol, int maxCarryWeight, GameConfig::Color color, Board *board)
 {
 	this->symbol = symbol;
+	this->maxCarryWeight = maxCarryWeight;
 	this->backgroundcolor = color;
 	this->board = board;
 }
@@ -13,7 +14,8 @@ void Ship::init(char symbol, GameConfig::Color color, Board *board)
 
 bool Ship::move(GameConfig::eKeys direction)
 {
-	if (board->checkMove(checkNextObjLocation(direction))) {
+	int carryWeight = maxCarryWeight;
+	if (board->checkMove(checkNextObjLocation(direction, &carryWeight))) {
 		delTrace();
 		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 		int currY, currX;
@@ -31,11 +33,11 @@ bool Ship::move(GameConfig::eKeys direction)
 }
 
 
-LocationInfo& Ship::checkNextObjLocation(GameConfig::eKeys direction) {
+LocationInfo& Ship::checkNextObjLocation(GameConfig::eKeys direction, int* carryWeight) {
 	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
 	for (size_t i = 0; i < size; i++)
 		nextPos[i].move(direction);
-	shipLocationinfo = { nextPos, symbol, size , direction};
+	shipLocationinfo = { nextPos, symbol, size , direction, carryWeight};
 	return shipLocationinfo;
 }
 
