@@ -21,9 +21,9 @@ class Board {
 	char original_board[HEIGHT][WIDTH + 1] = {
 		//   01234567890123456789012345678901234567890123456789012345678901234567890123456789
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 0
-			"W       T                                                                WSSWBBW", // 1
-			"W                                                                        WWWWBBW", // 2
-			"W       L                                                                   WWWW", // 3
+			"W T                                                       WWWW            W    W", // 1
+			"W                                                         WBBW           WSW   W", // 2
+			"W L                                                       WBBW           WSW   W", // 3
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 4
 			"W         @@                                                                   W", // 5
 			"W         ##                                                                   W", // 6

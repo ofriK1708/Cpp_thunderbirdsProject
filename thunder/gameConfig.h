@@ -14,6 +14,15 @@ public:
 	static constexpr int MIN_X = 10;
 	static constexpr int MIN_Y = 3;
 
+	static constexpr char BIG_SHIP_S = '#';
+	static constexpr char SMALL_SHIP_S = '@';
+	static constexpr char FINISH_S = 'X';
+
+
+	static constexpr int BIG_SHIP_ID = 0;
+	static constexpr int SMALL_SHIP_ID = 1;
+
+
 	static constexpr size_t GAME_TIME = 400;
 	static constexpr size_t LIVES = 3;
 	static constexpr char HEALTH_SYMBOL = 'L';
@@ -27,22 +36,23 @@ public:
 		CYAN = 3,
 		RED = 4,
 		MAGENTA = 5,
-		BROWN = 6,
+		BROWN = 6 | 6<<4,
 		LIGHTGREY = 7,
 		DARKGREY = 8,
-		LIGHTBLUE = 9,
+		LIGHTBLUE = 9 | 9<<4,
 		LIGHTGREEN = 10,
 		LIGHTCYAN = 11,
 		LIGHTRED = 12,
 		LIGHTMAGENTA = 13,
 		YELLOW = 14,
 		WHITE = 15, 
-		BACKGROUND_GREY = 8<<4,
-		PURPLE = BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY,
-		TURQUOISE = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY
+		BACKGROUND_GREY = 8<<4 | 8,
+		PURPLE = BACKGROUND_BLUE | BACKGROUND_RED | BLUE | RED,
+		TURQUOISE = BACKGROUND_BLUE | BACKGROUND_GREEN | BLUE | GREEN
 
 	};
 
+	static constexpr GameConfig::Color WALL_COLOR = BACKGROUND_GREY;
 
 	enum gamePieceType {
 		PRIMARY = 0,
@@ -64,6 +74,6 @@ public:
 	static constexpr size_t MAX_NUM_BLOCKS = 10;
 	static constexpr size_t MAX_BLOCK_SIZE = 6;
 	static const char BLOCK_SYMBOLS[MAX_NUM_BLOCKS];
-	static const Color BLOCK_COLOR = LIGHTBLUE;
+	static const Color BLOCK_COLOR = BROWN;
 };
 #endif

@@ -25,43 +25,61 @@ void Board::init(bool colorSet)
 	printScreen();
 }
 
-int isShip(char ch) {
-	int res = -1;
-	
-	for (int i = 0; i < GameConfig::NUM_SHIPS; i++)
-		if (GameConfig::SHIPS_SYMBOLS[i] == ch)
-			res = i;
-	return res;
+bool isBlock(char ch) 
+{
+	if(ch >= '0' && ch <= '9')
+	{
+		return true;
+	}
+	return false;
 }
 
 
 /**
  * Prints the current state of the game board on the screen with appropriate indentation.
  */
-void Board::printScreen() {
+void Board::printScreen()
+{
+	GameConfig::Color color = GameConfig::WHITE;
 	for (size_t j = 0; j < GameConfig::MIN_Y; j++)
 		std::cout << endl;
 	for (int i = 0; i < HEIGHT; i++) {
 		for (size_t j = 0; j < GameConfig::MIN_X; j++)
 			std::cout << " ";
-		for (size_t j = 0; j < WIDTH; j++){
-			int shipIndex = isShip(board[i][j]);
-			if (shipIndex != -1) {
-				setTextColor(ships[shipIndex].getBackgroundColor());
-				std::cout << board[i][j];
-				setTextColor(GameConfig::WHITE);
-			}
-			else if(board[i][j] == 'W' && colorSet)
+		for (size_t j = 0; j < WIDTH; j++)
+		{
+			char currSymbol = board[i][j];
+			if (colorSet)
 			{
-				setTextColor(GameConfig::BACKGROUND_GREY);
-				std::cout << board[i][j];
-				setTextColor(GameConfig::WHITE); 
+				switch (currSymbol)
+				{
+				case GameConfig::BIG_SHIP_S:
+					color = ships[GameConfig::BIG_SHIP_ID].getBackgroundColor();
+					break;
+				case GameConfig::SMALL_SHIP_S:
+					color = ships[GameConfig::SMALL_SHIP_ID].getBackgroundColor();
+					break;
+				case 'W':
+					color = GameConfig::WALL_COLOR;
+					break;
+				default:
+					if (isBlock(currSymbol))
+					{
+						color = blocks[0].getBackgroundColor();
+					}
+					break;
+
+				}
+
 			}
-			else	
-				std::cout << board[i][j];
+			setTextColor(color);
+			std::cout << currSymbol;
+			setTextColor(color = GameConfig::WHITE);
+
 		}
-		std::cout << endl;
+		std::cout << std::endl;
 	}
+	
 }
 
 /**
@@ -73,6 +91,7 @@ void Board::printScreen() {
 void Board::updateGamePieces()
 {
 	std::memcpy(board, original_board, sizeof(original_board));
+	GameConfig::Color blockColor = colorSet ? GameConfig::BLOCK_COLOR : GameConfig::WHITE;
 	for (int i = 0; i < HEIGHT; i++) 
 	{
 		for (int j = 0; j < WIDTH; j++) 
@@ -84,10 +103,10 @@ void Board::updateGamePieces()
                 case GameConfig::HEALTH_SYMBOL:
                     health = { j, i };
                     break;
-				case '#':
+				case GameConfig::BIG_SHIP_S:
                     ships[0].addPoint(j, i);
                     break;
-                case '@':
+                case GameConfig::SMALL_SHIP_S:
                     ships[1].addPoint(j, i);
                     break;
                 case 'X':
@@ -103,8 +122,9 @@ void Board::updateGamePieces()
                     if (board[i][j] >= '0' && board[i][j] <= '9') 
 					{
                         size_t block_index = board[i][j] - '0';
-                        if (!blocks[block_index].getSymbol()) {
-                            blocks[block_index].init(board[i][j], GameConfig::BLOCK_COLOR, this);
+                        if (!blocks[block_index].getSymbol()) 
+						{
+                            blocks[block_index].init(board[i][j], blockColor, this);
                         }
                         blocks[block_index].addPoint(j, i);
                     }

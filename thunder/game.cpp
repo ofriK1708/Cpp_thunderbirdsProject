@@ -138,7 +138,7 @@ void Game::play() {
 
 void Game::afterDeath() {
 	clear();
-	cout << "!-!-!-!-!-!-!-! Sorry for that, Maybe try again !-!-!-!-!-!-!-!" << endl;
+	cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
 	health.decreaseLife();
 	this->timeOver = false;
 	Sleep(3000);
