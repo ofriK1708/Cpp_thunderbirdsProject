@@ -185,17 +185,23 @@ bool Board::checkMove(LocationInfo &ol)
 	}
 
 	for (int i = 0; i < obsticals.size() && isValid; i++) {
-		if (!(obsticals.at(i)->move(ol.direction, ol.carryWeight)))
+		if (!(obsticals.at(i)->checkMove(ol.direction, ol.carryWeight)))
 			isValid = false;
 	}
-	if(isfinished && isValid)
+	if(isValid)
 	{
-		shipFinishLine(ol.objSymbol);
-		isValid = false; // there is no reason to move after we finished 
+		if (isfinished) {
+			shipFinishLine(ol.objSymbol);
+			isValid = false; // there is no reason to move after we finished 
+		}
+		else {
+			for (int i = 0; i < obsticals.size() && isValid; i++) {
+				obsticals.at(i)->move(ol.direction, ol.carryWeight, true);
+			}
+		}
 	}
 	return isValid;
 }
-
 
 void Board::shipFinishLine(char shipID)
 {

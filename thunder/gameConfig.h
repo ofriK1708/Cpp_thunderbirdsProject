@@ -39,7 +39,7 @@ public:
 		CYAN = 3,
 		RED = 4,
 		MAGENTA = 5,
-		BROWN = 6 | 6 << 4,
+		BROWN = 6,
 		LIGHTGREY = 7,
 		DARKGREY = 8,
 		LIGHTBLUE = 9 | 9 << 4,

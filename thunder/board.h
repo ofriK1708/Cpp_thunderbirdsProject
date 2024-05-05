@@ -31,8 +31,8 @@ class Board {
 			"W                                                                              W", // 8
 			"W                                                                              W", // 9
 			"W                              11                                              W", // 10
-			"W                              1111                                            W", // 11
-			"W                                                                              W", // 12
+			"W          22222               1111                 333                        W", // 11
+			"W                                                   333                        W", // 12
 			"W                                                 WWWWWWWWWWWW                 W", // 13
 			"W                                                                              W", // 14
 			"W                                                 W         WWWW               W", // 15
@@ -41,9 +41,9 @@ class Board {
 			"W                                       W      00            X W               W", // 18
 			"W                                       WWWWWWWWWWWWWWWWWWWWWWWW               W", // 19
 			"W                                                                              W", // 20
-			"W                                                                              W", // 21
-			"                                                                                ", // 22
-			"                               22                                               ", // 23
+			"W                                       5                                      W", // 21
+			"             44                        55                                       ", // 22
+			"                                                                                ", // 23
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
 	Time time;
