@@ -65,8 +65,6 @@ void Ship::shipFinishLine()
 	{
 		currY = pos[i].getY();
 		currX = pos[i].getX();
-		pos[i].draw(' ', GameConfig::BLACK);
-		board->board[currY][currX] = ' ';
 		pos[i].draw(symbol, backgroundcolor);
 		board->board[currY][currX] = symbol;
 	}

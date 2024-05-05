@@ -2,6 +2,7 @@
 #include "gameConfig.h"
 #include "utils.h"
 
+bool isBlock(char ch);
 
 /**
  * Initializes the game board and its components.
@@ -28,6 +29,14 @@ void Board::init(bool colorSet)
 bool isBlock(char ch) 
 {
 	if(ch >= '0' && ch <= '9')
+	{
+		return true;
+	}
+	return false;
+}
+bool isShip(char ch)
+{
+	if(ch == GameConfig::BIG_SHIP_S || ch == GameConfig::SMALL_SHIP_S)
 	{
 		return true;
 	}
@@ -62,6 +71,9 @@ void Board::printScreen()
 				case 'W':
 					color = GameConfig::WALL_COLOR;
 					break;
+				case GameConfig::FINISH_S:
+					color = GameConfig::WHITE_BACKGROUND;
+					break;
 				default:
 					if (isBlock(currSymbol))
 					{
@@ -73,7 +85,15 @@ void Board::printScreen()
 
 			}
 			setTextColor(color);
-			std::cout << currSymbol;
+			if(currSymbol == GameConfig::FINISH_BIG_SHIP || currSymbol == GameConfig::FINISH_SMALL_SHIP)
+			{
+				std::cout << ' ';
+			}
+			else
+			{
+				std::cout << currSymbol;
+			}
+			 
 			setTextColor(color = GameConfig::WHITE);
 
 		}
@@ -96,8 +116,10 @@ void Board::updateGamePieces()
 	{
 		for (int j = 0; j < WIDTH; j++) 
 		{
-            switch (board[i][j]) {
-                case 'T':
+			char currSymbol = board[i][j];
+            switch (currSymbol) 
+			{
+			    case GameConfig::TIME_SYMBOL:
                     time.setLocation(j, i);
                     break;
                 case GameConfig::HEALTH_SYMBOL:
@@ -109,22 +131,22 @@ void Board::updateGamePieces()
                 case GameConfig::SMALL_SHIP_S:
                     ships[1].addPoint(j, i);
                     break;
-                case 'X':
+					case GameConfig::FINISH_S:
                     exit_pos.set(j, i);
                     break;
-				case 'B':
+				case GameConfig::FINISH_BIG_SHIP:
 					ships[0].addFinishPoint(j, i);
 					break;
-				case 'S':
+				case GameConfig::FINISH_SMALL_SHIP:
 					ships[1].addFinishPoint(j, i);
 					break;
                 default:
-                    if (board[i][j] >= '0' && board[i][j] <= '9') 
+                    if (isBlock(currSymbol))
 					{
-                        size_t block_index = board[i][j] - '0';
+                        size_t block_index = currSymbol - '0';
                         if (!blocks[block_index].getSymbol()) 
 						{
-                            blocks[block_index].init(board[i][j], blockColor, this);
+                            blocks[block_index].init(currSymbol, blockColor, this);
                         }
                         blocks[block_index].addPoint(j, i);
                     }
@@ -150,11 +172,11 @@ bool Board::checkMove(LocationInfo &ol)
 		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
 			if (currSymbol == 'W')
 				isValid = false;
-			else if(currSymbol == 'X' && (ol.objSymbol == '#' || ol.objSymbol == '@'))
+			else if(currSymbol == GameConfig::FINISH_S && isShip(ol.objSymbol))
 			{
 				isfinished = true;
 			}
-			else if(currSymbol >= '0' && currSymbol<= '9'){ 
+			else if(isBlock(currSymbol)){ 
 				addObstacle(obsticals, currSymbol, { currX, currY }); 
 			}
 			else {

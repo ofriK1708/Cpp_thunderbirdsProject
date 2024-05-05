@@ -17,7 +17,10 @@ public:
 	static constexpr char BIG_SHIP_S = '#';
 	static constexpr char SMALL_SHIP_S = '@';
 	static constexpr char FINISH_S = 'X';
-
+	static constexpr char FINISH_BIG_SHIP = 'B';
+	static constexpr char FINISH_SMALL_SHIP = 'S';
+	static constexpr char TIME_SYMBOL = 'T';
+	static constexpr char HEALTH_SYMBOL = 'L';
 
 	static constexpr int BIG_SHIP_ID = 0;
 	static constexpr int SMALL_SHIP_ID = 1;
@@ -25,7 +28,7 @@ public:
 
 	static constexpr size_t GAME_TIME = 400;
 	static constexpr size_t LIVES = 3;
-	static constexpr char HEALTH_SYMBOL = 'L';
+	
 
 
 	enum Color
@@ -36,16 +39,17 @@ public:
 		CYAN = 3,
 		RED = 4,
 		MAGENTA = 5,
-		BROWN = 6 | 6<<4,
+		BROWN = 6 | 6 << 4,
 		LIGHTGREY = 7,
 		DARKGREY = 8,
-		LIGHTBLUE = 9 | 9<<4,
+		LIGHTBLUE = 9 | 9 << 4,
 		LIGHTGREEN = 10,
 		LIGHTCYAN = 11,
 		LIGHTRED = 12,
 		LIGHTMAGENTA = 13,
 		YELLOW = 14,
-		WHITE = 15, 
+		WHITE = 15,
+		WHITE_BACKGROUND = 15 << 4,
 		BACKGROUND_GREY = 8<<4 | 8,
 		PURPLE = BACKGROUND_BLUE | BACKGROUND_RED | BLUE | RED,
 		TURQUOISE = BACKGROUND_BLUE | BACKGROUND_GREEN | BLUE | GREEN
