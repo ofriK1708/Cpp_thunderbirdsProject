@@ -127,7 +127,8 @@ void Game::setGameStatus() {
 }
 
 void Game::play() {
-	ships[activeShip].move((GameConfig::eKeys)keyPressed);
+	if(running)
+		ships[activeShip].move((GameConfig::eKeys)keyPressed);
 	size_t i = 0;
 	while (blocks[i].getSymbol()) {
 		blocks[i].move();
@@ -167,10 +168,10 @@ void Game::gameLoop()
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();
-		if (running) {
-			play();
-			timeOver = time.checkAndupdateTime();
-		}
+		//if (running) {
+		play();
+		timeOver = time.checkAndupdateTime();
+		//}
 		Sleep(gameSpeed);
 		if (timeOver)
 			afterDeath();
