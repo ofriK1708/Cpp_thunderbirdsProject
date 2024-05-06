@@ -1,6 +1,4 @@
 #include <iostream>
-
-#include "test.h"
 #include "game.h"
 #include "gameConfig.h"
 
