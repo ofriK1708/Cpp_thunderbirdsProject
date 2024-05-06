@@ -36,6 +36,7 @@ public:
 	bool move(GameConfig::eKeys direction);
 	GameConfig::gamePieceType getType() { return type; }
 	void shipFinishLine();
+	bool GetFinishStatus() { return isFinished; }
 };
 
 #endif

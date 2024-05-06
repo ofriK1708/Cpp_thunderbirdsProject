@@ -39,6 +39,8 @@ public:
 	void pauseMenu();
 	void resetBoard();
 	void afterDeath();
+	void gameFinish();
+	void printCredits();
 
 };
 

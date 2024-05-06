@@ -88,42 +88,66 @@ void Game::pauseMenu() {
 		break;
 	case (int)GameConfig::eKeys::EXIT:
 		clear();
-		cout << "Finished game, Thank you for playing :D" << endl;;
-		cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
+		printCredits();
 		stopGame = true;
 		break;
 	}
 }
 
-void Game::setGameStatus() {
-	switch (keyPressed)
+void Game::gameFinish()
+{
+	clear();
+	cout << "*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
+	printCredits();
+
+}
+
+void Game::printCredits()
+{
+	cout << "Finished game, Thank you for playing :D" << endl;;
+	cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
+}
+
+void Game::setGameStatus() 
+{
+	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
 	{
-	case (int)GameConfig::eKeys::ESC:
-		clear();
-		pauseMenu();
-		break;
-
-	case (int)GameConfig::eKeys::SWITCH_TO_BIG_S:
-		if (activeShip == GameConfig::ShipID::SMALL)
-			activeShip = GameConfig::ShipID::BIG;
-		else
+		stopGame = true;
+		gameFinish();
+	}
+	else
+	{
+		switch (keyPressed)
+		{
+		case (int)GameConfig::eKeys::ESC:
+			clear();
+			pauseMenu();
+			keyPressed = 0;
 			running = false;
-		break;
+			break;
 
-	case (int)GameConfig::eKeys::SWITCH_TO_SMALL_S:
-		if (activeShip == GameConfig::ShipID::BIG)
-			activeShip = GameConfig::ShipID::SMALL;
-		else
-			running = false;
-		break;
+		case (int)GameConfig::eKeys::SWITCH_TO_BIG_S:
+			if (activeShip == GameConfig::ShipID::SMALL)
+				activeShip = GameConfig::ShipID::BIG;
+			else
+				running = false;
+			break;
 
-	case (int)GameConfig::eKeys::UP:
-	case (int)GameConfig::eKeys::DOWN:
-	case (int)GameConfig::eKeys::LEFT:
-	case (int)GameConfig::eKeys::RIGHT:
-		running = true;
-		break;
-	};
+		case (int)GameConfig::eKeys::SWITCH_TO_SMALL_S:
+			if (activeShip == GameConfig::ShipID::BIG)
+				activeShip = GameConfig::ShipID::SMALL;
+			else
+				running = false;
+			break;
+
+		case (int)GameConfig::eKeys::UP:
+		case (int)GameConfig::eKeys::DOWN:
+		case (int)GameConfig::eKeys::LEFT:
+		case (int)GameConfig::eKeys::RIGHT:
+			running = true;
+			break;
+		};
+	}
 }
 
 void Game::play() {
@@ -168,10 +192,10 @@ void Game::gameLoop()
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();
-		//if (running) {
+		
 		play();
 		timeOver = time.checkAndupdateTime();
-		//}
+		
 		Sleep(gameSpeed);
 		if (timeOver)
 			afterDeath();
