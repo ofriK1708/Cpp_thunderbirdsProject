@@ -12,7 +12,7 @@ class Health
 	bool isColor = false;
 
 public:
-	void setLocation(Coord coord) { this->x = coord.x; this->y = coord.y; }
+	void setLocation(int x, int y) { this->x = x; this->y = y; }
 	void decreaseLife() { --livesLeft; }
 	bool isAlive();
 	void printHealth();

@@ -47,7 +47,7 @@ class Board {
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
 	Time time;
-	Coord health;
+	Health health;
 	Point life_pos;
 	Point exit_pos;	
 	Ship ships[GameConfig::NUM_SHIPS];
@@ -64,7 +64,7 @@ public:
 	Ship* getShips() {return ships;}
 	Block* getBlocks() { return blocks; }
 	Time& getTime() { return time; }
-	Coord getHealthLocation() { return this->health; }
+	Health& getHealth() { return health; }
 	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
 	void shipFinishLine(char shipID);
 

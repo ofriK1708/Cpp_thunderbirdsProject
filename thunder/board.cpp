@@ -74,6 +74,8 @@ void Board::printScreen()
 				case GameConfig::FINISH_S:
 					color = GameConfig::WHITE_BACKGROUND;
 					break;
+				case 'L':
+					health.setColor(colorSet);
 				default:
 					if (isBlock(currSymbol))
 					{
@@ -123,7 +125,7 @@ void Board::updateGamePieces()
                     time.setLocation(j, i);
                     break;
                 case GameConfig::HEALTH_SYMBOL:
-                    health = { j, i };
+                    health.setLocation(j, i);
                     break;
 				case GameConfig::BIG_SHIP_S:
                     ships[0].addPoint(j, i);

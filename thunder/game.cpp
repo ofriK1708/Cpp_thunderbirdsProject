@@ -8,9 +8,7 @@
 void Game::init()
 {
 	resetBoard();
-	health.setLocation(board.getHealthLocation());
-	health.setColor(colorSet);
-	health.printHealth();
+	health = board.getHealth();
 }
 
 void Game::resetBoard()
@@ -195,6 +193,7 @@ void Game::gameLoop()
 		
 		play();
 		timeOver = time.checkAndupdateTime();
+		health.printHealth();
 		
 		Sleep(gameSpeed);
 		if (timeOver)
