@@ -31,7 +31,7 @@ class Game
 	int userChoice;
 public:
 	void init();
-	void mainMenu();
+	bool mainMenu();
 	void setKey(int key) { keyPressed = tolower(key); }
 	void setGameStatus();
 	void gameLoop();

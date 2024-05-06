@@ -29,8 +29,9 @@ void clear() {
 /**
 * Manages the main menu interface and user interaction.
 */
-void Game::mainMenu()  
+bool Game::mainMenu()  
 {
+	bool isExit = false;
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
 	do {
 		cout << "Please enter your choice" << endl;
@@ -57,15 +58,19 @@ void Game::mainMenu()
 			cout << "Press 'B' or 'S' to switch control between the big and small ships" << endl << "Press 'ESC' to pause the game." << endl << endl;
 			break;
 		case 9:
-			cout << "exiting the game";
-			exit(0); // Not sure about that 
+			clear();
+			cout << "Exiting the game, please come back when you can :D";
+			Sleep(1500);
+			isExit = true;
+			break;
 		default:
 			cout << "invalid choice, please try again" << endl;
 			break;
 		}
-	} while (userChoice != 1);
+	} while (userChoice != 1 && !isExit);
 	Sleep(700);
 	clrscr();
+	return isExit;
 }
 
 void Game::pauseMenu() {
@@ -159,21 +164,32 @@ void Game::play() {
 }
 
 
-void Game::afterDeath() {
-	clear();
-	cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
-	health.decreaseLife();
-	this->timeOver = false;
-	Sleep(3000);
-	clear();
-	if (health.isAlive()) {
-		resetBoard();
-		health.printHealth();
-		this->running = false;
+void Game::afterDeath() 
+{
+	if (health.getlivesLeft() > 1) // if we are at 1 and died then game over 
+	{
+	 clear();
+	 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
+	 health.decreaseLife();
+	 this->timeOver = false;
+	 Sleep(3000);
+	 clear();
+	
+	 resetBoard();
+	 health.printHealth();
+	 this->running = false;
+	 running = false;
 		
 		//clean all clicks fron last round
-		while (_kbhit())
-			_getch();
+		//while (_kbhit())
+			//_getch();
+	}
+	else
+	{
+		clear();
+		cout << "!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-! GAME OVER !-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!" << endl;
+		printCredits();
+		stopGame = true;
 	}
 }
 
@@ -190,11 +206,12 @@ void Game::gameLoop()
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();
-		
-		play();
-		timeOver = time.checkAndupdateTime();
-		health.printHealth();
-		
+		if (!stopGame) 
+		{
+			play();
+			timeOver = time.checkAndupdateTime();
+			health.printHealth();
+		}
 		Sleep(gameSpeed);
 		if (timeOver)
 			afterDeath();

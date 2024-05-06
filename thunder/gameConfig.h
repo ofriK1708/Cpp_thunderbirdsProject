@@ -21,6 +21,7 @@ public:
 	static constexpr char FINISH_SMALL_SHIP = 'S';
 	static constexpr char TIME_SYMBOL = 'T';
 	static constexpr char HEALTH_SYMBOL = 'L';
+	static constexpr char WALL_SYMBOL = 'W';
 
 	static constexpr int BIG_SHIP_ID = 0;
 	static constexpr int SMALL_SHIP_ID = 1;

@@ -4,11 +4,13 @@
 
 
 
-bool Health::isAlive() {
+bool Health::isAlive() 
+{
 	if (livesLeft <= 0)
 		return false;
 	return true;
 }
+
 
 
 

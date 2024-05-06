@@ -68,13 +68,13 @@ void Board::printScreen()
 				case GameConfig::SMALL_SHIP_S:
 					color = ships[GameConfig::SMALL_SHIP_ID].getBackgroundColor();
 					break;
-				case 'W':
+				case GameConfig::WALL_SYMBOL:
 					color = GameConfig::WALL_COLOR;
 					break;
 				case GameConfig::FINISH_S:
 					color = GameConfig::WHITE_BACKGROUND;
 					break;
-				case 'L':
+				case GameConfig::HEALTH_SYMBOL:
 					health.setColor(colorSet);
 				default:
 					if (isBlock(currSymbol))
