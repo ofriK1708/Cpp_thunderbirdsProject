@@ -1,12 +1,13 @@
 #ifndef SNAKE_GAME_H
 #define SNAKE_GAME_H
 
+#include  <stdbool.h>
+
 #include "ship.h"
 #include "board.h"
 #include "utils.h"
 #include "time.h"
 #include "gameConfig.h"
-#include  <stdbool.h>
 
 using namespace std;
 
@@ -14,27 +15,33 @@ class Ship;
 
 class Game
 {
+		
 	Board board;
-	bool colorSet = false; 
+	Point timelocation;
+
+	//game pieces
 	Health health;
 	Time time;
-	int gameTime = GameConfig::GAME_TIME;
-	bool timeOver = false;
-	int gameSpeed = 80; // for sleep function, low values make the game run faster
 	Ship* ships;
 	Block* blocks;
-	Point timelocation;
-	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship
-	bool running = false;
-	bool stopGame = false;
+	
+	//configurations
+	int gameTime = GameConfig::GAME_TIME;
+	int gameSpeed = GameConfig::MIN_SLEEP; // for sleep function
+	
+	//data globals
+	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	
 	int keyPressed;
 	int userChoice;
-public:
-	void init();
-	bool mainMenu();
+	
+	//indicator globas
+	bool timeOver = false;
+	bool running = false;
+	bool stopGame = false;
+	bool colorSet = false;
+
 	void setKey(int key) { keyPressed = tolower(key); }
 	void setGameStatus();
-	void gameLoop();
 	void play();
 	void pauseMenu();
 	void resetBoard();
@@ -42,6 +49,10 @@ public:
 	void gameFinish();
 	void printCredits();
 
+public:
+	void init();
+	bool mainMenu();
+	void gameLoop();
 };
 
 #endif

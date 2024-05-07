@@ -26,9 +26,7 @@ void clear() {
 	clrscr();
 }
 
-/**
-* Manages the main menu interface and user interaction.
-*/
+//Manages the main menu interface and user interaction.
 bool Game::mainMenu()  
 {
 	bool isExit = false;
@@ -60,7 +58,7 @@ bool Game::mainMenu()
 		case 9:
 			clear();
 			cout << "Exiting the game, please come back when you can :D";
-			Sleep(1500);
+			Sleep(GameConfig::SHORT_SLEEP);
 			isExit = true;
 			break;
 		default:
@@ -68,32 +66,38 @@ bool Game::mainMenu()
 			break;
 		}
 	} while (userChoice != 1 && !isExit);
-	Sleep(700);
+	Sleep(GameConfig::SHORT_SLEEP);
 	clrscr();
 	return isExit;
 }
 
 void Game::pauseMenu() {
 	
+	bool illigalChoice = true;
+	
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
 	cout << "Press ESC again to continue or 9 to Exit" << endl;
-	while (!_kbhit())
-		Sleep(100);
-	setKey(_getch());
-	switch (keyPressed)
-	{
-	case (int)GameConfig::eKeys::ESC:
-		clear();
-		cout << "Returning to the game, get ready" << endl;;
-		Sleep(2000);
-		clear();
-		board.printScreen();
-		break;
-	case (int)GameConfig::eKeys::EXIT:
-		clear();
-		printCredits();
-		stopGame = true;
-		break;
+	while (illigalChoice) {
+		while (!_kbhit())
+			Sleep(GameConfig::MIN_SLEEP);
+		setKey(_getch());
+		switch (keyPressed)
+		{
+		case (int)GameConfig::eKeys::ESC:
+			clear();
+			cout << "Returning to the game, get ready" << endl;;
+			Sleep(GameConfig::SHORT_SLEEP);
+			clear();
+			board.printScreen();
+			illigalChoice = false;
+			break;
+		case (int)GameConfig::eKeys::EXIT:
+			clear();
+			printCredits();
+			stopGame = true;
+			illigalChoice = false;
+			break;
+		}
 	}
 }
 
@@ -172,17 +176,16 @@ void Game::afterDeath()
 	 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
 	 health.decreaseLife();
 	 this->timeOver = false;
-	 Sleep(3000);
+	 Sleep(GameConfig::LONG_SLEEP);
 	 clear();
 	
 	 resetBoard();
 	 health.printHealth();
 	 this->running = false;
 	 running = false;
-		
-		//clean all clicks fron last round
-		//while (_kbhit())
-			//_getch();
+	//clean all clicks fron last round
+	//while (_kbhit())
+		//_getch();
 	}
 	else
 	{
@@ -217,5 +220,4 @@ void Game::gameLoop()
 			afterDeath();
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
-	
 }
