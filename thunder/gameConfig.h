@@ -27,6 +27,9 @@ public:
 	static constexpr int SMALL_SHIP_ID = 1;
 
 
+	static constexpr size_t LONG_SLEEP = 3000;
+	static constexpr size_t SHORT_SLEEP = 1500;
+	static constexpr size_t MIN_SLEEP = 80;
 	static constexpr size_t GAME_TIME = 400;
 	static constexpr size_t LIVES = 3;
 	
