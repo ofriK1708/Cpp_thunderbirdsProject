@@ -11,7 +11,6 @@ bool isBlock(char ch);
  * the exit, and the legend position. It then updates the game pieces on the board and
  * prints the initial state of the game screen.
  */
-
 void Board::init(bool colorSet)
 {
 	this->colorSet = colorSet;
@@ -34,6 +33,8 @@ bool isBlock(char ch)
 	}
 	return false;
 }
+
+
 bool isShip(char ch)
 {
 	if(ch == GameConfig::BIG_SHIP_S || ch == GameConfig::SMALL_SHIP_S)
@@ -82,7 +83,6 @@ void Board::printScreen()
 						color = blocks[0].getBackgroundColor();
 					}
 					break;
-
 				}
 			}
 			setTextColor(color);

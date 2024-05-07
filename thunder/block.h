@@ -18,8 +18,6 @@ private:
 	GameConfig::gamePieceType type = GameConfig::SECONDARY;
 	char symbol = NULL;
 
-	size_t getSize() const { return size; }
-	Point getPos(size_t i) const { return pos[i]; }
 	void delTrace();
 
 public:
@@ -30,6 +28,8 @@ public:
 	GameConfig::gamePieceType getType() { return type; }
 	char getSymbol() { return symbol; }
 	bool checkMove(GameConfig::eKeys direction, int* carryWeight);
+	size_t getSize() const { return size; }
+	Point getPos(size_t i) const { return pos[i]; }
 };
 
 #endif
