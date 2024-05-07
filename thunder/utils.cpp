@@ -13,7 +13,7 @@ void gotoxy(int x, int y)
 
 void setTextColor(GameConfig::Color color) 
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)color);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
 

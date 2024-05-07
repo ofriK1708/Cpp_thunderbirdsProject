@@ -8,9 +8,7 @@
 void Game::init()
 {
 	resetBoard();
-	health.setLocation(board.getHealthLocation());
-	health.setColor(colorSet);
-	health.printHealth();
+	health = board.getHealth();
 }
 
 void Game::resetBoard()
@@ -28,11 +26,10 @@ void clear() {
 	clrscr();
 }
 
-/**
-* Manages the main menu interface and user interaction.
-*/
-void Game::mainMenu()  
+//Manages the main menu interface and user interaction.
+bool Game::mainMenu()  
 {
+	bool isExit = false;
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
 	do {
 		cout << "Please enter your choice" << endl;
@@ -59,75 +56,110 @@ void Game::mainMenu()
 			cout << "Press 'B' or 'S' to switch control between the big and small ships" << endl << "Press 'ESC' to pause the game." << endl << endl;
 			break;
 		case 9:
-			cout << "exiting the game";
-			exit(0); // Not sure about that 
+			clear();
+			cout << "Exiting the game, please come back when you can :D";
+			Sleep(GameConfig::SHORT_SLEEP);
+			isExit = true;
+			break;
 		default:
 			cout << "invalid choice, please try again" << endl;
 			break;
 		}
-	} while (userChoice != 1);
-	Sleep(700);
+	} while (userChoice != 1 && !isExit);
+	Sleep(GameConfig::SHORT_SLEEP);
 	clrscr();
+	return isExit;
 }
 
 void Game::pauseMenu() {
 	
+	bool illigalChoice = true;
+	
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
 	cout << "Press ESC again to continue or 9 to Exit" << endl;
-	while (!_kbhit())
-		Sleep(100);
-	setKey(_getch());
-	switch (keyPressed)
-	{
-	case (int)GameConfig::eKeys::ESC:
-		clear();
-		cout << "Returning to the game, get ready" << endl;;
-		Sleep(2000);
-		clear();
-		board.printScreen();
-		break;
-	case (int)GameConfig::eKeys::EXIT:
-		clear();
-		cout << "Finished game, Thank you for playing :D" << endl;;
-		cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
-		stopGame = true;
-		break;
+	while (illigalChoice) {
+		while (!_kbhit())
+			Sleep(GameConfig::MIN_SLEEP);
+		setKey(_getch());
+		switch (keyPressed)
+		{
+		case (int)GameConfig::eKeys::ESC:
+			clear();
+			cout << "Returning to the game, get ready" << endl;;
+			Sleep(GameConfig::SHORT_SLEEP);
+			clear();
+			board.printScreen();
+			illigalChoice = false;
+			break;
+		case (int)GameConfig::eKeys::EXIT:
+			clear();
+			printCredits();
+			stopGame = true;
+			illigalChoice = false;
+			break;
+		}
 	}
 }
 
-void Game::setGameStatus() {
-	switch (keyPressed)
+void Game::gameFinish()
+{
+	clear();
+	cout << "*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
+	printCredits();
+
+}
+
+void Game::printCredits()
+{
+	cout << "Finished game, Thank you for playing :D" << endl;;
+	cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
+}
+
+void Game::setGameStatus() 
+{
+	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
 	{
-	case (int)GameConfig::eKeys::ESC:
-		clear();
-		pauseMenu();
-		break;
-
-	case (int)GameConfig::eKeys::SWITCH_TO_BIG_S:
-		if (activeShip == GameConfig::ShipID::SMALL)
-			activeShip = GameConfig::ShipID::BIG;
-		else
+		stopGame = true;
+		gameFinish();
+	}
+	else
+	{
+		switch (keyPressed)
+		{
+		case (int)GameConfig::eKeys::ESC:
+			clear();
+			pauseMenu();
+			keyPressed = 0;
 			running = false;
-		break;
+			break;
 
-	case (int)GameConfig::eKeys::SWITCH_TO_SMALL_S:
-		if (activeShip == GameConfig::ShipID::BIG)
-			activeShip = GameConfig::ShipID::SMALL;
-		else
-			running = false;
-		break;
+		case (int)GameConfig::eKeys::SWITCH_TO_BIG_S:
+			if (activeShip == GameConfig::ShipID::SMALL)
+				activeShip = GameConfig::ShipID::BIG;
+			else
+				running = false;
+			break;
 
-	case (int)GameConfig::eKeys::UP:
-	case (int)GameConfig::eKeys::DOWN:
-	case (int)GameConfig::eKeys::LEFT:
-	case (int)GameConfig::eKeys::RIGHT:
-		running = true;
-		break;
-	};
+		case (int)GameConfig::eKeys::SWITCH_TO_SMALL_S:
+			if (activeShip == GameConfig::ShipID::BIG)
+				activeShip = GameConfig::ShipID::SMALL;
+			else
+				running = false;
+			break;
+
+		case (int)GameConfig::eKeys::UP:
+		case (int)GameConfig::eKeys::DOWN:
+		case (int)GameConfig::eKeys::LEFT:
+		case (int)GameConfig::eKeys::RIGHT:
+			running = true;
+			break;
+		};
+	}
 }
 
 void Game::play() {
-	ships[activeShip].move((GameConfig::eKeys)keyPressed);
+	if(running)
+		ships[activeShip].move((GameConfig::eKeys)keyPressed);
 	size_t i = 0;
 	while (blocks[i].getSymbol()) {
 		blocks[i].move();
@@ -136,21 +168,31 @@ void Game::play() {
 }
 
 
-void Game::afterDeath() {
-	clear();
-	cout << "!-!-!-!-!-!-!-! Sorry for that, Maybe try again !-!-!-!-!-!-!-!" << endl;
-	health.decreaseLife();
-	this->timeOver = false;
-	Sleep(3000);
-	clear();
-	if (health.isAlive()) {
-		resetBoard();
-		health.printHealth();
-		this->running = false;
-		
-		//clean all clicks fron last round
-		while (_kbhit())
-			_getch();
+void Game::afterDeath() 
+{
+	if (health.getlivesLeft() > 1) // if we are at 1 and died then game over 
+	{
+	 clear();
+	 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
+	 health.decreaseLife();
+	 this->timeOver = false;
+	 Sleep(GameConfig::LONG_SLEEP);
+	 clear();
+	
+	 resetBoard();
+	 health.printHealth();
+	 this->running = false;
+	 running = false;
+	//clean all clicks fron last round
+	//while (_kbhit())
+		//_getch();
+	}
+	else
+	{
+		clear();
+		cout << "!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-! GAME OVER !-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!" << endl;
+		printCredits();
+		stopGame = true;
 	}
 }
 
@@ -167,14 +209,15 @@ void Game::gameLoop()
 		if (_kbhit())
 			setKey(_getch());
 		setGameStatus();
-		if (running) {
+		if (!stopGame) 
+		{
 			play();
 			timeOver = time.checkAndupdateTime();
+			health.printHealth();
 		}
 		Sleep(gameSpeed);
 		if (timeOver)
 			afterDeath();
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
-	
 }

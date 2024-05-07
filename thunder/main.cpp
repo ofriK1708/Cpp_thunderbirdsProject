@@ -1,6 +1,4 @@
 #include <iostream>
-
-#include "test.h"
 #include "game.h"
 #include "gameConfig.h"
 
@@ -17,8 +15,10 @@ int main()
 void startGame()
 {
     Game theGame;
-
-    theGame.mainMenu();
-    theGame.init();
-    theGame.gameLoop();
+    bool pressedExit = theGame.mainMenu();
+    if (!pressedExit) 
+    {
+        theGame.init();
+        theGame.gameLoop();
+    }
 }

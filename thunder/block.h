@@ -12,24 +12,24 @@ private:
 	Board* board;
 	Point pos[GameConfig::MAX_BLOCK_SIZE];
 	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
-	char symbol = NULL;
-	GameConfig::gamePieceType type = GameConfig::SECONDARY;
 	size_t size = 0;
-	GameConfig::Color backgroundcolor;
 	LocationInfo locationInfo;
+	GameConfig::Color backgroundcolor;
+	GameConfig::gamePieceType type = GameConfig::SECONDARY;
+	char symbol = NULL;
 
-	size_t getSize() const { return size; }
-	Point getPos(size_t i) const { return pos[i]; }
 	void delTrace();
-	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction, int* carryWeight);
 
 public:
 	void init(char symbol, GameConfig::Color color, Board* Board);
 	GameConfig::Color getBackgroundColor() { return backgroundcolor; }
 	void addPoint(int x, int y) { pos[size++].set(x, y); }
-	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr);
+	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr, bool onCommand = false);
 	GameConfig::gamePieceType getType() { return type; }
 	char getSymbol() { return symbol; }
+	bool checkMove(GameConfig::eKeys direction, int* carryWeight);
+	size_t getSize() const { return size; }
+	Point getPos(size_t i) const { return pos[i]; }
 };
 
 #endif

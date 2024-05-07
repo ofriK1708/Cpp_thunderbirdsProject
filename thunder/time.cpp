@@ -34,7 +34,6 @@ void Time::printTime(int time)
 	if (isColor)
 		setTextColor(GameConfig::GREEN);
 
-	
 	// Print updated time
 	for (int i = 0; i < time; i++)
 	{
