@@ -25,7 +25,7 @@ class Board {
 			"W                                                         WBBW           WSW   W", // 2
 			"W L                                                       WBBW           WSW   W", // 3
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 4
-			"WWWWWWWWWWWWWWW        33  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                  W", // 5
+			"WWWWWWWWWWWWWWW        33  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                   W", // 5
 			"W@@          11  W     3                                                       W", // 7
 			"WWWWWWWWWWWWWWW  WWWWWW0WWWWWWWWWWWWWWWWWWWWWWWW   55555        22  X          W", // 8
 			"W             WWWWWWW  4                       W  WWWWWWWWWWWWWWWW  WWWWWWWWWWWW", // 9
