@@ -73,25 +73,31 @@ bool Game::mainMenu()
 
 void Game::pauseMenu() {
 	
+	bool illigalChoice = true;
+	
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
 	cout << "Press ESC again to continue or 9 to Exit" << endl;
-	while (!_kbhit())
-		Sleep(GameConfig::MIN_SLEEP);
-	setKey(_getch());
-	switch (keyPressed)
-	{
-	case (int)GameConfig::eKeys::ESC:
-		clear();
-		cout << "Returning to the game, get ready" << endl;;
-		Sleep(GameConfig::SHORT_SLEEP);
-		clear();
-		board.printScreen();
-		break;
-	case (int)GameConfig::eKeys::EXIT:
-		clear();
-		printCredits();
-		stopGame = true;
-		break;
+	while (illigalChoice) {
+		while (!_kbhit())
+			Sleep(GameConfig::MIN_SLEEP);
+		setKey(_getch());
+		switch (keyPressed)
+		{
+		case (int)GameConfig::eKeys::ESC:
+			clear();
+			cout << "Returning to the game, get ready" << endl;;
+			Sleep(GameConfig::SHORT_SLEEP);
+			clear();
+			board.printScreen();
+			illigalChoice = false;
+			break;
+		case (int)GameConfig::eKeys::EXIT:
+			clear();
+			printCredits();
+			stopGame = true;
+			illigalChoice = false;
+			break;
+		}
 	}
 }
 
