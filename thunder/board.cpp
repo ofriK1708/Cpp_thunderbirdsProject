@@ -84,7 +84,6 @@ void Board::printScreen()
 					break;
 
 				}
-
 			}
 			setTextColor(color);
 			if(currSymbol == GameConfig::FINISH_BIG_SHIP || currSymbol == GameConfig::FINISH_SMALL_SHIP)
@@ -95,9 +94,7 @@ void Board::printScreen()
 			{
 				std::cout << currSymbol;
 			}
-			 
 			setTextColor(color = GameConfig::WHITE);
-
 		}
 		std::cout << std::endl;
 	}
@@ -172,7 +169,7 @@ bool Board::checkMove(LocationInfo &ol)
 
 		currSymbol = board[currY][currX];
 		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
-			if (currSymbol == 'W')
+			if (currSymbol == GameConfig::WALL_SYMBOL)
 				isValid = false;
 			else if(currSymbol == GameConfig::FINISH_S && isShip(ol.objSymbol))
 			{
@@ -209,10 +206,10 @@ void Board::shipFinishLine(char shipID)
 {
 	switch (shipID)
 	{
-	case '#':
+	case GameConfig::BIG_SHIP_S:
 		ships[0].shipFinishLine();
 		break;
-	case '@':
+	case GameConfig::SMALL_SHIP_S:
 		ships[1].shipFinishLine();
 		break;
 	}

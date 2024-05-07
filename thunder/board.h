@@ -14,8 +14,8 @@
 
 
 class Board {
-	constexpr static size_t WIDTH = 80;
-	constexpr static size_t HEIGHT = 25;
+	constexpr static size_t WIDTH = GameConfig::GAME_WIDTH;
+	constexpr static size_t HEIGHT = GameConfig::GAME_HEIGHT;
 	size_t num_blocks = 0;
 	// the original board that will be copied to the actual board
 	char original_board[HEIGHT][WIDTH + 1] = {
@@ -54,9 +54,10 @@ class Board {
 	Block blocks[GameConfig::MAX_NUM_BLOCKS];
 	bool colorSet = false;
 
+	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
+
 public:
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
-	
 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
@@ -65,7 +66,5 @@ public:
 	Block* getBlocks() { return blocks; }
 	Time& getTime() { return time; }
 	Health& getHealth() { return health; }
-	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
 	void shipFinishLine(char shipID);
-
 };
