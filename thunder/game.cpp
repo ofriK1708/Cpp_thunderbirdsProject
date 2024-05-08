@@ -34,7 +34,7 @@ bool Game::mainMenu()
 	do {
 		cout << "Please enter your choice" << endl;
 		cout << "1: Start a new game" << endl;
-		cout << "2: Set color ON/OFF (the default value is off)" << endl;
+		cout << "2: Set color ON/OFF (the default value is on)" << endl;
 		cout << "8: Instructions and keys" << endl;
 		cout << "9: Exit" << endl;
 		cin >> userChoice;

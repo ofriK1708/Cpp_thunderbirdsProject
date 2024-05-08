@@ -38,7 +38,7 @@ class Game
 	bool timeOver = false;
 	bool running = false;
 	bool stopGame = false;
-	bool colorSet = false;
+	bool colorSet = true;
 
 	void setKey(int key) { keyPressed = tolower(key); }
 	void setGameStatus();
