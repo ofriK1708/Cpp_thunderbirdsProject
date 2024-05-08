@@ -181,11 +181,9 @@ void Game::afterDeath()
 	
 	 resetBoard();
 	 health.printHealth();
-	 this->running = false;
 	 running = false;
-	//clean all clicks fron last round
-	//while (_kbhit())
-		//_getch();
+	 keyPressed = 0;
+	
 	}
 	else
 	{
