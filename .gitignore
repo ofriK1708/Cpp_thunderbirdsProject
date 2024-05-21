@@ -35,6 +35,8 @@ thunder/.vs
 
 x64/
 
+.vs/
+
 thunder/thunder.vcxproj.filters
 
 thunder/thunder.vcxproj.user
