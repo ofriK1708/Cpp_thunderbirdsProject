@@ -31,24 +31,9 @@
 *.out
 *.app
 
-thunder/.vs
-
 x64/
-
 .vs/
-
-thunder/thunder.vcxproj.filters
-
-thunder/thunder.vcxproj.user
-
-exercise1/.vs/
-
 *.filters
-
 *.user
 
-Constractors/.vs/
 
-*.vcxproj
-
-*.sln
