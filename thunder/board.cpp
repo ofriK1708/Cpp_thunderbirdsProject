@@ -156,6 +156,30 @@ void Board::updateGamePieces()
 }
 
 
+Ship* Board::getShipBySymbol(char symbol) {
+	if (symbol == GameConfig::BIG_SHIP_S)
+		return &ships[0];
+	else if (symbol == GameConfig::SMALL_SHIP_S)
+		return &ships[1];
+	else
+		return nullptr;
+}
+
+
+Collision Board::checkFall(LocationInfo& ol, char currSymbol) {
+	bool isValid = Collision.;
+
+	if (isShip(currSymbol)) {
+		Ship* sh = getShipBySymbol(currSymbol);
+		if (ol.objSize <= sh.getCarryWeight()) {
+			
+		}
+	}
+	return isValid;
+}
+
+
+
 bool Board::checkMove(LocationInfo &ol)
 {
 	int currY, currX;
@@ -178,7 +202,10 @@ bool Board::checkMove(LocationInfo &ol)
 			else if(isBlock(currSymbol)){ 
 				addObstacle(obsticals, currSymbol, { currX, currY }); 
 			}
-			else {
+			else if (isBlock(ol.objSymbol) && ol.direction == GameConfig::eKeys::DOWN) {
+				isValid = checkFall(ol, currSymbol);
+			}
+			else{
 				isValid = false; //if collide with other ship
 			}
 	}

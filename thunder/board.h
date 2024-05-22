@@ -53,10 +53,11 @@ class Board {
 	Ship ships[GameConfig::NUM_SHIPS];
 	Block blocks[GameConfig::MAX_NUM_BLOCKS];
 	bool colorSet = false;
-
 	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
+	Ship* getShipBySymbol(char symbol);
 
 public:
+	enum Collision { PASS = 0, BLOCKED = 1, DEATH = 2 };
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
 	void init(bool colorSet);
 	void printScreen();
@@ -67,4 +68,7 @@ public:
 	Time& getTime() { return time; }
 	Health& getHealth() { return health; }
 	void shipFinishLine(char shipID);
+
+private:
+	Collision checkFall(LocationInfo& ol, char currSymbol);
 };
