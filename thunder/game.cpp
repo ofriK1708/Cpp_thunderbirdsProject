@@ -4,6 +4,7 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include "mapsfiles.h"
 
 void Game::init()
 {
@@ -14,7 +15,7 @@ void Game::init()
 void Game::resetBoard()
 {
 	this->board = Board(); 
-	board.init(colorSet);
+	board.init(colorSet,mapChoose);
 	ships = board.getShips();
 	blocks = board.getBlocks();
 	time = board.getTime();
@@ -35,6 +36,7 @@ bool Game::mainMenu()
 		cout << "Please enter your choice" << endl;
 		cout << "1: Start a new game" << endl;
 		cout << "2: Set color ON/OFF (the default value is on)" << endl;
+		cout << "3: load a specific map" << endl;
 		cout << "8: Instructions and keys" << endl;
 		cout << "9: Exit" << endl;
 		cin >> userChoice;
@@ -47,6 +49,10 @@ bool Game::mainMenu()
 			colorSet = !colorSet;
 			colorSet ? cout << "color is now set on" : cout << "color is now set off";
 			cout << endl;
+			break;
+		case 3:
+			cout << "No problome, when you will start a new game, you will choose the map :)";
+			mapChoose = true;
 			break;
 		case 8:
 			cout << endl;

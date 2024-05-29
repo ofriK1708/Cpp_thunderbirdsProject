@@ -39,6 +39,7 @@ class Game
 	bool running = false;
 	bool stopGame = false;
 	bool colorSet = true;
+	bool mapChoose = false;
 
 	void setKey(int key) { keyPressed = tolower(key); }
 	void setGameStatus();
