@@ -20,7 +20,7 @@ GameConfig::ErrorCode GamePlay::openFile(size_t level) {
 	auto res = GameConfig::Success;
 
 	closeCurrFile();
-	file.open(prefix + std::to_string(level) + ending, std::ofstream::out | std::ofstream::app);
+	file.open(prefix + std::to_string(level) + ending, std::ofstream::out | std::ofstream::trunc);
 	
 	if (!file) {
 		std::cout << "Error opening file!" << std::endl;
@@ -34,3 +34,9 @@ GameConfig::ErrorCode GamePlay::openFile(size_t level) {
 void GamePlay::write(string data) {
 	file << data << std::endl;
 }
+
+
+GamePlay::~GamePlay() {
+	closeCurrFile();
+}
+

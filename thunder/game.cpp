@@ -1,14 +1,17 @@
 #include "game.h"
+#include "steps.h"
 
 #include <stdlib.h>
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
 
+
 void Game::init()
 {
 	resetBoard();
 	health = board.getHealth();
+	stepsFile.openFile(1);
 }
 
 void Game::resetBoard()
@@ -206,6 +209,9 @@ void Game::gameLoop()
 	{
 		if (_kbhit())
 			setKey(_getch());
+
+		stepsFile.writeStep(to_string(keyPressed));
+
 		setGameStatus();
 		if (!stopGame) 
 		{

@@ -130,22 +130,28 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="gameConfig.cpp" />
+    <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="result.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="steps.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="GamePlay.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="result.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="steps.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

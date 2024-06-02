@@ -22,6 +22,7 @@ protected:
 	void write(string data);
 
 public:
+	~GamePlay();
 	GameConfig::ErrorCode openFile(size_t level);
 };
 
