@@ -136,7 +136,6 @@
     <ClCompile Include="point.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
