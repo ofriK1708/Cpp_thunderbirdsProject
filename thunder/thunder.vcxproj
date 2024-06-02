@@ -136,6 +136,7 @@
     <ClCompile Include="point.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+    <Text Include="tb01.screen.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
