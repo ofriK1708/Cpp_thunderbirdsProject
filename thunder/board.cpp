@@ -11,6 +11,7 @@ bool isBlock(char ch);
  * the exit, and the legend position. It then updates the game pieces on the board and
  * prints the initial state of the game screen.
  */
+
 void Board::init(bool colorSet, bool mapChoose)
 {
 	this->colorSet = colorSet;
@@ -20,13 +21,16 @@ void Board::init(bool colorSet, bool mapChoose)
 
 	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
 		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_CARRY_WEIGHT[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
-	if(mapChoose)
+	if (!maps.getMapsLoadedstatus())
+		maps.loadMapLevels();
+
+	if(maps.getMap(original_board,mapChoose))
 	{
-		maps.GetUserFileChoice();
+		mapFileLoaded = true;
+		updateGamePieces();
+		printScreen();
 	}
-	maps.getMap(original_board);
-	updateGamePieces();
-	printScreen();
+	
 }
 
 bool isBlock(char ch) 

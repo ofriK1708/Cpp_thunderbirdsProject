@@ -3,50 +3,61 @@
 #include <fstream>
 #include "utils.h"
 #include "Windows.h"
+#include <filesystem>
 using std::cout;
 using std::endl;
 using std::cin;
 using std::string;
 
+void Mapsfiles::loadMapLevels()
+{
+	for(const auto& file : std::filesystem::directory_iterator(filesPath))
+	{
+     if(file.is_regular_file()) // check if it's a file and not a dir or something else
+	 {
+		 string currFileName = file.path().filename().string();
+		 // now checks if .screen.txt is at the end of the file name and there is some name before the .screen.txt
+		 if ((currFileName.size() > fileSuffix.size()) && ((currFileName.substr(currFileName.size() - fileSuffix.size())) == fileSuffix))
+		 {
+			 filesNames.push_back(currFileName);
+		 }
+		 
+	 }
+	}
+	std::sort(filesNames.begin(), filesNames.end());// sorting the fileNames lexicographically
+	mapsLoaded = true;
+}
+
 void Mapsfiles::GetUserFileChoice()
 {
-	cout << "Please Enter your file choice: " << endl;
-	cout << "1. tb01.screen" << endl;
-	cout << "2. tb02.screen" << endl;
-	cout << "3. tb03.screen" << endl;
-	cin >> userChoice;
 	do
 	{
-		switch (userChoice)
-		{
-		case 1:
-			fileName = "tb01.screen.txt";
-			break;
-		case 2:
-			fileName = "tb02.screen.txt";
-			break;
-		case 3:
-			fileName = "tb03.screen.txt";
-			break;
-		default:
-			cout << "Invalid choice, try again" << endl;
-			cout << "1. tb01.screen" << endl;
-			cout << "2. tb02.screen" << endl;
-			cout << "3. tb03.screen" << endl;
-			break;
-		}
-	} while (userChoice > 3 || userChoice < 1);
+		if (fileIndex != 0) // not the first time we entred this loop
+			cout << "invalid choice, try again";
+		cout << "Please Enter your file choice(enter a number): " << endl;
+		for (int i = 0; i < filesNames.size(); i++)
+			cout << i + 1 << ": " << filesNames[i] << endl;
+		cin >> fileIndex;
+	} while (fileIndex > filesNames.size() || fileIndex < 1);
+	fileIndex--;
+	
+}
+bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
+{
+	if (filesNames.size() == 0) 
+	{
+		cout << "couldn't find any maps files, please enter a map file in the diractory - mapFiles" << endl;
+		return false;
+	}
+	if (userChoice)
+		GetUserFileChoice();
+
+	currfileName = filesPath + "/" + filesNames[fileIndex];
 	Sleep(150);
 	clrscr();
-	fileMap.open(fileName, std::ios::in);
+	fileMap.open(currfileName, std::ios::in);
 	checkFileStatus();
-}
-void Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1])
-{
-	if (userChoice == 0) 
-	{
-		searchMapFile();
-	}
+	
 	if (fileStatus)
 	{
 		string line;
@@ -58,13 +69,16 @@ void Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1])
 			{
 				map[i][j] = line[j];
 			}
-			map[i][j] = '/0';			
+			map[i][j] = '\0';			
 		}
 		if(!checkMapAndUpdate(map))
 		{
-			cout << "couldn't load map,map is not correct, please try to fix it or choose another level";
+			cout << "couldn't load map,map is not correct, please try to fix it or choose another level" << endl;
+			return false;
 		}
+		return true;
 	}
+	return false;
 }
 
 bool Mapsfiles::checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1])
@@ -105,7 +119,7 @@ void Mapsfiles::copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& l
 		{
 			map[line][col] = legend[i][col];
 		}
-		map[line][col] = '/0';
+		map[line][col] = '\0';
 		line++;
 	}
 }
@@ -121,24 +135,12 @@ void Mapsfiles::checkFileStatus()
 		cout << "Problem opening file!!!!";
 	}
 }
-
-void Mapsfiles::searchMapFile()
+void Mapsfiles::loadNextMap()
 {
-	string baseName = "tb";
-
-	// Check files tb01, tb02, and tb03
-	for (int i = 1; i <= 3; ++i) 
-	{
-		fileName = baseName + "0" + std::to_string(i) + ".screen.txt";;
-		fileMap.open(fileName,std::ios::in);
-		checkFileStatus();
-		if (fileStatus)
-		{
-			return;
-		}
-	}
-	
-	std::cout << "No files found (tb01, tb02, tb03)." << std::endl;
-	
+	if (fileMap.is_open())
+		fileMap.close();
+	fileMap.open(filesNames[++fileIndex], std::ios::in);
+	checkFileStatus();
 }
+
 

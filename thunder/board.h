@@ -49,6 +49,7 @@ class Board {
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
 	*/
+	bool mapFileLoaded = false;
 	char original_board[HEIGHT][WIDTH + 1];
 	Time time;
 	Health health;
@@ -62,6 +63,7 @@ class Board {
 	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
 
 public:
+	void loadMapFiles();
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
 	void init(bool colorSet, bool mapChoose);
 	void printScreen();
@@ -72,4 +74,5 @@ public:
 	Time& getTime() { return time; }
 	Health& getHealth() { return health; }
 	void shipFinishLine(char shipID);
+	bool getMapFileStatus() const { return mapFileLoaded; }
 };

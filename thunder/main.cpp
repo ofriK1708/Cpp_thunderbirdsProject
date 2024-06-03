@@ -19,6 +19,7 @@ void startGame()
     if (!pressedExit) 
     {
         theGame.init();
-        theGame.gameLoop();
+        if(theGame.getMapFileStatus())
+            theGame.gameLoop();
     }
 }

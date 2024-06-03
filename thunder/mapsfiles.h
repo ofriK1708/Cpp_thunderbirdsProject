@@ -2,9 +2,12 @@
 #include <string>
 #include "gameConfig.h"
 #include <fstream>
+#include <filesystem>
+#include <vector>
+#include <algorithm>
 using std::string;
 using std::ifstream;
-
+using std::vector;
 class Mapsfiles
 {
 	char legend[3][GameConfig::GAME_WIDTH + 1] = {
@@ -12,18 +15,25 @@ class Mapsfiles
 		"W                                                         WBBW           WSW   W",
 		"W L                                                       WBBW           WSW   W"
 	};
-	int userChoice = 0;
-	string fileName;
+	vector<string> filesNames;
+	size_t fileIndex = 0;
+	string filesPath = "mapFiles";
+	string currfileName;
+	string fileSuffix = ".screen.txt";
 	bool fileStatus = false;
+	bool mapsLoaded = false;
 	ifstream fileMap;
 	void checkFileStatus();
-	void searchMapFile();
 	void copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line,size_t& col);
 	bool checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1]);
+	void GetUserFileChoice();
+	void loadNextMap();
 	
 public:
-	void GetUserFileChoice();
-	void getMap(char map[][GameConfig::GAME_WIDTH + 1]);
+	void loadMapLevels();
+	
+	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
+	bool getMapsLoadedstatus() const { return mapsLoaded; }
 	
 };
 

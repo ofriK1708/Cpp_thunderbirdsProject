@@ -9,17 +9,26 @@
 void Game::init()
 {
 	resetBoard();
-	health = board.getHealth();
+	if(mapfileLoaded)
+		health = board.getHealth();
 }
 
 void Game::resetBoard()
 {
 	this->board = Board(); 
 	board.init(colorSet,mapChoose);
-	ships = board.getShips();
-	blocks = board.getBlocks();
-	time = board.getTime();
-	time.setTimeSettings(gameTime, colorSet);
+	if (board.getMapFileStatus()) 
+	{
+		mapfileLoaded = true;
+		ships = board.getShips();
+		blocks = board.getBlocks();
+		time = board.getTime();
+		time.setTimeSettings(gameTime, colorSet);
+	}
+	else
+	{
+		mapfileLoaded = false;
+	}
 }
 
 void clear() {
@@ -51,7 +60,7 @@ bool Game::mainMenu()
 			cout << endl;
 			break;
 		case 3:
-			cout << "No problome, when you will start a new game, you will choose the map :)";
+			cout << "No problem, when you will start a new game, you will choose the map :)" << endl;
 			mapChoose = true;
 			break;
 		case 8:
