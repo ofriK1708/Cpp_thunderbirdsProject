@@ -8,7 +8,7 @@ using std::ifstream;
 class Mapsfiles
 {
 	char legend[3][GameConfig::GAME_WIDTH + 1] = {
-		"T                                                         WWWW            W    W",
+		"W T                                                       WWWW            W    W",
 		"W                                                         WBBW           WSW   W",
 		"W L                                                       WBBW           WSW   W"
 	};
@@ -18,13 +18,12 @@ class Mapsfiles
 	ifstream fileMap;
 	void checkFileStatus();
 	void searchMapFile();
-	void copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],int line);
-
+	void copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line,size_t& col);
+	bool checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1]);
 	
 public:
 	void GetUserFileChoice();
 	void getMap(char map[][GameConfig::GAME_WIDTH + 1]);
-	
 	
 };
 

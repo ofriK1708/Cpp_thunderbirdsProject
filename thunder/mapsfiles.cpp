@@ -50,39 +50,63 @@ void Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1])
 	if (fileStatus)
 	{
 		string line;
-		int j;
-		for (int i = 0; i < GameConfig::GAME_HEIGHT; i++)
+		size_t j;
+		for (size_t i = 0; i < GameConfig::GAME_HEIGHT; i++)
 		{
 			getline(fileMap,line);
 			for (j = 0; j < GameConfig::GAME_WIDTH; j++)
 			{
-				if(line[j] != '&')
-					map[i][j] = line[j];
-				else
-				{
-					copyHeaderToMap(map,i);
-					i += 2;
-					break;
-				}
+				map[i][j] = line[j];
 			}
-			if( j == GameConfig::GAME_WIDTH)
-			{
-				map[i][j] = '/0';
-			}
+			map[i][j] = '/0';			
+		}
+		if(!checkMapAndUpdate(map))
+		{
+			cout << "couldn't load map,map is not correct, please try to fix it or choose another level";
 		}
 	}
 }
 
-void Mapsfiles::copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],int line)
+bool Mapsfiles::checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1])
 {
-	int j;
-	for(int i = 0; i < 3;i++)
+	unsigned int bigShipSize = 0;
+	unsigned int smallShipSize = 0;
+	unsigned int numOfLegend = 0;
+	for(size_t line = 0; line < GameConfig::GAME_HEIGHT;line++)
 	{
-		for(j = 0; j < GameConfig::GAME_WIDTH; j++)
+		for(size_t col = 0; col < GameConfig::GAME_WIDTH;col++)
 		{
-			map[line + i][j] = legend[i][j];
+			switch (map[line][col])
+			{
+			case GameConfig::BIG_SHIP_S:
+				bigShipSize++;
+				break;
+			case GameConfig::SMALL_SHIP_S:
+				smallShipSize++;
+				break;
+			case '&':
+				if (numOfLegend == 0)
+					copyHeaderToMap(map, line, col);
+				numOfLegend++;
+				break;
+			}
 		}
-		map[line + i][j] = '/0';
+	}
+	if (bigShipSize == 4 && smallShipSize == 2 && numOfLegend == 1)
+		return true;
+	return false;
+}
+
+void Mapsfiles::copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line, size_t& col)
+{
+	for(int i = 0; i < 3; i++)
+	{
+		for(col = 0; col < GameConfig::GAME_WIDTH;col++)
+		{
+			map[line][col] = legend[i][col];
+		}
+		map[line][col] = '/0';
+		line++;
 	}
 }
 
