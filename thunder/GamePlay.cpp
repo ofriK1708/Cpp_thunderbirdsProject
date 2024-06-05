@@ -9,7 +9,7 @@ GameConfig::ErrorCode GamePlay::closeCurrFile() {
 		file.close();
 	}
 
-	if (file.is_open()) {
+	if (file.is_open()) { //could not close the file
 		res = GameConfig::Failed;
 	}
 
