@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "Windows.h"
 #include <filesystem>
+#include "gameConfig.h"
 using std::cout;
 using std::endl;
 using std::cin;
@@ -53,7 +54,7 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 		GetUserFileChoice();
 
 	currfileName = filesPath + "/" + filesNames[fileIndex];
-	Sleep(150);
+	Sleep(GameConfig::SYSTEM_OPR_SLEEP);
 	clrscr();
 	fileMap.open(currfileName, std::ios::in);
 	checkFileStatus();
@@ -65,10 +66,13 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 		for (size_t i = 0; i < GameConfig::GAME_HEIGHT; i++)
 		{
 			getline(fileMap,line);
-			for (j = 0; j < GameConfig::GAME_WIDTH; j++)
+			for (j = 0; j < GameConfig::GAME_WIDTH && j<line.length(); j++)
 			{
 				map[i][j] = line[j];
 			}
+			for (; j < GameConfig::GAME_WIDTH; j++)
+				map[i][j] = GameConfig::WALL_SYMBOL;
+
 			map[i][j] = '\0';			
 		}
 		if(!checkMapAndUpdate(map))
@@ -133,6 +137,7 @@ void Mapsfiles::checkFileStatus()
 	else
 	{
 		cout << "Problem opening file!!!!";
+		fileStatus = false;
 	}
 }
 void Mapsfiles::loadNextMap()
