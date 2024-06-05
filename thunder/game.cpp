@@ -207,11 +207,10 @@ void Game::gameLoop()
 
 	while (!stopGame && !timeOver && health.isAlive())
 	{
-		if (_kbhit())
+		if (_kbhit()) {
 			setKey(_getch());
-
-		stepsFile.writeStep(to_string(keyPressed));
-
+			stepsFile.writeStep(keyPressed, time.getTimeLeft());
+		}
 		setGameStatus();
 		if (!stopGame) 
 		{

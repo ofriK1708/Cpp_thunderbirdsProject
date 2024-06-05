@@ -9,11 +9,16 @@ using std::string;
 
 class Result : public GamePlay
 {
+	enum class Events {
+		DEATH,
+		FINISH_LEVEL
+	};
+	
 	const string resultEnding = ".result";
 
 
 public:
 	Result() { ending = resultEnding; }
-	void writeEvent(string event);
+	void writeEvent(int timeLeft, Events event);
 };
 

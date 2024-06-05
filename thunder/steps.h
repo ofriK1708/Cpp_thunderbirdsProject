@@ -7,7 +7,7 @@ class Steps :public GamePlay{
 
 public:
 	Steps() { ending = stepsEnding; }
-	void writeStep(string step);
+	void writeStep(int step, int timeLeft);
 
 };
 
