@@ -36,12 +36,14 @@ class Game
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	
 	int keyPressed;
 	int userChoice;
+	bool mapfileLoaded;
 	
 	//indicator globas
 	bool timeOver = false;
 	bool running = false;
 	bool stopGame = false;
 	bool colorSet = true;
+	bool mapChoose = false;
 
 	void setKey(int key) { keyPressed = tolower(key); }
 	void setGameStatus();
@@ -56,6 +58,7 @@ public:
 	void init();
 	bool mainMenu();
 	void gameLoop();
+	bool getMapFileStatus() const { return mapfileLoaded; }
 };
 
 #endif

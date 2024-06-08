@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,6 +134,7 @@
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapsfiles.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="ship.cpp" />
@@ -147,6 +149,7 @@
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="gameConfig.h" />
+    <ClInclude Include="mapsfiles.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="ship.h" />
@@ -156,7 +159,10 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="mapFiles\tb02.screen.txt" />
+    <Text Include="mapFiles\tb03.screen.txt" />
     <Text Include="readme.txt" />
+    <Text Include="mapFiles\tb01.screen.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,23 +5,33 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include "mapsfiles.h"
 
 
 void Game::init()
 {
 	resetBoard();
-	health = board.getHealth();
+	if(mapfileLoaded)
+		health = board.getHealth();
 	stepsFile.openFile(1);
 }
 
 void Game::resetBoard()
 {
 	this->board = Board(); 
-	board.init(colorSet);
-	ships = board.getShips();
-	blocks = board.getBlocks();
-	time = board.getTime();
-	time.setTimeSettings(gameTime, colorSet);
+	board.init(colorSet,mapChoose);
+	if (board.getMapFileStatus()) 
+	{
+		mapfileLoaded = true;
+		ships = board.getShips();
+		blocks = board.getBlocks();
+		time = board.getTime();
+		time.setTimeSettings(gameTime, colorSet);
+	}
+	else
+	{
+		mapfileLoaded = false;
+	}
 }
 
 void clear() {
@@ -38,6 +48,7 @@ bool Game::mainMenu()
 		cout << "Please enter your choice" << endl;
 		cout << "1: Start a new game" << endl;
 		cout << "2: Set color ON/OFF (the default value is on)" << endl;
+		cout << "3: load a specific map" << endl;
 		cout << "8: Instructions and keys" << endl;
 		cout << "9: Exit" << endl;
 		cin >> userChoice;
@@ -50,6 +61,10 @@ bool Game::mainMenu()
 			colorSet = !colorSet;
 			colorSet ? cout << "color is now set on" : cout << "color is now set off";
 			cout << endl;
+			break;
+		case 3:
+			cout << "No problem, when you will start a new game, you will choose the map :)" << endl;
+			mapChoose = true;
 			break;
 		case 8:
 			cout << endl;

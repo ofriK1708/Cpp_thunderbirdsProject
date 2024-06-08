@@ -5,6 +5,11 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thunder", "thunder.vcxproj", "{8EE2F62B-F401-4B39-A561-AB29BAB1F459}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C0AF388-2C5A-4A32-9A5A-4563DB12127A}"
+	ProjectSection(SolutionItems) = preProject
+		tb01.screen.txt = tb01.screen.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

@@ -7,6 +7,7 @@
 #include "time.h"
 #include "health.h"
 #include "utils.h"
+#include "mapsfiles.h"
 
 #include <iostream>
 #include <cstring>
@@ -18,6 +19,7 @@ class Board {
 	constexpr static size_t HEIGHT = GameConfig::GAME_HEIGHT;
 	size_t num_blocks = 0;
 	// the original board that will be copied to the actual board
+	/*
 	char original_board[HEIGHT][WIDTH + 1] = {
 		//   01234567890123456789012345678901234567890123456789012345678901234567890123456789
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 0
@@ -46,19 +48,24 @@ class Board {
 			"W## W                                                                          W", // 23
 			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
 	};
+	*/
+	bool mapFileLoaded = false;
+	char original_board[HEIGHT][WIDTH + 1];
 	Time time;
 	Health health;
 	Point life_pos;
 	Point exit_pos;	
 	Ship ships[GameConfig::NUM_SHIPS];
 	Block blocks[GameConfig::MAX_NUM_BLOCKS];
+	Mapsfiles maps;
 	bool colorSet = false;
 
 	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
 
 public:
+	void loadMapFiles();
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
-	void init(bool colorSet);
+	void init(bool colorSet, bool mapChoose);
 	void printScreen();
 	void updateGamePieces();
 	bool checkMove(LocationInfo& objectLoction);
@@ -67,4 +74,5 @@ public:
 	Time& getTime() { return time; }
 	Health& getHealth() { return health; }
 	void shipFinishLine(char shipID);
+	bool getMapFileStatus() const { return mapFileLoaded; }
 };
