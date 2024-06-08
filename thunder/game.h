@@ -2,6 +2,7 @@
 #define SNAKE_GAME_H
 
 #include  <stdbool.h>
+#include <map>
 
 #include "ship.h"
 #include "board.h"
@@ -24,8 +25,7 @@ class Game
 	Health health;
 	Time time;
 	Ship* ships;
-	Block* blocks;
-
+	map <char, Block>* blocks;
 	Steps stepsFile;
 	
 	//configurations

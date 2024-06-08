@@ -11,8 +11,9 @@
 void Game::init()
 {
 	resetBoard();
-	if(mapfileLoaded)
+	if (mapfileLoaded) {
 		health = board.getHealth();
+	}
 	stepsFile.openFile(1);
 }
 
@@ -178,11 +179,8 @@ void Game::setGameStatus()
 void Game::play() {
 	if(running)
 		ships[activeShip].move((GameConfig::eKeys)keyPressed);
-	size_t i = 0;
-	while (blocks[i].getSymbol()) {
-		blocks[i].move();
-		i++;
-	}
+	for(auto & pair: *blocks)
+		pair.second.move();
 }
 
 

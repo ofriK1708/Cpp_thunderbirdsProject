@@ -37,6 +37,8 @@ public:
 	GameConfig::gamePieceType getType() { return type; }
 	void shipFinishLine();
 	bool GetFinishStatus() { return isFinished; }
+	static bool isShip(char ch);
+	
 };
 
 #endif

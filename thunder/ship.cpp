@@ -12,6 +12,16 @@ void Ship::init(char symbol, int maxCarryWeight, GameConfig::Color color, Board 
 }
 
 
+bool Ship::isShip(char ch)
+{
+	if (ch == GameConfig::BIG_SHIP_S || ch == GameConfig::SMALL_SHIP_S)
+	{
+		return true;
+	}
+	return false;
+}
+
+
 bool Ship::move(GameConfig::eKeys direction)
 {
 	if (!isFinished) {

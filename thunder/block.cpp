@@ -4,11 +4,13 @@
 #include "board.h"
 
 
-void Block::init(char symbol, GameConfig::Color color, Board* board)
+bool Block::isBlock(char ch)
 {
-	this->symbol = symbol;
-	this->backgroundcolor = color;
-	this->board = board;
+	if (ch >= 'a' && ch <= 'z')
+	{
+		return true;
+	}
+	return false;
 }
 
 
