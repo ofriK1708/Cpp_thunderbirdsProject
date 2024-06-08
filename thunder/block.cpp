@@ -1,14 +1,21 @@
 #include "ship.h"
+#include "board.h"
+#include "gameConfig.h"
+
 #include "utils.h"
 #include <cstring>
-#include "board.h"
 
 
-void Block::init(char symbol, GameConfig::Color color, Board* board)
+GameConfig::Color Block::backgroundcolor = GameConfig::BLOCK_COLOR;
+
+
+bool Block::isBlock(char ch)
 {
-	this->symbol = symbol;
-	this->backgroundcolor = color;
-	this->board = board;
+	if (ch >= 'a' && ch <= 'z')
+	{
+		return true;
+	}
+	return false;
 }
 
 

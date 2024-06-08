@@ -2,7 +2,7 @@
 #include "gameConfig.h"
 #include "utils.h"
 
-bool isBlock(char ch);
+#include <set>
 
 /**
  * Initializes the game board and its components.
@@ -11,7 +11,6 @@ bool isBlock(char ch);
  * the exit, and the legend position. It then updates the game pieces on the board and
  * prints the initial state of the game screen.
  */
-
 void Board::init(bool colorSet, bool mapChoose)
 {
 	this->colorSet = colorSet;
@@ -31,25 +30,6 @@ void Board::init(bool colorSet, bool mapChoose)
 		printScreen();
 	}
 	
-}
-
-bool isBlock(char ch) 
-{
-	if(ch >= '0' && ch <= '9')
-	{
-		return true;
-	}
-	return false;
-}
-
-
-bool isShip(char ch)
-{
-	if(ch == GameConfig::BIG_SHIP_S || ch == GameConfig::SMALL_SHIP_S)
-	{
-		return true;
-	}
-	return false;
 }
 
 
@@ -85,11 +65,10 @@ void Board::printScreen()
 					break;
 				case GameConfig::HEALTH_SYMBOL:
 					health.setColor(colorSet);
+					break;
 				default:
-					if (isBlock(currSymbol))
-					{
-						color = blocks[0].getBackgroundColor();
-					}
+					if (Block::isBlock(currSymbol))
+						color = Block::getBackgroundColor();
 					break;
 				}
 			}
@@ -118,7 +97,8 @@ void Board::printScreen()
 void Board::updateGamePieces()
 {
 	std::memcpy(board, original_board, sizeof(original_board));
-	GameConfig::Color blockColor = colorSet ? GameConfig::BLOCK_COLOR : GameConfig::WHITE;
+	if(!colorSet)
+		Block::setColor(GameConfig::WHITE);
 	for (int i = 0; i < HEIGHT; i++) 
 	{
 		for (int j = 0; j < WIDTH; j++) 
@@ -148,14 +128,10 @@ void Board::updateGamePieces()
 					ships[1].addFinishPoint(j, i);
 					break;
                 default:
-                    if (isBlock(currSymbol))
+                    if (Block::isBlock(currSymbol))
 					{
-                        size_t block_index = currSymbol - '0';
-                        if (!blocks[block_index].getSymbol()) 
-						{
-                            blocks[block_index].init(currSymbol, blockColor, this);
-                        }
-                        blocks[block_index].addPoint(j, i);
+						blocks.insert({ currSymbol, {currSymbol, this}}); //check in dbug if there is a copy ctor involved
+                        blocks[currSymbol].addPoint(j, i);
                     }
                     break;
             }
@@ -169,7 +145,7 @@ bool Board::checkMove(LocationInfo &ol)
 	int currY, currX;
 	char currSymbol;
 	bool isValid = true,isfinished = false;
-	vector <Block*> obsticals;
+	set <Block*> obsticals;
 	for(int i=0; i<ol.objSize && isValid; i++)
 	{
 		currY = ol.nextPos[i].getY();
@@ -179,22 +155,21 @@ bool Board::checkMove(LocationInfo &ol)
 		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
 			if (currSymbol == GameConfig::WALL_SYMBOL)
 				isValid = false;
-			else if(currSymbol == GameConfig::FINISH_S && isShip(ol.objSymbol))
-			{
+			else if(currSymbol == GameConfig::FINISH_S && Ship::isShip(ol.objSymbol))
 				isfinished = true;
-			}
-			else if(isBlock(currSymbol)){ 
-				addObstacle(obsticals, currSymbol, { currX, currY }); 
-			}
-			else {
+			else if(Block::isBlock(currSymbol))
+				obsticals.insert(&blocks[currSymbol]);
+			else 
 				isValid = false; //if collide with other ship
-			}
 	}
 
-	for (int i = 0; i < obsticals.size() && isValid; i++) {
-		if (!(obsticals.at(i)->checkMove(ol.direction, ol.carryWeight)))
-			isValid = false;
+	//check for the whole chunk if it can move
+	for (auto obs : obsticals) {
+		if (!isValid)
+			break;
+		isValid = obs->checkMove(ol.direction, ol.carryWeight);
 	}
+	
 	if(isValid)
 	{
 		if (isfinished) {
@@ -202,9 +177,10 @@ bool Board::checkMove(LocationInfo &ol)
 			isValid = false; // there is no reason to move after we finished 
 		}
 		else {
-			for (int i = 0; i < obsticals.size() && isValid; i++) {
-				obsticals.at(i)->move(ol.direction, ol.carryWeight, true);
-			}
+			
+			//move the whole chunk togther
+			for (auto obs : obsticals) 
+				obs->move(ol.direction, ol.carryWeight, true);
 		}
 	}
 	return isValid;
@@ -221,18 +197,4 @@ void Board::shipFinishLine(char shipID)
 		ships[1].shipFinishLine();
 		break;
 	}
-}
-
-void Board::addObstacle(vector <Block*> &obs, char currSymbol, Coord coord) {
-	//check if it is a new obsticle or not
-	bool newObstacle = true;
-	Block *currBlock;
-	currBlock = &blocks[board[coord.y][coord.x] - '0'];
-	for (int i = 0; i < obs.size() && newObstacle; i++) {
-
-		if (currBlock == obs.at(i))
-			newObstacle = false;
-	}
-	if (newObstacle)
-		obs.push_back(currBlock);
 }
