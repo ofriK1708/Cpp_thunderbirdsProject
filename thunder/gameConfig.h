@@ -30,7 +30,7 @@ public:
 	static constexpr size_t LONG_SLEEP = 3000;
 	static constexpr size_t SHORT_SLEEP = 1500;
 	static constexpr size_t MIN_SLEEP = 80;
-	static constexpr size_t GAME_TIME = 400;
+	static constexpr size_t GAME_TIME = 30;
 	static constexpr size_t LIVES = 3;
 	
 
@@ -83,5 +83,10 @@ public:
 	static constexpr size_t MAX_BLOCK_SIZE = 6;
 	static const char BLOCK_SYMBOLS[MAX_NUM_BLOCKS];
 	static const Color BLOCK_COLOR = BROWN;
+
+	enum ErrorCode {
+		Success = 0,
+		Failed = 1
+	};
 };
 #endif

@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "time.h"
 #include "gameConfig.h"
+#include "steps.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ class Game
 	Time time;
 	Ship* ships;
 	Block* blocks;
+
+	Steps stepsFile;
 	
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;

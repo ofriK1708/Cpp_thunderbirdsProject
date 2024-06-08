@@ -10,6 +10,7 @@ class Time
 	bool isColor = false;
 
 public:
+	int getTimeLeft() const { return timeLeft;}
 	void setLocation(int x, int y) { this->x = x; this->y = y; }
 	void setTimeSettings(const int totalTime, const bool isColor);
 	bool checkAndupdateTime();
