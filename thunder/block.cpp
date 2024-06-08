@@ -1,7 +1,12 @@
 #include "ship.h"
+#include "board.h"
+#include "gameConfig.h"
+
 #include "utils.h"
 #include <cstring>
-#include "board.h"
+
+
+GameConfig::Color Block::backgroundcolor = GameConfig::BLOCK_COLOR;
 
 
 bool Block::isBlock(char ch)

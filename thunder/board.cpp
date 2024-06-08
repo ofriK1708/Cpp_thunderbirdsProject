@@ -65,11 +65,10 @@ void Board::printScreen()
 					break;
 				case GameConfig::HEALTH_SYMBOL:
 					health.setColor(colorSet);
+					break;
 				default:
 					if (Block::isBlock(currSymbol))
-					{
-						color = blocks[0].getBackgroundColor();
-					}
+						color = Block::getBackgroundColor();
 					break;
 				}
 			}
@@ -98,7 +97,8 @@ void Board::printScreen()
 void Board::updateGamePieces()
 {
 	std::memcpy(board, original_board, sizeof(original_board));
-	GameConfig::Color blockColor = colorSet ? GameConfig::BLOCK_COLOR : GameConfig::WHITE;
+	if(!colorSet)
+		Block::setColor(GameConfig::WHITE);
 	for (int i = 0; i < HEIGHT; i++) 
 	{
 		for (int j = 0; j < WIDTH; j++) 
@@ -130,7 +130,7 @@ void Board::updateGamePieces()
                 default:
                     if (Block::isBlock(currSymbol))
 					{
-						blocks.insert({ currSymbol, {currSymbol, blockColor, this}}); //check in dbug if there is a copy ctor involved
+						blocks.insert({ currSymbol, {currSymbol, this}}); //check in dbug if there is a copy ctor involved
                         blocks[currSymbol].addPoint(j, i);
                     }
                     break;

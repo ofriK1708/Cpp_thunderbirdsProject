@@ -9,21 +9,25 @@ class Board;
 class Block
 {
 private:
+	static GameConfig::Color backgroundcolor;
+
 	Board* board;
 	Point pos[GameConfig::MAX_BLOCK_SIZE];
 	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
 	size_t size = 0;
 	LocationInfo locationInfo;
-	GameConfig::Color backgroundcolor;
 	GameConfig::gamePieceType type = GameConfig::SECONDARY;
 	char symbol = NULL;
 
 	void delTrace();
 
 public:
-	Block() {};
-	Block(char symbol, GameConfig::Color color, Board* board) : symbol(symbol), backgroundcolor(color), board(board) {};
-	GameConfig::Color getBackgroundColor() { return backgroundcolor; }
+	Block(){};
+	Block(char symbol, Board* board) : symbol(symbol), board(board) {};
+
+	static GameConfig::Color getBackgroundColor() { return backgroundcolor; }
+	static void setColor(GameConfig::Color color) { backgroundcolor = color; }	
+	
 	void addPoint(int x, int y) { pos[size++].set(x, y); }
 	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr, bool onCommand = false);
 	GameConfig::gamePieceType getType() { return type; }
