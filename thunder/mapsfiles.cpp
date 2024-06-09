@@ -52,7 +52,9 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 	}
 	if (userChoice)
 		GetUserFileChoice();
-
+	if (currlevelLoaded) {
+		return true;
+	}
 	currfileName = filesPath + "/" + filesNames[fileIndex];
 	Sleep(GameConfig::SYSTEM_OPR_SLEEP);
 	clrscr();
@@ -80,6 +82,7 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 			cout << "couldn't load map,map is not correct, please try to fix it or choose another level" << endl;
 			return false;
 		}
+		currlevelLoaded = true;
 		return true;
 	}
 	return false;
@@ -144,8 +147,8 @@ void Mapsfiles::loadNextMap()
 {
 	if (fileMap.is_open())
 		fileMap.close();
-	fileMap.open(filesNames[++fileIndex], std::ios::in);
-	checkFileStatus();
+	currfileName = filesNames[++fileIndex];
+	currlevelLoaded = false;
 }
 
 

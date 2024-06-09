@@ -22,6 +22,7 @@ class Mapsfiles
 	string fileSuffix = ".screen.txt";
 	bool fileStatus = false;
 	bool mapsLoaded = false;
+	bool currlevelLoaded = false;
 	ifstream fileMap;
 	void checkFileStatus();
 	void copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line,size_t& col);
@@ -34,6 +35,7 @@ public:
 	
 	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
 	bool getMapsLoadedstatus() const { return mapsLoaded; }
+	bool getCurrLevelLoadedStatus() const { return currlevelLoaded; }
 	
 };
 
