@@ -1,11 +1,14 @@
 #include "steps.h"
-
+#include "gameConfig.h"
 #include <string>
 
 using std::to_string;
 
-void Steps::writeStep(int step, int timeLeft) {
+void Steps::writeStep(int step, int timeLeft) 
+{
 	string space = " ";
 	string message = to_string(step) + space + to_string(timeLeft);
-	write(message);
+	if (GameConfig::iskeyMove((GameConfig::eKeys)step)) 
+		write(message);
+}
 }
