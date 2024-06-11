@@ -1,45 +1,12 @@
 #pragma once
 #include <string>
 #include "gameConfig.h"
-#include <fstream>
 #include <filesystem>
 #include <vector>
 #include <algorithm>
+#include "smartReadFile.h"
 using std::string;
-using std::ifstream;
 using std::vector;
-using std::exception;
-
-
-class SmartFile {
-	ifstream file;
-public:
-	~SmartFile() {
-		if (file.is_open())
-			file.close();
-	}
-	MyFile& operator=(const MyFile& other) {
-		if (this != &other) {
-			if (other.file.is_open()) {
-				throw std::exception("cannot assign with opened file");
-			}
-			if (file.is_open()) {
-				file.close();
-			}
-		}
-		return *this;
-	}
-	MyFile(const MyFile&) = delete;
-	MyFile() {}
-	void open(const string& fileName) {
-		if (file.is_open())
-			throw std::exception("shouldnt open opened file");
-		file.open(fileName, std::ios::in);
-	}
-	ifstream& getFile() { return file; }
-	bool is_open() const { return file.is_open(); }
-	bool bad() const {return file.bad();}
-};
 
 class Mapsfiles
 {
@@ -56,7 +23,7 @@ class Mapsfiles
 	bool fileStatus = false;
 	bool mapsLoaded = false;
 	bool currlevelLoaded = false;
-	MyFile fileMap;
+	smartReadFile fileMap;
 	void checkFileStatus();
 	void copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line,size_t& col);
 	bool checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1]);
@@ -65,7 +32,6 @@ class Mapsfiles
 	
 public:
 	void loadMapLevels();
-	//~Mapsfiles();
 	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
 	bool getMapsLoadedstatus() const { return mapsLoaded; }
 	bool getCurrLevelLoadedStatus() const { return currlevelLoaded; }

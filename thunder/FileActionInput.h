@@ -1,10 +1,8 @@
 #pragma once
 #include "UserInput.h"
-
+#include "smartReadFile.h"
 #include <fstream>
 
-
-using std::ifstream;
 
 
 struct levelState : public gameState {
@@ -17,7 +15,7 @@ struct levelState : public gameState {
 
 class FileActionInput : public UserInput
 {	
-	ifstream fileMap;
+	smartReadFile fileMap;
 	
 	//void loadFile() const;
 	//void closeFile();

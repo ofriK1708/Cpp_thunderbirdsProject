@@ -153,9 +153,3 @@ void Mapsfiles::loadNextMap()
 }
 
 
-/*
-Mapsfiles::~Mapsfiles() {
-	if (fileMap.is_open()) {
-		fileMap.close();
-	}
-}*/
