@@ -15,6 +15,6 @@ public:
 	virtual void open(const char* fileName)=0;
 	virtual bool is_open() const = 0;
 	virtual bool bad() const = 0;
-	virtual std::ifstream& getFile()=0;
+	virtual std::ios& getFile()=0;
 };
 
