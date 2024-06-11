@@ -1,20 +1,19 @@
 #pragma once
-#include <stdio.h>
-#include <fstream>
-#include <string>
-class smartReadFile {
+#include "SmartFile.h"
+
+
+class smartReadFile: public SmartFile {
 	std::ifstream file;
 public:
-	~smartReadFile() {
+	~smartReadFile() override{
 		if (file.is_open())
 			file.close();
 	}
 	smartReadFile& operator=(const smartReadFile& other);
-	smartReadFile(const smartReadFile&) = delete;
-	smartReadFile() {}
-	void open(const std::string& fileName);
-	void open(const char* fileName);
-	bool is_open() const { return file.is_open(); }
-	bool bad() const { return file.bad(); }
-	std::ifstream& getFile() { return file; }
+	smartReadFile() {}  
+	void open(const std::string& fileName) override;
+	void open(const char* fileName) override;
+	bool is_open() const override { return file.is_open(); }
+	bool bad() const override { return file.bad(); }
+	std::ifstream& getFile() override { return file; }
 };

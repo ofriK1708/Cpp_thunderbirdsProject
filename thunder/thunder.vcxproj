@@ -158,6 +158,7 @@
     <ClInclude Include="result.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="SmartFile.h" />
     <ClInclude Include="smartReadFile.h" />
     <ClInclude Include="steps.h" />
     <ClInclude Include="time.h" />
