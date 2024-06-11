@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
+    <ClCompile Include="FileActionInput.cpp" />
     <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="health.cpp" />
@@ -141,14 +142,17 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="steps.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="FileActionInput.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="gameConfig.h" />
+    <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="mapsfiles.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="result.h" />
@@ -156,6 +160,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="steps.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="UserInput.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

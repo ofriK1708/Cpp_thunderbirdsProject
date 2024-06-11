@@ -10,6 +10,9 @@
 #include "time.h"
 #include "gameConfig.h"
 #include "steps.h"
+#include "UserInput.h"
+#include "KeyboardInput.h"
+#include "FileActionInput.h"
 
 using namespace std;
 
@@ -21,6 +24,13 @@ class Game
 	Board board;
 	Point timelocation;
 
+	KeyboardInput keyboardInput;
+	FileActionInput fileActionInput;
+
+	UserInput* userInput = &keyboardInput;
+	//UserInput* userInput = &fileActionInput;
+
+
 	//game pieces
 	Health health;
 	Time time;
@@ -28,6 +38,8 @@ class Game
 	map <char, Block>* blocks;
 	Steps stepsFile;
 	
+	levelState lt;
+
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
 	int gameSpeed = GameConfig::MIN_SLEEP; // for sleep function

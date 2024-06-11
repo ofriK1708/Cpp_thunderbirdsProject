@@ -1,11 +1,11 @@
 #include "game.h"
 #include "steps.h"
+#include "mapsfiles.h"
 
 #include <stdlib.h>
 #include <iostream>
-#include <conio.h>
+//#include <conio.h>
 #include <Windows.h>
-#include "mapsfiles.h"
 
 
 void Game::init()
@@ -221,7 +221,8 @@ void Game::gameLoop()
 	while (!stopGame && !timeOver && health.isAlive())
 	{
 		if (_kbhit()) {
-			setKey(_getch());
+			lt = { time.getTimeLeft(), 1 };
+			setKey(userInput->getAction(&lt));
 			stepsFile.writeStep(keyPressed, time.getTimeLeft());
 		}
 		setGameStatus();

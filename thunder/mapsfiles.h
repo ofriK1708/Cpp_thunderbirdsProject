@@ -32,7 +32,7 @@ class Mapsfiles
 	
 public:
 	void loadMapLevels();
-	
+	//~Mapsfiles();
 	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
 	bool getMapsLoadedstatus() const { return mapsLoaded; }
 	bool getCurrLevelLoadedStatus() const { return currlevelLoaded; }
