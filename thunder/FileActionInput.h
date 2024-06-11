@@ -1,33 +1,32 @@
 #pragma once
 #include "StepInput.h"
 #include "smartReadFile.h"
+#include "gameConfig.h"
+
 #include <fstream>
+#include <string>
 
+using std::string;
+using std::string;
 
-
-struct levelState : public gameState {
-	int timeStamp;
-	int level;
-
-	levelState() : gameState(), timeStamp(0), level(0) {};
-	levelState(int timeStamp, int level) : gameState(), timeStamp(timeStamp), level(level) {};
-};
 
 class FileActionInput : public StepInput
 {	
-	smartReadFile fileMap;
+	smartReadFile f;
+	const int &timeStamp, &level;
+	bool gotInput = false;
+	int currTime = GameConfig::GAME_TIME + 1, currAction;
+
+	const string stepsEnding = ".steps";
+	const string prefix = "tb0";
+	string fileName;
 	
-	//void loadFile() const;
-	//void closeFile();
+	void loadFile() { f.open(prefix + std::to_string(level) + stepsEnding); }
 
 public:
-	virtual char getAction(gameState* state) const override {
-		levelState* ls = dynamic_cast<levelState*>(state);//move to the constructor
-		return '1';
- 	}
-	virtual bool hasInput() const override{
-		return false;
-	}
+	FileActionInput(const int &timeStamp, size_t &level) : timeStamp(timeStamp), level(level) {};
+	virtual char getAction() const override { return currAction; }
+	virtual bool hasInput() override;
 
 	//~FileActionInput();
 };

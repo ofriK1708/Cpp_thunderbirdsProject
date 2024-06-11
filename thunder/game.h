@@ -24,21 +24,19 @@ class Game
 	Board board;
 	Point timelocation;
 
-	KeyboardInput keyboardInput;
-	FileActionInput fileActionInput;
-
-	StepInput* userInput = &keyboardInput;
-	//UserInput* userInput = &fileActionInput;
-
-
 	//game pieces
 	Health health;
 	Time time;
 	Ship* ships;
 	map <char, Block>* blocks;
 	Steps stepsFile;
-	
-	levelState lt;
+
+	size_t level = 0;
+
+	KeyboardInput keyboardInput;
+	FileActionInput fileActionInput;
+
+	StepInput* userInput = &keyboardInput;
 
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
@@ -67,6 +65,7 @@ class Game
 	void printCredits();
 
 public:
+	Game() :fileActionInput(time.getTimeLeft(), level) {};
 	void init();
 	bool mainMenu();
 	void gameLoop();

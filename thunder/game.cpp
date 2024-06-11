@@ -220,8 +220,7 @@ void Game::gameLoop()
 	while (!stopGame && !timeOver && health.isAlive())
 	{
 		if (userInput->hasInput()) {
-			lt = { time.getTimeLeft(), 1 };
-			setKey(userInput->getAction(&lt));
+			setKey(userInput->getAction());
 			stepsFile.writeStep(keyPressed, time.getTimeLeft());
 		}
 		setGameStatus();

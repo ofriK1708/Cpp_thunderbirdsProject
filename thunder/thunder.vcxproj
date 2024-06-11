@@ -143,7 +143,6 @@
     <ClCompile Include="smartReadFile.cpp" />
     <ClCompile Include="steps.cpp" />
     <ClCompile Include="time.cpp" />
-    <ClCompile Include="StepInput.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>

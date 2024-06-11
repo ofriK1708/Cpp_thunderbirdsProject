@@ -14,7 +14,7 @@ public:
 	smartReadFile() {}
 	void open(const std::string& fileName);
 	void open(const char* fileName);
-	std::ifstream& getFile() { return file; }
 	bool is_open() const { return file.is_open(); }
 	bool bad() const { return file.bad(); }
+	std::ifstream& getFile() { return file; }
 };

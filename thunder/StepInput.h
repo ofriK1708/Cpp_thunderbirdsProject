@@ -1,10 +1,6 @@
 #pragma once
 
 
-struct gameState {
-	virtual ~gameState() = default;
-};
-
 class StepInput
 {
 	/**
@@ -12,7 +8,7 @@ class StepInput
 	*/
 
 public:
-	virtual bool hasInput() const = 0;
-	virtual char getAction(gameState *state) const = 0;
+	virtual bool hasInput() = 0;
+	virtual char getAction() const = 0;
 	virtual ~StepInput() = default;
 };

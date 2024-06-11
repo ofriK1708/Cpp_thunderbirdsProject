@@ -20,6 +20,7 @@ void smartReadFile::open(const std::string& fileName)
 		throw std::exception("shouldnt open opened file");
 	file.open(fileName, std::ios::in);
 }
+
 void smartReadFile::open(const char* fileName)
 {
 	if (file.is_open())
