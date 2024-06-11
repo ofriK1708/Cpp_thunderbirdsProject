@@ -14,7 +14,7 @@ void Game::init()
 	if (mapfileLoaded) {
 		health = board.getHealth();
 	}
-	stepsFile.openFile(1);
+	//stepsFile.openFile(1);
 }
 
 void Game::resetBoard()
@@ -221,7 +221,7 @@ void Game::gameLoop()
 	{
 		if (userInput->hasInput()) {
 			setKey(userInput->getAction());
-			stepsFile.writeStep(keyPressed, time.getTimeLeft());
+			//stepsFile.writeStep(keyPressed, time.getTimeLeft());
 		}
 		setGameStatus();
 		if (!stopGame) 

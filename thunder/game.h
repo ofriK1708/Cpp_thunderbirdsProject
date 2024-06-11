@@ -31,12 +31,12 @@ class Game
 	map <char, Block>* blocks;
 	Steps stepsFile;
 
-	size_t level = 0;
+	size_t level = 1;
 
 	KeyboardInput keyboardInput;
 	FileActionInput fileActionInput;
 
-	StepInput* userInput = &keyboardInput;
+	StepInput* userInput = &fileActionInput;
 
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;

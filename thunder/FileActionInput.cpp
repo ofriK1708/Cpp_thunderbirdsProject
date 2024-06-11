@@ -18,6 +18,7 @@ bool cmdInterrupt() {
 }
 
 bool FileActionInput::hasInput(){
+	loadFile();
 	if (cmdInterrupt()) {
 		currAction = (char)GameConfig::eKeys::ESC;
 		return true;
@@ -27,7 +28,15 @@ bool FileActionInput::hasInput(){
 	if (timeStamp > currTime) {
 		string line;
 		getline(f.getFile(), line);
-		std::sscanf(line.c_str(), "%d %d", &timeStamp, &currAction);
+		std::sscanf(line.c_str(), "%d %d", &currAction, &timeStamp);
 	}
 	return false;
+}
+
+void FileActionInput::loadFile() {
+	if (currLevel != level) {
+		currLevel = level;
+		timeStamp = GameConfig::GAME_TIME + 1;
+		f.open(prefix + std::to_string(level) + stepsEnding);
+	}
 }

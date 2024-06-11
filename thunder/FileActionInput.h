@@ -14,20 +14,18 @@ class FileActionInput : public StepInput
 {	
 	smartReadFile f;
 	const size_t &currTime, &level;
-	bool gotInput = false;
 	int timeStamp = GameConfig::GAME_TIME + 1, currAction = false;
+	size_t currLevel = 0;
 
 	const string stepsEnding = ".steps";
 	const string prefix = "tb0";
 	string fileName;
 	
-	void loadFile() { f.open(prefix + std::to_string(level) + stepsEnding); }
+	void loadFile();
 
 public:
 	FileActionInput(const size_t &currTime, size_t &level) : currTime(currTime), level(level) {};
 	virtual char getAction() const override { return currAction; }
 	virtual bool hasInput() override;
-
-	//~FileActionInput();
 };
 
