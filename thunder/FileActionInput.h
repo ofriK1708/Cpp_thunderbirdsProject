@@ -1,5 +1,5 @@
 #pragma once
-#include "UserInput.h"
+#include "StepInput.h"
 #include "smartReadFile.h"
 #include <fstream>
 
@@ -13,7 +13,7 @@ struct levelState : public gameState {
 	levelState(int timeStamp, int level) : gameState(), timeStamp(timeStamp), level(level) {};
 };
 
-class FileActionInput : public UserInput
+class FileActionInput : public StepInput
 {	
 	smartReadFile fileMap;
 	
@@ -25,6 +25,10 @@ public:
 		levelState* ls = dynamic_cast<levelState*>(state);//move to the constructor
 		return '1';
  	}
+	virtual bool hasInput() const override{
+		return false;
+	}
+
 	//~FileActionInput();
 };
 

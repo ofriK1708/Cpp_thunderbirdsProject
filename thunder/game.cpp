@@ -19,7 +19,7 @@ void Game::init()
 
 void Game::resetBoard()
 {
-	board = Board();// board.reset(); or write operator= in the mapfiles class
+	board = Board();
 	board.init(colorSet,mapChoose);
 	if (board.getMapFileStatus()) 
 	{
@@ -219,7 +219,7 @@ void Game::gameLoop()
 
 	while (!stopGame && !timeOver && health.isAlive())
 	{
-		if (_kbhit()) { //get rid from this and put in the cmd class
+		if (userInput->hasInput()) {
 			lt = { time.getTimeLeft(), 1 };
 			setKey(userInput->getAction(&lt));
 			stepsFile.writeStep(keyPressed, time.getTimeLeft());

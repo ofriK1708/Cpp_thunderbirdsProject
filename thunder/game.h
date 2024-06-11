@@ -10,7 +10,7 @@
 #include "time.h"
 #include "gameConfig.h"
 #include "steps.h"
-#include "UserInput.h"
+#include "StepInput.h"
 #include "KeyboardInput.h"
 #include "FileActionInput.h"
 
@@ -27,7 +27,7 @@ class Game
 	KeyboardInput keyboardInput;
 	FileActionInput fileActionInput;
 
-	UserInput* userInput = &keyboardInput;
+	StepInput* userInput = &keyboardInput;
 	//UserInput* userInput = &fileActionInput;
 
 

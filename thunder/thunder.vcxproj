@@ -143,7 +143,7 @@
     <ClCompile Include="smartReadFile.cpp" />
     <ClCompile Include="steps.cpp" />
     <ClCompile Include="time.cpp" />
-    <ClCompile Include="UserInput.cpp" />
+    <ClCompile Include="StepInput.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,7 +162,7 @@
     <ClInclude Include="smartReadFile.h" />
     <ClInclude Include="steps.h" />
     <ClInclude Include="time.h" />
-    <ClInclude Include="UserInput.h" />
+    <ClInclude Include="StepInput.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
