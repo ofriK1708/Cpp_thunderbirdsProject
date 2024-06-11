@@ -34,7 +34,7 @@ public:
 	static constexpr size_t GAME_TIME = 60;
 	static constexpr size_t LIVES = 3;
 	
-	static bool iskeyMove(GameConfig::eKeys key);
+	static bool isShipControlMove(GameConfig::eKeys key);
 
 	enum Color
 	{

@@ -7,7 +7,6 @@ class Steps :public GamePlay{
 
 public:
 	Steps() { ending = stepsEnding; }
-	void writeStep(int step, int timeLeft);
+	void writeStep(size_t step, size_t timeLeft);
 
 };
-

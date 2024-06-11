@@ -4,7 +4,7 @@
 #include "gameConfig.h"
 
 
-void Time::setTimeSettings(const int totalTime, const bool isColor)
+void Time::setTimeSettings(const size_t totalTime, const bool isColor)
 {
 	this->totalTime = timeLeft = totalTime;
 	this->isColor = isColor;
@@ -27,7 +27,7 @@ bool Time::checkAndupdateTime()
 	}
 }
 
-void Time::printTime(int time)
+void Time::printTime(size_t time)
 {
 	gotoxy(x + GameConfig::MIN_X, y + GameConfig::MIN_Y);
 	cout << "Time Left : ";

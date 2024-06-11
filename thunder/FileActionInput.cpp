@@ -10,11 +10,11 @@
 
 
 bool cmdInterrupt() {
+	bool interrupt = false;
 	if (_kbhit())
 		if ((GameConfig::eKeys)_getch() == GameConfig::eKeys::ESC)
-			return true;
-	else
-		return false; 
+			interrupt = true;
+	return interrupt;
 }
 
 bool FileActionInput::hasInput(){
@@ -22,12 +22,12 @@ bool FileActionInput::hasInput(){
 		currAction = (char)GameConfig::eKeys::ESC;
 		return true;
 	}
-	if (currTime == timeStamp)
+	if (timeStamp == currTime)
 		return true;
-	if (currTime > timeStamp) {
+	if (timeStamp > currTime) {
 		string line;
 		getline(f.getFile(), line);
-		std::sscanf(line.c_str(), "%d %d", &currTime, &currAction);
+		std::sscanf(line.c_str(), "%d %d", &timeStamp, &currAction);
 	}
 	return false;
 }

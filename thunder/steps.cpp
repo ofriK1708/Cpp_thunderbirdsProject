@@ -4,11 +4,10 @@
 
 using std::to_string;
 
-void Steps::writeStep(int step, int timeLeft) 
+void Steps::writeStep(size_t step, size_t timeLeft)
 {
 	string space = " ";
 	string message = to_string(step) + space + to_string(timeLeft);
-	if (GameConfig::iskeyMove((GameConfig::eKeys)step)) 
+	if (GameConfig::isShipControlMove((GameConfig::eKeys)step))
 		write(message);
-}
 }

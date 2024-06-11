@@ -13,9 +13,9 @@ using std::string;
 class FileActionInput : public StepInput
 {	
 	smartReadFile f;
-	const int &timeStamp, &level;
+	const size_t &currTime, &level;
 	bool gotInput = false;
-	int currTime = GameConfig::GAME_TIME + 1, currAction;
+	int timeStamp = GameConfig::GAME_TIME + 1, currAction = false;
 
 	const string stepsEnding = ".steps";
 	const string prefix = "tb0";
@@ -24,7 +24,7 @@ class FileActionInput : public StepInput
 	void loadFile() { f.open(prefix + std::to_string(level) + stepsEnding); }
 
 public:
-	FileActionInput(const int &timeStamp, size_t &level) : timeStamp(timeStamp), level(level) {};
+	FileActionInput(const size_t &currTime, size_t &level) : currTime(currTime), level(level) {};
 	virtual char getAction() const override { return currAction; }
 	virtual bool hasInput() override;
 
