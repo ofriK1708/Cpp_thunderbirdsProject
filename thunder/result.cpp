@@ -1,3 +1,4 @@
+/*
 #include "result.h"
 
 #include <string>
@@ -21,3 +22,4 @@ void Result::writeEvent(int timeLeft, Events event) {
 	
 	write(message);
 }
+*/

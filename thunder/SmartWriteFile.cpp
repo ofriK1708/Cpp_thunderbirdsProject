@@ -1,11 +1,9 @@
 #include "SmartWriteFile.h"
 
-#include "smartReadFile.h"
-
 #include <string>
 
 
-smartReadFile& smartReadFile::operator=(const smartReadFile& other)
+SmartWriteFile& SmartWriteFile::operator=(const SmartWriteFile& other)
 {
 	if (this != &other)
 	{
@@ -21,7 +19,7 @@ smartReadFile& smartReadFile::operator=(const smartReadFile& other)
 	return *this;
 }
 
-void smartReadFile::open(const std::string& fileName)
+void SmartWriteFile::open(const std::string& fileName)
 {
 	if (file.is_open())
 		throw std::exception("shouldnt open opened file");
@@ -30,7 +28,7 @@ void smartReadFile::open(const std::string& fileName)
 		throw std::exception("could not open the file");
 }
 
-void smartReadFile::open(const char* fileName)
+void SmartWriteFile::open(const char* fileName)
 {
 	open((std::string)(fileName));
 }

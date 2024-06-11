@@ -132,7 +132,6 @@
     <ClCompile Include="board.cpp" />
     <ClCompile Include="FileActionInput.cpp" />
     <ClCompile Include="gameConfig.cpp" />
-    <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapsfiles.cpp" />
@@ -141,7 +140,8 @@
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="smartReadFile.cpp" />
-    <ClCompile Include="steps.cpp" />
+    <ClCompile Include="SmartWriteFile.cpp" />
+    <ClCompile Include="stepsIO.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -149,7 +149,6 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="FileActionInput.h" />
-    <ClInclude Include="GamePlay.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="KeyboardInput.h" />
@@ -160,7 +159,8 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="SmartFile.h" />
     <ClInclude Include="smartReadFile.h" />
-    <ClInclude Include="steps.h" />
+    <ClInclude Include="SmartWriteFile.h" />
+    <ClInclude Include="stepsIO.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="StepInput.h" />
     <ClInclude Include="utils.h" />
