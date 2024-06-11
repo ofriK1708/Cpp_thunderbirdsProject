@@ -24,7 +24,7 @@ class FileActionInput : public UserInput
 
 public:
 	virtual char getAction(gameState* state) const override {
-		levelState* ls = dynamic_cast<levelState*>(state);
+		levelState* ls = dynamic_cast<levelState*>(state);//move to the constructor
 		return '1';
  	}
 	//~FileActionInput();

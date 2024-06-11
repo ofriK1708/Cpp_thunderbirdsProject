@@ -5,7 +5,7 @@ struct gameState {
 	virtual ~gameState() = default;
 };
 
-class UserInput
+class UserInput//fix name maybe stepInput
 {
 	/**
 	* Acstract Base class for the key inputs for the game

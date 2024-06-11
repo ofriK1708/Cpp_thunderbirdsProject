@@ -19,7 +19,7 @@ void Game::init()
 
 void Game::resetBoard()
 {
-	this->board = Board(); 
+	board = Board();// board.reset(); or write operator= in the mapfiles class
 	board.init(colorSet,mapChoose);
 	if (board.getMapFileStatus()) 
 	{
@@ -188,18 +188,17 @@ void Game::afterDeath()
 {
 	if (health.getlivesLeft() > 1) // if we are at 1 and died then game over 
 	{
-	 clear();
-	 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
-	 health.decreaseLife();
-	 this->timeOver = false;
-	 Sleep(GameConfig::LONG_SLEEP);
-	 clear();
+		 clear();
+		 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
+		 health.decreaseLife();
+		 this->timeOver = false;
+		 Sleep(GameConfig::LONG_SLEEP);
+		 clear();
 	
-	 resetBoard();
-	 health.printHealth();
-	 running = false;
-	 keyPressed = 0;
-	
+		 resetBoard();
+		 health.printHealth();
+		 running = false;
+		 keyPressed = 0;
 	}
 	else
 	{
@@ -220,7 +219,7 @@ void Game::gameLoop()
 
 	while (!stopGame && !timeOver && health.isAlive())
 	{
-		if (_kbhit()) {
+		if (_kbhit()) { //get rid from this and put in the cmd class
 			lt = { time.getTimeLeft(), 1 };
 			setKey(userInput->getAction(&lt));
 			stepsFile.writeStep(keyPressed, time.getTimeLeft());

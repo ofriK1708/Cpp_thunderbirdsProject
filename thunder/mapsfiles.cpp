@@ -58,7 +58,7 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 	currfileName = filesPath + "/" + filesNames[fileIndex];
 	Sleep(GameConfig::SYSTEM_OPR_SLEEP);
 	clrscr();
-	fileMap.open(currfileName, std::ios::in);
+	fileMap.open(currfileName);
 	checkFileStatus();
 	
 	if (fileStatus)
@@ -67,7 +67,7 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 		size_t j;
 		for (size_t i = 0; i < GameConfig::GAME_HEIGHT; i++)
 		{
-			getline(fileMap,line);
+			getline(fileMap.getFile(), line);
 			for (j = 0; j < GameConfig::GAME_WIDTH && j<line.length(); j++)
 			{
 				map[i][j] = line[j];
@@ -145,8 +145,9 @@ void Mapsfiles::checkFileStatus()
 }
 void Mapsfiles::loadNextMap()
 {
+/*
 	if (fileMap.is_open())
-		fileMap.close();
+		fileMap.close();*/
 	currfileName = filesNames[++fileIndex];
 	currlevelLoaded = false;
 }
