@@ -66,6 +66,8 @@ public:
 	bool getMapFileStatus() const { return mapfileLoaded; }
 	void printScreen() { board.printScreen(); }
 	void printCredits();
+	GameState getState() { return gameState; }
+	void setStateToRunning() { gameState = GameState::RUNNING; }
 };
 
 #endif

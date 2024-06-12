@@ -19,6 +19,8 @@ class StateManager
 	void mainMenu();
 	void pauseMenu();
 	void exceptionHandler(const exception& e);
+	void setMode(int argc, char* argv[]);
+
 
 	
 public:

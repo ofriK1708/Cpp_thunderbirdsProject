@@ -10,7 +10,13 @@ using std::to_string;
 using std::exception;
 
 
-StateManager::StateManager(int argc, char* argv[]){
+
+StateManager::StateManager(int argc, char* argv[]) {
+	setMode(argc, argv);
+}
+
+
+void StateManager::setMode(int argc, char* argv[]) {
 	switch (argc) {
 	case 1:
 		mode = Mode::SIMPLE;
@@ -18,9 +24,11 @@ StateManager::StateManager(int argc, char* argv[]){
 	case 2:
 		if (argv[1] == "-load") {
 			mode = Mode::LOAD_FROM_FILE;
-		}else if (argv[1] == "-save") {
-				mode = Mode::SAVE_TO_FILE;
-		}else{
+		}
+		else if (argv[1] == "-save") {
+			mode = Mode::SAVE_TO_FILE;
+		}
+		else {
 			exceptionHandler(exception("Game Mode not avaliable"));
 		}
 		break;
@@ -60,7 +68,12 @@ void StateManager::startGame()
 		{
 			try {
 				game.prepareToStart();
-				game.gameLoop();
+				while (game.getState()!=GameState::WIN and game.getState() != GameState::LOSE and !toExit) {
+					game.gameLoop();
+					pauseMenu();
+					if (!toExit)
+						game.setStateToRunning();
+				}
 			}
 			catch (const exception& e) {
 				exceptionHandler(e);
