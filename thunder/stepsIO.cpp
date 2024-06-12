@@ -22,12 +22,14 @@ void StepsIO::loadFileByMode() {
 		switch (mode) {
 		case FileMode::write:
 			rfp.close();
-			Sleep(3000);
+			wfp.close();
+			Sleep(GameConfig::SYSTEM_OPR_SLEEP);
 			wfp.open(getFileName());
 			break;
 		case FileMode::read:
+			rfp.close();
 			wfp.close();
-			Sleep(3000);
+			Sleep(GameConfig::SYSTEM_OPR_SLEEP);
 			rfp.open(getFileName());
 			break;
 		default:
