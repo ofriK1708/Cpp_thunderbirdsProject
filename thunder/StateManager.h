@@ -4,5 +4,12 @@
 class StateManager
 {
 	Game game;
+	bool mapChoose = false;
+	bool colorSet = true;
+	bool toExit = false;
+	
+	void pauseMenu();
+	bool mainMenu();
+
 };
 

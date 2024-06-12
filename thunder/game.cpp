@@ -1,5 +1,6 @@
 #include "game.h"
 #include "mapsfiles.h"
+#include "utils.h"
 
 #include <stdlib.h>
 #include <iostream>
@@ -12,14 +13,14 @@ void Game::init()
 	if (mapfileLoaded) {
 		health = board.getHealth();
 	}
-	//stepsFile.openFile(1);
 }
 
 void Game::resetBoard()
 {
 	board = Board();
-	board.init(colorSet,mapChoose);
-	if (board.getMapFileStatus()) 
+	board.init(colorSet, mapChoose);
+	mapfileLoaded = false;
+	if (board.getMapFileStatus())
 	{
 		mapfileLoaded = true;
 		ships = board.getShips();
@@ -27,100 +28,12 @@ void Game::resetBoard()
 		time = board.getTime();
 		time.setTimeSettings(gameTime, colorSet);
 	}
-	else
-	{
-		mapfileLoaded = false;
-	}
 }
 
-void clear() {
-	gotoxy(0, 0);
-	clrscr();
-}
-
-//Manages the main menu interface and user interaction.
-bool Game::mainMenu()  
-{
-	bool isExit = false;
-	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
-	do {
-		cout << "Please enter your choice" << endl;
-		cout << "1: Start a new game" << endl;
-		cout << "2: Set color ON/OFF (the default value is on)" << endl;
-		cout << "3: load a specific map" << endl;
-		cout << "8: Instructions and keys" << endl;
-		cout << "9: Exit" << endl;
-		cin >> userChoice;
-		switch (userChoice)
-		{
-		case 1:
-			cout << "Great, setting up the game, have fun!! :D";
-			break;
-		case 2:
-			colorSet = !colorSet;
-			colorSet ? cout << "color is now set on" : cout << "color is now set off";
-			cout << endl;
-			break;
-		case 3:
-			cout << "No problem, when you will start a new game, you will choose the map :)" << endl;
-			mapChoose = true;
-			break;
-		case 8:
-			cout << endl;
-			cout << "Objective :" << endl << "Escape the ancient Egyptian tomb by maneuvering the two trapped ships, a big ship(2x2) and a small ship(2x1), through obstacles and reaching the exit before time runs out" << endl << endl;
-			cout << "Controls: " << endl << "Use WASD to move the active ship" << endl;
-			cout << "W - Up" << endl << "A - Left" << endl << "S - Down" << endl << "D - Right" << endl;
-			cout << "Press 'B' or 'S' to switch control between the big and small ships" << endl << "Press 'ESC' to pause the game." << endl << endl;
-			break;
-		case 9:
-			clear();
-			cout << "Exiting the game, please come back when you can :D";
-			Sleep(GameConfig::SHORT_SLEEP);
-			isExit = true;
-			break;
-		default:
-			cout << "invalid choice, please try again" << endl;
-			break;
-		}
-	} while (userChoice != 1 && !isExit);
-	Sleep(GameConfig::SHORT_SLEEP);
-	clrscr();
-	return isExit;
-}
-
-void Game::pauseMenu() {
-	
-	bool illigalChoice = true;
-	
-	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
-	cout << "Press ESC again to continue or 9 to Exit" << endl;
-	while (illigalChoice) {
-		while (!_kbhit())
-			Sleep(GameConfig::MIN_SLEEP);
-		setKey(_getch());
-		switch (keyPressed)
-		{
-		case (int)GameConfig::eKeys::ESC:
-			clear();
-			cout << "Returning to the game, get ready" << endl;;
-			Sleep(GameConfig::SHORT_SLEEP);
-			clear();
-			board.printScreen();
-			illigalChoice = false;
-			break;
-		case (int)GameConfig::eKeys::EXIT:
-			clear();
-			printCredits();
-			stopGame = true;
-			illigalChoice = false;
-			break;
-		}
-	}
-}
 
 void Game::gameFinish()
 {
-	clear();
+	clrscr();
 	cout << "*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
 	printCredits();
 
@@ -132,11 +45,11 @@ void Game::printCredits()
 	cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
 }
 
-void Game::setGameStatus() 
+void Game::ShipAction() 
 {
 	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
 	{
-		stopGame = true;
+		gameState = GameState::WIN;
 		gameFinish();
 	}
 	else
@@ -144,38 +57,37 @@ void Game::setGameStatus()
 		switch (keyPressed)
 		{
 		case (int)GameConfig::eKeys::ESC:
-			clear();
-			pauseMenu();
+			clrscr();
+			gameState = GameState::PAUSE;
 			keyPressed = 0;
-			running = false;
 			break;
 
 		case (int)GameConfig::eKeys::SWITCH_TO_BIG_S:
 			if (activeShip == GameConfig::ShipID::SMALL)
 				activeShip = GameConfig::ShipID::BIG;
 			else
-				running = false;
+				freezeSips = true;
 			break;
 
 		case (int)GameConfig::eKeys::SWITCH_TO_SMALL_S:
 			if (activeShip == GameConfig::ShipID::BIG)
 				activeShip = GameConfig::ShipID::SMALL;
 			else
-				running = false;
+				freezeSips = true;
 			break;
 
 		case (int)GameConfig::eKeys::UP:
 		case (int)GameConfig::eKeys::DOWN:
 		case (int)GameConfig::eKeys::LEFT:
 		case (int)GameConfig::eKeys::RIGHT:
-			running = true;
+			freezeSips = false;
 			break;
 		};
 	}
 }
 
 void Game::play() {
-	if(running)
+	if(not freezeSips)
 		ships[activeShip].move((GameConfig::eKeys)keyPressed);
 	for(auto & pair: *blocks)
 		pair.second.move();
@@ -184,26 +96,26 @@ void Game::play() {
 
 void Game::afterDeath() 
 {
-	if (health.getlivesLeft() > 1) // if we are at 1 and died then game over 
+	if (health.getlivesLeft() > 1)
 	{
-		 clear();
+		 clrscr();
 		 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
 		 health.decreaseLife();
 		 this->timeOver = false;
 		 Sleep(GameConfig::LONG_SLEEP);
-		 clear();
+		 clrscr();
 	
 		 resetBoard();
 		 health.printHealth();
-		 running = false;
+		 freezeSips = true;
 		 keyPressed = 0;
 	}
 	else
 	{
-		clear();
+		clrscr();
 		cout << "!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-! GAME OVER !-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!" << endl;
 		printCredits();
-		stopGame = true;
+		gameState = GameState::LOSE;
 	}
 }
 
@@ -215,14 +127,14 @@ void Game::gameLoop()
 {
 	keyPressed = 0;
 
-	while (!stopGame && !timeOver && health.isAlive())
+	while (gameState==GameState::RUNNING and !timeOver and health.isAlive())
 	{
 		if (userInput->hasInput()) {
 			setKey(userInput->getAction());
 			//stepsFile.writeStep(keyPressed, time.getTimeLeft());
 		}
-		setGameStatus();
-		if (!stopGame) 
+		ShipAction();
+		if (gameState == GameState::RUNNING)
 		{
 			play();
 			timeOver = time.checkAndupdateTime();
