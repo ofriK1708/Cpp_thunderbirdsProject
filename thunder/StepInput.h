@@ -12,3 +12,4 @@ public:
 	virtual char getAction() const = 0;
 	virtual ~StepInput() = default;
 };
+

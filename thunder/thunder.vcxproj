@@ -170,6 +170,7 @@
     <Text Include="mapFiles\tb03.screen.txt" />
     <Text Include="readme.txt" />
     <Text Include="mapFiles\tb01.screen.txt" />
+    <Text Include="tb01.steps.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,37 +11,40 @@ using std::exception;
 
 
 
-StateManager::StateManager(int argc, char* argv[]) {
+StateManager::StateManager(int argc, char* argv[]): stepsIO(game.getTimeLeft(), game.getLevel()){
 	setMode(argc, argv);
 }
 
-
 void StateManager::setMode(int argc, char* argv[]) {
+	string errorMessage = "Game Mode not avaliable: ";
 	switch (argc) {
 	case 1:
-		mode = Mode::SIMPLE;
+		game.setMode(GameMode::SIMPLE, &keyboardStepsInput, nullptr);
 		break;
 	case 2:
-		if (argv[1] == "-load") {
-			mode = Mode::LOAD_FROM_FILE;
+		if (!strcmp(argv[1],"-load")) {
+			game.setMode(GameMode::LOAD_FROM_FILE, &stepsIO, nullptr);
 		}
-		else if (argv[1] == "-save") {
-			mode = Mode::SAVE_TO_FILE;
+		else if (!strcmp(argv[1],"-save")) {
+			game.setMode(GameMode::SAVE_TO_FILE, &keyboardStepsInput, &stepsIO);
 		}
 		else {
-			exceptionHandler(exception("Game Mode not avaliable"));
+			errorMessage.append(argv[1]);
+			exceptionHandler(exception(errorMessage.c_str()));
 		}
 		break;
 	case 3:
-		mode = Mode::SILENT_LOAD_FROM_FILE;
-		if (argv[1] == "-load" and argv[2] == "-silent") {
-			mode = Mode::SILENT_LOAD_FROM_FILE;
+		if (!strcmp(argv[1], "-load") and !strcmp(argv[2], "-silent")) {
+			game.setMode(GameMode::SILENT_LOAD_FROM_FILE, &stepsIO, nullptr);
 		}
-		else if (argv[1] == "-save" and argv[2] == "-silent") {
-			mode = Mode::SAVE_TO_FILE;
+		else if (!strcmp(argv[1], "-save") and !strcmp(argv[2], "-silent")) {
+			game.setMode(GameMode::SAVE_TO_FILE, &keyboardStepsInput ,&stepsIO);
 		}
 		else {
-			exceptionHandler(exception("Game Mode not avaliable"));
+			errorMessage.append(argv[1]);
+			errorMessage.append(" ");
+			errorMessage.append(argv[2]);
+			exceptionHandler(exception(errorMessage.c_str()));
 		}
 		break;
 	default:
@@ -68,11 +71,13 @@ void StateManager::startGame()
 		{
 			try {
 				game.prepareToStart();
-				while (game.getState()!=GameState::WIN and game.getState() != GameState::LOSE and !toExit) {
+				while (game.getState()!=GameState::WIN and game.getState()!= GameState::LOSE and !toExit) {
 					game.gameLoop();
-					pauseMenu();
-					if (!toExit)
-						game.setStateToRunning();
+					if (game.getState() == GameState::PAUSE) {
+						pauseMenu();
+						if (!toExit)
+							game.setStateToRunning();
+					}
 				}
 			}
 			catch (const exception& e) {

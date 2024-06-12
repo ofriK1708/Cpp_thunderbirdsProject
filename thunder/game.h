@@ -24,14 +24,20 @@ enum class GameState {
 	LOSE //the game is finished and the player lost
 };
 
+enum class GameMode {
+	SIMPLE = 0,
+	SAVE_TO_FILE,
+	LOAD_FROM_FILE,
+	SILENT_LOAD_FROM_FILE
+};
 
 class Game
 {
 	Board board;
 	Point timelocation;
 	size_t level = 1;
-	KeyboardInput ki;
-	StepInput* userInput = &ki;
+	StepInput* stepInput = nullptr;
+	StepsIO* stepsOutPut = nullptr;
 
 	//game pieces
 	Health health;
@@ -49,6 +55,7 @@ class Game
 	int keyPressed;
 	bool mapfileLoaded;
 	GameState gameState;
+	GameMode mode = GameMode::SIMPLE;
 	bool timeOver = false;
 	bool colorSet = true;
 	bool mapChoose = false;
@@ -61,6 +68,7 @@ class Game
 	void gameFinish();
 
 public:
+	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
 	void prepareToStart();
 	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }
@@ -68,6 +76,9 @@ public:
 	void printCredits();
 	GameState getState() { return gameState; }
 	void setStateToRunning() { gameState = GameState::RUNNING; }
+	const size_t& getTimeLeft() { return time.getTimeLeft(); }
+	const size_t& getLevel() { return level;}
+
 };
 
 #endif

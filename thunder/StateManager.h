@@ -1,17 +1,12 @@
 #pragma once
 #include "game.h";
 
-enum class Mode {
-	SIMPLE = 0,
-	SAVE_TO_FILE,
-	LOAD_FROM_FILE,
-	SILENT_LOAD_FROM_FILE
-};
-
 class StateManager
 {
 	Game game;
-	Mode mode;
+	StepsIO stepsIO;
+	KeyboardInput keyboardStepsInput;
+
 	bool mapChoose = false;
 	bool colorSet = true;
 	bool toExit = false;
