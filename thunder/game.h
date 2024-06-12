@@ -47,7 +47,6 @@ class Game
 
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
-	int gameSpeed = GameConfig::MIN_SLEEP; // for sleep function
 	
 	//data global indicators
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	

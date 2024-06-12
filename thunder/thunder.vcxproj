@@ -131,6 +131,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="gameConfig.cpp" />
+    <ClCompile Include="GameSleep.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapsfiles.cpp" />
@@ -148,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="GameSleep.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="KeyboardInput.h" />

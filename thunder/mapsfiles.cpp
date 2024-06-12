@@ -5,6 +5,7 @@
 #include "Windows.h"
 #include <filesystem>
 #include "gameConfig.h"
+#include "GameSleep.h"
 
 
 using std::cout;
@@ -58,7 +59,7 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 		return true;
 	}
 	currfileName = filesPath + "/" + filesNames[fileIndex];
-	Sleep(GameConfig::SYSTEM_OPR_SLEEP);
+	GameSleep::systemOprSleep();
 	clrscr();
 	fileMap.open(currfileName);
 	checkFileStatus();

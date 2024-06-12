@@ -1,4 +1,5 @@
 #include "StateManager.h"
+#include "GameSleep.h"
 
 #include <conio.h>
 #include <iostream>
@@ -36,6 +37,7 @@ void StateManager::setMode(int argc, char* argv[]) {
 	case 3:
 		if (!strcmp(argv[1], "-load") and !strcmp(argv[2], "-silent")) {
 			game.setMode(GameMode::SILENT_LOAD_FROM_FILE, &stepsIO, nullptr);
+			GameSleep::silentMode = true;
 		}
 		else if (!strcmp(argv[1], "-save") and !strcmp(argv[2], "-silent")) {
 			game.setMode(GameMode::SAVE_TO_FILE, &keyboardStepsInput ,&stepsIO);
@@ -59,7 +61,7 @@ void StateManager::exceptionHandler(const exception& e) {
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
 	cout << "Exception: " << e.what() << endl;
 	cout << "Exiting game ...";
-	Sleep(GameConfig::LONG_SLEEP);
+	GameSleep::longSleep();
 }
 
 
@@ -124,7 +126,7 @@ void StateManager::mainMenu()
 		case 9:
 			clrscr();
 			cout << "Exiting the game, please come back when you can :D";
-			Sleep(GameConfig::SHORT_SLEEP);
+			GameSleep::shortSleep();
 			toExit = true;
 			break;
 		default:
@@ -132,7 +134,7 @@ void StateManager::mainMenu()
 			break;
 		}
 	} while (userChoice != 1 && !toExit);
-	Sleep(GameConfig::SHORT_SLEEP);
+	GameSleep::shortSleep();
 	clrscr();
 }
 
@@ -146,14 +148,14 @@ void StateManager::pauseMenu() {
 	cout << "Press ESC again to continue or 9 to Exit" << endl;
 	while (illigalChoice) {
 		while (!_kbhit())
-			Sleep(GameConfig::MIN_SLEEP);
+			GameSleep::systemOprSleep();
 		userInput = _getch();
 		switch (userInput)
 		{
 		case (int)GameConfig::eKeys::ESC:
 			clrscr();
 			cout << "Returning to the game, get ready" << endl;;
-			Sleep(GameConfig::SHORT_SLEEP);
+			GameSleep::shortSleep();
 			clrscr();
 			game.printScreen();
 			illigalChoice = false;

@@ -2,6 +2,7 @@
 
 #include "stepsIO.h"
 #include "gameConfig.h"
+#include "GameSleep.h"
 
 #include <string>
 #include <conio.h>
@@ -23,13 +24,13 @@ void StepsIO::loadFileByMode() {
 		case FileMode::write:
 			rfp.close();
 			wfp.close();
-			Sleep(GameConfig::SYSTEM_OPR_SLEEP);
+			GameSleep::systemOprSleep();
 			wfp.open(getFileName());
 			break;
 		case FileMode::read:
 			rfp.close();
 			wfp.close();
-			Sleep(GameConfig::SYSTEM_OPR_SLEEP);
+			GameSleep::systemOprSleep();
 			rfp.open(getFileName());
 			break;
 		default:

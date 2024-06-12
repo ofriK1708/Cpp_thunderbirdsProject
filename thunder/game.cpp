@@ -1,6 +1,7 @@
 #include "game.h"
 #include "mapsfiles.h"
 #include "utils.h"
+#include "GameSleep.h"
 
 #include <stdlib.h>
 #include <iostream>
@@ -123,7 +124,7 @@ void Game::afterDeath()
 		 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
 		 health.decreaseLife();
 		 this->timeOver = false;
-		 Sleep(GameConfig::LONG_SLEEP);
+		 GameSleep::longSleep();
 		 clrscr();
 	
 		 resetBoard();
@@ -163,7 +164,8 @@ void Game::gameLoop()
 			timeOver = time.checkAndupdateTime();
 			health.printHealth();
 		}
-		Sleep(gameSpeed);
+		
+		GameSleep::gameOprSleep();
 		if (timeOver)
 			afterDeath();
 	}
