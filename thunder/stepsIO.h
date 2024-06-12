@@ -28,7 +28,7 @@ private:
 	string getFileName() const {return prefix + std::to_string(level) + stepsEnding; }
 
 public:
-	StepsIO(const size_t& currTime, const size_t& level) :currTime(currTime), level(level) { loadFileByMode(); }
+	StepsIO(const size_t& currTime, const size_t& level) :currTime(currTime), level(level) { loadFileByMode(); currLevel = 0; }
 	void setMode(FileMode _mode);
 	virtual char getAction() const override { return currAction; }
 	virtual bool hasInput() override;

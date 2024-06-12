@@ -22,10 +22,12 @@ void StepsIO::loadFileByMode() {
 		switch (mode) {
 		case FileMode::write:
 			rfp.close();
+			Sleep(3000);
 			wfp.open(getFileName());
 			break;
 		case FileMode::read:
 			wfp.close();
+			Sleep(3000);
 			rfp.open(getFileName());
 			break;
 		default:
