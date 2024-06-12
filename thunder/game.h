@@ -61,7 +61,7 @@ class Game
 	void gameFinish();
 
 public:
-	void init();
+	void prepareToStart();
 	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }
 	void printScreen() { board.printScreen(); }

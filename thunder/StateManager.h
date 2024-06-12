@@ -8,8 +8,12 @@ class StateManager
 	bool colorSet = true;
 	bool toExit = false;
 	
-	void pauseMenu();
 	bool mainMenu();
+	void pauseMenu();
+	void exceptionHandler(const exception& e);
 
+	
+public:
+	void startGame();
 };
 

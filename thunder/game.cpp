@@ -7,11 +7,14 @@
 #include <Windows.h>
 
 
-void Game::init()
+void Game::prepareToStart()
 {
 	resetBoard();
 	if (mapfileLoaded) {
 		health = board.getHealth();
+	}
+	else {
+		throw std::exception("Could not load game map");
 	}
 }
 
@@ -29,7 +32,6 @@ void Game::resetBoard()
 		time.setTimeSettings(gameTime, colorSet);
 	}
 }
-
 
 void Game::gameFinish()
 {

@@ -1,25 +1,16 @@
 #include <iostream>
-#include "game.h"
+
+#include "StateManager.h"
 #include "gameConfig.h"
 
 using namespace std;
 
-void startGame();
 
 int main()
 {
-    startGame();
+    StateManager stateManager;
+
+    stateManager.startGame();
     return 0;
 }
 
-void startGame()
-{
-    Game theGame;
-    bool pressedExit = theGame.mainMenu();
-    if (!pressedExit) 
-    {
-        theGame.init();
-        if(theGame.getMapFileStatus())
-            theGame.gameLoop();
-    }
-}

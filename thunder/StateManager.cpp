@@ -1,5 +1,35 @@
 #include "StateManager.h"
+
 #include "conio.h"
+#include "iostream"
+
+using std::cout;
+using std::endl;
+
+
+void StateManager::exceptionHandler(const exception& e) {
+	clrscr();
+	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
+	cout << "Exception: " << e.what() << endl;
+	cout << "Exiting game ...";
+	Sleep(GameConfig::LONG_SLEEP);
+}
+
+
+void StateManager::startGame()
+{
+	bool pressedExit = mainMenu();
+	if (!pressedExit)
+	{
+		try {
+			game.prepareToStart();
+			game.gameLoop();
+		}
+		catch (const exception& e) {
+			exceptionHandler(e);
+		}
+	}
+}
 
 
 bool StateManager::mainMenu()
