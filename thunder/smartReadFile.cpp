@@ -29,7 +29,9 @@ void smartReadFile::open(const std::string& fileName)
 	if (file.is_open())
 		throw std::exception("shouldnt open opened file");
 	file.open(fileName, std::ios::in);
-	if ((not file.is_open()) or file.bad())
+	if (not file.is_open())
+		throw std::exception("could not open the file");
+	else if(file.bad())
 		throw std::exception("could not open the file");
 }
 

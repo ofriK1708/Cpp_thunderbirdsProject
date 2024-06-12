@@ -7,6 +7,25 @@
 #include <Windows.h>
 
 
+void Game::setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut) {
+	mode = _mode;
+	stepInput = _stepsInput;
+	switch (mode) {
+	case GameMode::SIMPLE:
+		break;
+	case GameMode::SAVE_TO_FILE:
+		stepsOutPut = _stepsOutPut;
+		stepsOutPut->setMode(FileMode::write);
+		break;
+	case GameMode::LOAD_FROM_FILE:
+	case GameMode::SILENT_LOAD_FROM_FILE:
+		break;
+	default:
+		throw std::exception("Game mode is invalid");
+	}
+}
+
+
 void Game::prepareToStart()
 {
 	resetBoard();
@@ -131,9 +150,11 @@ void Game::gameLoop()
 
 	while (gameState==GameState::RUNNING and !timeOver and health.isAlive())
 	{
-		if (userInput->hasInput()) {
-			setKey(userInput->getAction());
-			//stepsFile.writeStep(keyPressed, time.getTimeLeft());
+		if (stepInput->hasInput()) {
+			setKey(stepInput->getAction());
+			if (mode == GameMode::SAVE_TO_FILE) {
+				stepsOutPut->writeStep(keyPressed, time.getTimeLeft());
+			}
 		}
 		ShipAction();
 		if (gameState == GameState::RUNNING)

@@ -1,13 +1,60 @@
 #include "StateManager.h"
 
-#include "conio.h"
-#include "iostream"
+#include <conio.h>
+#include <iostream>
+#include <string>
 
 using std::cout;
 using std::endl;
+using std::to_string;
+using std::exception;
+
+
+
+StateManager::StateManager(int argc, char* argv[]): stepsIO(game.getTimeLeft(), game.getLevel()){
+	setMode(argc, argv);
+}
+
+void StateManager::setMode(int argc, char* argv[]) {
+	string errorMessage = "Game Mode not avaliable: ";
+	switch (argc) {
+	case 1:
+		game.setMode(GameMode::SIMPLE, &keyboardStepsInput, nullptr);
+		break;
+	case 2:
+		if (!strcmp(argv[1],"-load")) {
+			game.setMode(GameMode::LOAD_FROM_FILE, &stepsIO, nullptr);
+		}
+		else if (!strcmp(argv[1],"-save")) {
+			game.setMode(GameMode::SAVE_TO_FILE, &keyboardStepsInput, &stepsIO);
+		}
+		else {
+			errorMessage.append(argv[1]);
+			exceptionHandler(exception(errorMessage.c_str()));
+		}
+		break;
+	case 3:
+		if (!strcmp(argv[1], "-load") and !strcmp(argv[2], "-silent")) {
+			game.setMode(GameMode::SILENT_LOAD_FROM_FILE, &stepsIO, nullptr);
+		}
+		else if (!strcmp(argv[1], "-save") and !strcmp(argv[2], "-silent")) {
+			game.setMode(GameMode::SAVE_TO_FILE, &keyboardStepsInput ,&stepsIO);
+		}
+		else {
+			errorMessage.append(argv[1]);
+			errorMessage.append(" ");
+			errorMessage.append(argv[2]);
+			exceptionHandler(exception(errorMessage.c_str()));
+		}
+		break;
+	default:
+		exceptionHandler(exception("Game Mode not avaliable"));
+	}
+}
 
 
 void StateManager::exceptionHandler(const exception& e) {
+	toExit = true;
 	clrscr();
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
 	cout << "Exception: " << e.what() << endl;
@@ -18,23 +65,31 @@ void StateManager::exceptionHandler(const exception& e) {
 
 void StateManager::startGame()
 {
-	bool pressedExit = mainMenu();
-	if (!pressedExit)
-	{
-		try {
-			game.prepareToStart();
-			game.gameLoop();
-		}
-		catch (const exception& e) {
-			exceptionHandler(e);
+	if (!toExit) {
+		mainMenu();
+		if (!toExit)
+		{
+			try {
+				game.prepareToStart();
+				while (game.getState()!=GameState::WIN and game.getState()!= GameState::LOSE and !toExit) {
+					game.gameLoop();
+					if (game.getState() == GameState::PAUSE) {
+						pauseMenu();
+						if (!toExit)
+							game.setStateToRunning();
+					}
+				}
+			}
+			catch (const exception& e) {
+				exceptionHandler(e);
+			}
 		}
 	}
 }
 
 
-bool StateManager::mainMenu()
+void StateManager::mainMenu()
 {
-	bool isExit = false;
 	unsigned short userChoice;
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
 	do {
@@ -70,16 +125,15 @@ bool StateManager::mainMenu()
 			clrscr();
 			cout << "Exiting the game, please come back when you can :D";
 			Sleep(GameConfig::SHORT_SLEEP);
-			isExit = true;
+			toExit = true;
 			break;
 		default:
 			cout << "invalid choice, please try again" << endl;
 			break;
 		}
-	} while (userChoice != 1 && !isExit);
+	} while (userChoice != 1 && !toExit);
 	Sleep(GameConfig::SHORT_SLEEP);
 	clrscr();
-	return isExit;
 }
 
 

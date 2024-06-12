@@ -9,8 +9,8 @@
 using std::to_string;
 
 
-StepsIO::StepsIO(Mode mode, const size_t& currTime, size_t& level):
-	mode(mode), currTime(currTime), level(level) {
+void StepsIO::setMode(FileMode _mode) {
+	mode = _mode;
 	loadFileByMode();
 }
 
@@ -20,12 +20,16 @@ void StepsIO::loadFileByMode() {
 		timeStamp = GameConfig::GAME_TIME + 1;
 
 		switch (mode) {
-		case Mode::write:
+		case FileMode::write:
 			rfp.close();
+			wfp.close();
+			Sleep(GameConfig::SYSTEM_OPR_SLEEP);
 			wfp.open(getFileName());
 			break;
-		case Mode::read:
+		case FileMode::read:
+			rfp.close();
 			wfp.close();
+			Sleep(GameConfig::SYSTEM_OPR_SLEEP);
 			rfp.open(getFileName());
 			break;
 		default:
@@ -37,7 +41,7 @@ void StepsIO::loadFileByMode() {
 
 void StepsIO::writeStep(size_t step, size_t timeLeft)
 {
-	string message = to_string(step) + to_string(' ') + to_string(timeLeft);
+	string message = to_string(step) + " " + to_string(timeLeft);
 	if (GameConfig::isShipControlMove((GameConfig::eKeys)step))
 		wfp.getFile() << message << std::endl;;
 }
