@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -131,7 +131,6 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="gameConfig.cpp" />
-    <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapsfiles.cpp" />
@@ -139,23 +138,29 @@
     <ClCompile Include="result.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="steps.cpp" />
+    <ClCompile Include="smartReadFile.cpp" />
+    <ClCompile Include="SmartWriteFile.cpp" />
+    <ClCompile Include="stepsIO.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
-    <ClInclude Include="GamePlay.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="gameConfig.h" />
+    <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="mapsfiles.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="steps.h" />
+    <ClInclude Include="SmartFile.h" />
+    <ClInclude Include="smartReadFile.h" />
+    <ClInclude Include="SmartWriteFile.h" />
+    <ClInclude Include="stepsIO.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="StepInput.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

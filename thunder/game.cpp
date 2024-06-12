@@ -1,11 +1,9 @@
 #include "game.h"
-#include "steps.h"
+#include "mapsfiles.h"
 
 #include <stdlib.h>
 #include <iostream>
-#include <conio.h>
 #include <Windows.h>
-#include "mapsfiles.h"
 
 
 void Game::init()
@@ -14,12 +12,12 @@ void Game::init()
 	if (mapfileLoaded) {
 		health = board.getHealth();
 	}
-	stepsFile.openFile(1);
+	//stepsFile.openFile(1);
 }
 
 void Game::resetBoard()
 {
-	this->board = Board(); 
+	board = Board();
 	board.init(colorSet,mapChoose);
 	if (board.getMapFileStatus()) 
 	{
@@ -188,18 +186,17 @@ void Game::afterDeath()
 {
 	if (health.getlivesLeft() > 1) // if we are at 1 and died then game over 
 	{
-	 clear();
-	 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
-	 health.decreaseLife();
-	 this->timeOver = false;
-	 Sleep(GameConfig::LONG_SLEEP);
-	 clear();
+		 clear();
+		 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
+		 health.decreaseLife();
+		 this->timeOver = false;
+		 Sleep(GameConfig::LONG_SLEEP);
+		 clear();
 	
-	 resetBoard();
-	 health.printHealth();
-	 running = false;
-	 keyPressed = 0;
-	
+		 resetBoard();
+		 health.printHealth();
+		 running = false;
+		 keyPressed = 0;
 	}
 	else
 	{
@@ -220,9 +217,9 @@ void Game::gameLoop()
 
 	while (!stopGame && !timeOver && health.isAlive())
 	{
-		if (_kbhit()) {
-			setKey(_getch());
-			stepsFile.writeStep(keyPressed, time.getTimeLeft());
+		if (userInput->hasInput()) {
+			setKey(userInput->getAction());
+			//stepsFile.writeStep(keyPressed, time.getTimeLeft());
 		}
 		setGameStatus();
 		if (!stopGame) 

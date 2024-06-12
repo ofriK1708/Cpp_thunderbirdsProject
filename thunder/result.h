@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include "gameConfig.h"
 #include "GamePlay.h"
@@ -22,3 +23,4 @@ public:
 	void writeEvent(int timeLeft, Events event);
 };
 
+*/

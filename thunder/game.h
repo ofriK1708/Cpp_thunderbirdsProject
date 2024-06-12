@@ -9,7 +9,9 @@
 #include "utils.h"
 #include "time.h"
 #include "gameConfig.h"
-#include "steps.h"
+#include "stepsIO.h"
+#include "StepInput.h"
+#include "KeyboardInput.h"
 
 using namespace std;
 
@@ -26,8 +28,11 @@ class Game
 	Time time;
 	Ship* ships;
 	map <char, Block>* blocks;
-	Steps stepsFile;
-	
+
+	size_t level = 1;
+
+	StepInput* userInput;
+
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
 	int gameSpeed = GameConfig::MIN_SLEEP; // for sleep function
