@@ -2,6 +2,7 @@
 #include "mapsfiles.h"
 #include "utils.h"
 #include "GameSleep.h"
+#include "GamePrint.h"
 
 #include <stdlib.h>
 #include <iostream>
@@ -56,15 +57,15 @@ void Game::resetBoard()
 void Game::gameFinish()
 {
 	clrscr();
-	cout << "*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
+	GamePrint::print("*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 	printCredits();
 
 }
 
 void Game::printCredits()
 {
-	cout << "Finished game, Thank you for playing :D" << endl;;
-	cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
+	GamePrint::print("Finished game, Thank you for playing :D");
+	GamePrint::print("*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*\n");
 }
 
 void Game::ShipAction() 
@@ -121,7 +122,7 @@ void Game::afterDeath()
 	if (health.getlivesLeft() > 1)
 	{
 		 clrscr();
-		 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
+		 GamePrint::print("!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!");
 		 health.decreaseLife();
 		 this->timeOver = false;
 		 GameSleep::longSleep();
@@ -135,7 +136,7 @@ void Game::afterDeath()
 	else
 	{
 		clrscr();
-		cout << "!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-! GAME OVER !-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!" << endl;
+		GamePrint::print("!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-! GAME OVER !-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!");
 		printCredits();
 		gameState = GameState::LOSE;
 	}

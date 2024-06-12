@@ -68,6 +68,7 @@ class Game
 
 public:
 	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
+	GameMode getMode() { return mode; }
 	void prepareToStart();
 	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }
