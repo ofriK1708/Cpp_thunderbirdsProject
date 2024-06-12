@@ -3,6 +3,12 @@
 #include <string>
 
 
+void SmartWriteFile::close() {
+	if (file.is_open()) {
+		file.close();
+	}
+}
+
 SmartWriteFile& SmartWriteFile::operator=(const SmartWriteFile& other)
 {
 	if (this != &other)

@@ -1,10 +1,8 @@
 #include "game.h"
-#include "steps.h"
 #include "mapsfiles.h"
 
 #include <stdlib.h>
 #include <iostream>
-//#include <conio.h>
 #include <Windows.h>
 
 

@@ -2,44 +2,45 @@
 
 #include "stepsIO.h"
 #include "gameConfig.h"
+
 #include <string>
+#include <conio.h>
 
 using std::to_string;
 
 
-StepsIO(Mode mode, const size_t& currTime, size_t& level) {
-	switch (Mode:mode)
-	if(mode = Mode::read)
-		frp = dynamic_cast<smartReadFile*>(SmartFile);
-
+StepsIO::StepsIO(Mode mode, const size_t& currTime, size_t& level):
+	mode(mode), currTime(currTime), level(level) {
+	loadFileByMode();
 }
 
+void StepsIO::loadFileByMode() {
+	if (currLevel != level) {
+		currLevel = level;
+		timeStamp = GameConfig::GAME_TIME + 1;
 
+		switch (mode) {
+		case Mode::write:
+			rfp.close();
+			wfp.open(getFileName());
+			break;
+		case Mode::read:
+			wfp.close();
+			rfp.open(getFileName());
+			break;
+		default:
+			throw std::exception("Chosen mode not exist");
+			break;
+		}
+	}
+}
 
 void StepsIO::writeStep(size_t step, size_t timeLeft)
 {
-	string space = " ";
-	string message = to_string(step) + space + to_string(timeLeft);
+	string message = to_string(step) + to_string(' ') + to_string(timeLeft);
 	if (GameConfig::isShipControlMove((GameConfig::eKeys)step))
-		file.write .write(message);
+		wfp.getFile() << message << std::endl;;
 }
-
-
-
-
-
-
-
-
-
-#include "FileActionInput.h"
-#include "gameConfig.h"
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <conio.h>
-
 
 bool cmdInterrupt() {
 	bool interrupt = false;
@@ -49,26 +50,19 @@ bool cmdInterrupt() {
 	return interrupt;
 }
 
-bool FileActionInput::hasInput() {
-	loadFile();
+bool StepsIO::hasInput() {
+	loadFileByMode();
+	bool res = false;
 	if (cmdInterrupt()) {
 		currAction = (char)GameConfig::eKeys::ESC;
-		return true;
+		res = true;
 	}
-	if (timeStamp == currTime)
-		return true;
-	if (timeStamp > currTime) {
+	else if (timeStamp == currTime)
+		res = true;
+	else if (timeStamp > currTime) {
 		string line;
-		getline(f.getFile(), line);
+		getline(rfp.getFile(), line);
 		std::sscanf(line.c_str(), "%d %d", &currAction, &timeStamp);
 	}
-	return false;
-}
-
-void FileActionInput::loadFile() {
-	if (currLevel != level) {
-		currLevel = level;
-		timeStamp = GameConfig::GAME_TIME + 1;
-		f.open(prefix + std::to_string(level) + stepsEnding);
-	}
+	return res;
 }

@@ -2,6 +2,12 @@
 
 #include <string>
 
+void smartReadFile::close() {
+	if (file.is_open()) {
+		file.close();
+	}
+}
+
 
 smartReadFile& smartReadFile::operator=(const smartReadFile& other) 
 {

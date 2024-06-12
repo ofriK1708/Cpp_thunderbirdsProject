@@ -12,7 +12,6 @@
 #include "stepsIO.h"
 #include "StepInput.h"
 #include "KeyboardInput.h"
-#include "FileActionInput.h"
 
 using namespace std;
 
@@ -29,14 +28,10 @@ class Game
 	Time time;
 	Ship* ships;
 	map <char, Block>* blocks;
-	Steps stepsFile;
 
 	size_t level = 1;
 
-	KeyboardInput keyboardInput;
-	FileActionInput fileActionInput;
-
-	StepInput* userInput = &fileActionInput;
+	StepInput* userInput;
 
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
@@ -65,7 +60,6 @@ class Game
 	void printCredits();
 
 public:
-	Game() :fileActionInput(time.getTimeLeft(), level) {};
 	void init();
 	bool mainMenu();
 	void gameLoop();
