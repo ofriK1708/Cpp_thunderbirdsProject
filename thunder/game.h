@@ -31,7 +31,8 @@ class Game
 
 	size_t level = 1;
 
-	StepInput* userInput;
+	KeyboardInput ki;
+	StepInput* userInput = &ki;
 
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
