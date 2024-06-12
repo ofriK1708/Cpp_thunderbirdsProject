@@ -1,11 +1,9 @@
-/*
-#include "result.h"
+#include "ResultIO.h"
 
-#include <string>
 
-void Result::writeEvent(int timeLeft, Events event) {
+void ResultIO::writeEvent(int timeLeft, Events event) {
 	string message;
-	
+
 	switch (event) {
 	case Events::DEATH:
 		message = "death";
@@ -19,7 +17,6 @@ void Result::writeEvent(int timeLeft, Events event) {
 	}
 	message.append(" ");
 	message.append(std::to_string(timeLeft));
-	
-	write(message);
+
+	wfp.getFile() << message << std::endl;
 }
-*/
