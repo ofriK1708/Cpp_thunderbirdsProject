@@ -16,11 +16,14 @@ void Game::setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut
 	case GameMode::SIMPLE:
 		break;
 	case GameMode::SAVE_TO_FILE:
+		resultIO.setMode(ResultIO::FileMode::write);
 		stepsOutPut = _stepsOutPut;
-		stepsOutPut->setMode(FileMode::write);
+		stepsOutPut->setMode(StepsIO::FileMode::write);
 		break;
 	case GameMode::LOAD_FROM_FILE:
+		break;
 	case GameMode::SILENT_LOAD_FROM_FILE:
+		resultIO.setMode(ResultIO::FileMode::read);
 		break;
 	default:
 		throw std::exception("Game mode is invalid");
@@ -73,6 +76,8 @@ void Game::ShipAction()
 	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
 	{
 		gameState = GameState::WIN;
+		if (getMode() == GameMode::SAVE_TO_FILE)
+			resultIO.writeEvent(time.getTimeLeft(), Events::FINISH_LEVEL);
 		gameFinish();
 	}
 	else
@@ -119,6 +124,8 @@ void Game::play() {
 
 void Game::afterDeath() 
 {
+	if(getMode() == GameMode::SAVE_TO_FILE)
+		resultIO.writeEvent(time.getTimeLeft(), Events::DEATH);
 	if (health.getlivesLeft() > 1)
 	{
 		 clrscr();

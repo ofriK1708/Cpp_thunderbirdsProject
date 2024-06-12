@@ -11,10 +11,10 @@
 
 using std::string;
 
-enum class FileMode { read = 0, write };
 
 class StepsIO: public StepInput{
-	
+public:
+	enum class FileMode { read = 0, write };
 private: 
 	FileMode mode = FileMode::read;
 	smartReadFile rfp;
@@ -26,7 +26,6 @@ private:
 	
 	void loadFileByMode();
 	string getFileName() const {return prefix + std::to_string(level) + stepsEnding; }
-
 public:
 	StepsIO(const size_t& currTime, const size_t& level) :currTime(currTime), level(level) { loadFileByMode(); currLevel = 0; }
 	void setMode(FileMode _mode);

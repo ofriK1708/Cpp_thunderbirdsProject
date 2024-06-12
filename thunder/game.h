@@ -12,6 +12,7 @@
 #include "stepsIO.h"
 #include "StepInput.h"
 #include "KeyboardInput.h"
+#include "ResultIO.h"
 
 using namespace std;
 
@@ -38,8 +39,9 @@ class Game
 	size_t level = 1;
 	StepInput* stepInput = nullptr;
 	StepsIO* stepsOutPut = nullptr;
+	ResultIO resultIO;
 
-	//game pieces
+	//game pieceresultIOs
 	Health health;
 	Time time;
 	Ship* ships;
@@ -67,6 +69,7 @@ class Game
 	void gameFinish();
 
 public:
+	Game():resultIO(time.getTimeLeft(), level) {};
 	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
 	GameMode getMode() { return mode; }
 	void prepareToStart();

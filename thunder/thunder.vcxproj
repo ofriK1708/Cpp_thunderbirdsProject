@@ -135,7 +135,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapsfiles.cpp" />
     <ClCompile Include="point.cpp" />
-    <ClCompile Include="result.cpp" />
+    <ClCompile Include="ResultIO.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="smartReadFile.cpp" />
@@ -155,7 +155,7 @@
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="mapsfiles.h" />
     <ClInclude Include="point.h" />
-    <ClInclude Include="result.h" />
+    <ClInclude Include="ResultIO.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="SmartFile.h" />
