@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
 #include "gameConfig.h"
-#include <fstream>
 #include <filesystem>
 #include <vector>
 #include <algorithm>
+#include "smartReadFile.h"
 using std::string;
-using std::ifstream;
 using std::vector;
+
 class Mapsfiles
 {
 	char legend[3][GameConfig::GAME_WIDTH + 1] = {
@@ -23,7 +23,7 @@ class Mapsfiles
 	bool fileStatus = false;
 	bool mapsLoaded = false;
 	bool currlevelLoaded = false;
-	ifstream fileMap;
+	smartReadFile fileMap;
 	void checkFileStatus();
 	void copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line,size_t& col);
 	bool checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1]);
@@ -32,10 +32,10 @@ class Mapsfiles
 	
 public:
 	void loadMapLevels();
-	//~Mapsfiles();
 	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
 	bool getMapsLoadedstatus() const { return mapsLoaded; }
 	bool getCurrLevelLoadedStatus() const { return currlevelLoaded; }
+
 	
 };
 

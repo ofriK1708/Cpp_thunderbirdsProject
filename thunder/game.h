@@ -9,10 +9,9 @@
 #include "utils.h"
 #include "time.h"
 #include "gameConfig.h"
-#include "steps.h"
-#include "UserInput.h"
+#include "stepsIO.h"
+#include "StepInput.h"
 #include "KeyboardInput.h"
-#include "FileActionInput.h"
 
 using namespace std;
 
@@ -24,21 +23,15 @@ class Game
 	Board board;
 	Point timelocation;
 
-	KeyboardInput keyboardInput;
-	FileActionInput fileActionInput;
-
-	UserInput* userInput = &keyboardInput;
-	//UserInput* userInput = &fileActionInput;
-
-
 	//game pieces
 	Health health;
 	Time time;
 	Ship* ships;
 	map <char, Block>* blocks;
-	Steps stepsFile;
-	
-	levelState lt;
+
+	size_t level = 1;
+
+	StepInput* userInput;
 
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
