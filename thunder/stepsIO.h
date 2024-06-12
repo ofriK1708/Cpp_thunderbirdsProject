@@ -11,12 +11,12 @@
 
 using std::string;
 
-enum class Mode { read = 0, write };
+enum class FileMode { read = 0, write };
 
 class StepsIO: public StepInput{
 	
 private: 
-	Mode mode;
+	FileMode mode;
 	smartReadFile rfp;
 	SmartWriteFile wfp;
 	const string stepsEnding = ".steps", prefix = "tb0";
@@ -28,7 +28,7 @@ private:
 	string getFileName() const {return prefix + std::to_string(level) + stepsEnding; }
 
 public:
-	StepsIO(Mode mode, const size_t& currTime, size_t& level);
+	StepsIO(FileMode mode, const size_t& currTime, size_t& level);
 	virtual char getAction() const override { return currAction; }
 	virtual bool hasInput() override;
 	void writeStep(size_t step, size_t timeLeft);

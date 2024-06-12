@@ -9,7 +9,7 @@
 using std::to_string;
 
 
-StepsIO::StepsIO(Mode mode, const size_t& currTime, size_t& level):
+StepsIO::StepsIO(FileMode mode, const size_t& currTime, size_t& level):
 	mode(mode), currTime(currTime), level(level) {
 	loadFileByMode();
 }
@@ -20,11 +20,11 @@ void StepsIO::loadFileByMode() {
 		timeStamp = GameConfig::GAME_TIME + 1;
 
 		switch (mode) {
-		case Mode::write:
+		case FileMode::write:
 			rfp.close();
 			wfp.open(getFileName());
 			break;
-		case Mode::read:
+		case FileMode::read:
 			wfp.close();
 			rfp.open(getFileName());
 			break;

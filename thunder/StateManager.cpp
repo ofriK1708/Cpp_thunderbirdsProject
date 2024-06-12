@@ -1,13 +1,49 @@
 #include "StateManager.h"
 
-#include "conio.h"
-#include "iostream"
+#include <conio.h>
+#include <iostream>
+#include <string>
 
 using std::cout;
 using std::endl;
+using std::to_string;
+using std::exception;
+
+
+StateManager::StateManager(int argc, char* argv[]){
+	switch (argc) {
+	case 1:
+		mode = Mode::SIMPLE;
+		break;
+	case 2:
+		if (argv[1] == "-load") {
+			mode = Mode::LOAD_FROM_FILE;
+		}else if (argv[1] == "-save") {
+				mode = Mode::SAVE_TO_FILE;
+		}else{
+			exceptionHandler(exception("Game Mode not avaliable"));
+		}
+		break;
+	case 3:
+		mode = Mode::SILENT_LOAD_FROM_FILE;
+		if (argv[1] == "-load" and argv[2] == "-silent") {
+			mode = Mode::SILENT_LOAD_FROM_FILE;
+		}
+		else if (argv[1] == "-save" and argv[2] == "-silent") {
+			mode = Mode::SAVE_TO_FILE;
+		}
+		else {
+			exceptionHandler(exception("Game Mode not avaliable"));
+		}
+		break;
+	default:
+		exceptionHandler(exception("Game Mode not avaliable"));
+	}
+}
 
 
 void StateManager::exceptionHandler(const exception& e) {
+	toExit = true;
 	clrscr();
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
 	cout << "Exception: " << e.what() << endl;
@@ -18,23 +54,24 @@ void StateManager::exceptionHandler(const exception& e) {
 
 void StateManager::startGame()
 {
-	bool pressedExit = mainMenu();
-	if (!pressedExit)
-	{
-		try {
-			game.prepareToStart();
-			game.gameLoop();
-		}
-		catch (const exception& e) {
-			exceptionHandler(e);
+	if (!toExit) {
+		mainMenu();
+		if (!toExit)
+		{
+			try {
+				game.prepareToStart();
+				game.gameLoop();
+			}
+			catch (const exception& e) {
+				exceptionHandler(e);
+			}
 		}
 	}
 }
 
 
-bool StateManager::mainMenu()
+void StateManager::mainMenu()
 {
-	bool isExit = false;
 	unsigned short userChoice;
 	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
 	do {
@@ -70,16 +107,15 @@ bool StateManager::mainMenu()
 			clrscr();
 			cout << "Exiting the game, please come back when you can :D";
 			Sleep(GameConfig::SHORT_SLEEP);
-			isExit = true;
+			toExit = true;
 			break;
 		default:
 			cout << "invalid choice, please try again" << endl;
 			break;
 		}
-	} while (userChoice != 1 && !isExit);
+	} while (userChoice != 1 && !toExit);
 	Sleep(GameConfig::SHORT_SLEEP);
 	clrscr();
-	return isExit;
 }
 
 

@@ -6,9 +6,9 @@
 using namespace std;
 
 
-int main()
+int main(int argc, char* argv[])
 {
-    StateManager stateManager;
+    StateManager stateManager(argc, argv);
 
     stateManager.startGame();
     return 0;
