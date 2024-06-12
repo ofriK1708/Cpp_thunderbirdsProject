@@ -17,11 +17,21 @@ using namespace std;
 
 class Ship;
 
+enum class GameState {
+	RUNNING = 0, //The game shall run 
+	PAUSE, //puase the game
+	WIN, //the game is finished and the player won
+	LOSE //the game is finished and the player lost
+};
+
+
 class Game
 {
-		
 	Board board;
 	Point timelocation;
+	size_t level = 1;
+	KeyboardInput ki;
+	StepInput* userInput = &ki;
 
 	//game pieces
 	Health health;
@@ -29,41 +39,33 @@ class Game
 	Ship* ships;
 	map <char, Block>* blocks;
 
-	size_t level = 1;
-
-	StepInput* userInput;
-
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
 	int gameSpeed = GameConfig::MIN_SLEEP; // for sleep function
 	
-	//data globals
+	//data global indicators
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	
+	bool freezeSips = false;
 	int keyPressed;
-	int userChoice;
 	bool mapfileLoaded;
-	
-	//indicator globas
+	GameState gameState;
 	bool timeOver = false;
-	bool running = false;
-	bool stopGame = false;
 	bool colorSet = true;
 	bool mapChoose = false;
 
 	void setKey(int key) { keyPressed = tolower(key); }
-	void setGameStatus();
+	void ShipAction();
 	void play();
-	void pauseMenu();
 	void resetBoard();
 	void afterDeath();
 	void gameFinish();
-	void printCredits();
 
 public:
-	void init();
-	bool mainMenu();
+	void prepareToStart();
 	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }
+	void printScreen() { board.printScreen(); }
+	void printCredits();
 };
 
 #endif

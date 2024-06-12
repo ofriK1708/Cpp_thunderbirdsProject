@@ -140,6 +140,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="smartReadFile.cpp" />
     <ClCompile Include="SmartWriteFile.cpp" />
+    <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="stepsIO.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="SmartFile.h" />
     <ClInclude Include="smartReadFile.h" />
     <ClInclude Include="SmartWriteFile.h" />
+    <ClInclude Include="StateManager.h" />
     <ClInclude Include="stepsIO.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="StepInput.h" />
