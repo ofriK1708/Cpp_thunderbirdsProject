@@ -16,5 +16,6 @@ public:
 	bool checkAndupdateTime();
 	void resetTime() { timeLeft = totalTime; }
 	void printTime(size_t time);
+	void reverse() { totalTime += 1; }
 };
 

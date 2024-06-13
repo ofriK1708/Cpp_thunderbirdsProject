@@ -62,8 +62,7 @@ bool StepsIO::hasInput() {
 	}
 	bool res = false;
 	if (cmdInterrupt()) {
-		currAction = (char)GameConfig::eKeys::ESC;
-		res = true;
+		throw std::ios_base::failure("Esc");
 	}
 	else if (timeStamp == currTime) {
 		res = true;

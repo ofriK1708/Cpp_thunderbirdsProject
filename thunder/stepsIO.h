@@ -29,7 +29,7 @@ private:
 public:
 	StepsIO(const size_t& currTime, const size_t& level) :currTime(currTime), level(level) { loadFileByMode(); currLevel = 0; }
 	void setMode(FileMode _mode);
-	virtual char getAction() const override { return currAction; }
+	virtual char getAction() const override {return currAction; }
 	virtual bool hasInput() override;
 	void writeStep(size_t step, size_t timeLeft);
 };

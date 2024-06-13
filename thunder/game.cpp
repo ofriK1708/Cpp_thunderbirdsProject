@@ -171,23 +171,29 @@ void Game::gameLoop()
 
 	while (gameState==GameState::RUNNING and !timeOver and health.isAlive())
 	{
-		if (stepInput->hasInput()) {
-			setKey(stepInput->getAction());
-			if (mode == GameMode::SAVE_TO_FILE) {
-				stepsOutPut->writeStep(keyPressed, time.getTimeLeft());
+		try {
+			if (stepInput->hasInput()) {
+				setKey(stepInput->getAction());
+				if (mode == GameMode::SAVE_TO_FILE) {
+					stepsOutPut->writeStep(keyPressed, time.getTimeLeft());
+				}
 			}
+			ShipAction();
+			if (gameState == GameState::RUNNING)
+			{
+				play();
+				timeOver = time.checkAndupdateTime();
+				health.printHealth();
+			}
+
+			GameSleep::gameOprSleep();
+			if (timeOver)
+				afterDeath();
 		}
-		ShipAction();
-		if (gameState == GameState::RUNNING)
-		{
-			play();
-			timeOver = time.checkAndupdateTime();
-			health.printHealth();
+		catch (const std::ios_base::failure& e) {
+			time.reverse();
+			setKey((int)GameConfig::eKeys::ESC);
 		}
-		
-		GameSleep::gameOprSleep();
-		if (timeOver)
-			afterDeath();
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }
