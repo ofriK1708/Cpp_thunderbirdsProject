@@ -68,7 +68,7 @@ void StateManager::exceptionHandler(const exception& e) {
 void StateManager::startGame()
 {
 	if (!toExit) {
-		if(game.getMode() != GameMode::SILENT_LOAD_FROM_FILE)
+		if(game.getMode() != GameMode::SILENT_LOAD_FROM_FILE and game.getMode() != GameMode::LOAD_FROM_FILE)
 			mainMenu();
 		if (!toExit)
 		{
