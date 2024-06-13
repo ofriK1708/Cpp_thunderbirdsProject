@@ -28,14 +28,15 @@ class Mapsfiles
 	void copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line,size_t& col);
 	bool checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1]);
 	void GetUserFileChoice();
-	void loadNextMap();
+	
 	
 public:
 	void loadMapLevels(size_t& levels);
-	Mapsfiles& operator=(const Mapsfiles& other) = delete;
+	Mapsfiles& operator=(const Mapsfiles& other);
 	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
 	bool getMapsLoadedstatus() const { return mapsLoaded; }
 	bool getCurrLevelLoadedStatus() const { return currlevelLoaded; }
+	void loadNextMap();
 
 	
 };

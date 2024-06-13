@@ -149,11 +149,14 @@ void Mapsfiles::checkFileStatus()
 }
 void Mapsfiles::loadNextMap()
 {
-/*
 	if (fileMap.is_open())
-		fileMap.close();*/
+		fileMap.close();
 	currfileName = filesNames[++fileIndex];
 	currlevelLoaded = false;
+}
+Mapsfiles& Mapsfiles::operator=(const Mapsfiles& other)
+{
+	return *this; // we dont want to change anything here
 }
 
 

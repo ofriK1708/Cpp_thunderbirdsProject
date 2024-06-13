@@ -65,6 +65,7 @@ void Game::gameFinish()
 	{
 		level++;
 		resetBoard();
+		board.loadNextMap();
 		health.printHealth();
 		freezeSips = true;
 		keyPressed = 0;

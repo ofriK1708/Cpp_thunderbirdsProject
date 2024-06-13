@@ -45,4 +45,5 @@ public:
 	void shipFinishLine(char shipID);
 	bool getMapFileStatus() const { return mapFileLoaded; }
 	size_t getNumOfLevels() const { return levels; }
+	void loadNextMap() { maps.loadNextMap();}
 };
