@@ -22,7 +22,8 @@ enum class GameState {
 	RUNNING = 0, //The game shall run 
 	PAUSE, //puase the game
 	WIN, //the game is finished and the player won
-	LOSE //the game is finished and the player lost
+	LOSE, //the game is finished and the player lost
+	RESULT_DIFF //there is a difference between the curr result and the recorded one
 };
 
 enum class GameMode {
@@ -69,7 +70,7 @@ class Game
 	void gameFinish();
 
 public:
-	Game():resultIO(time.getTimeLeft(), level) {};
+	Game():resultIO(level) {};
 	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
 	GameMode getMode() { return mode; }
 	void prepareToStart();

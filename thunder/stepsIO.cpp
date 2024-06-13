@@ -43,7 +43,7 @@ void StepsIO::loadFileByMode() {
 void StepsIO::writeStep(size_t step, size_t timeLeft)
 {
 	string message = to_string(step) + " " + to_string(timeLeft);
-	if (GameConfig::isShipControlMove((GameConfig::eKeys)step))
+	if (GameConfig::isShipControlMove((GameConfig::eKeys)step) or step=='0')
 		wfp.getFile() << message << std::endl;;
 }
 
@@ -57,17 +57,26 @@ bool cmdInterrupt() {
 
 bool StepsIO::hasInput() {
 	loadFileByMode();
+	if (currTime == 27) {
+		int i = 0;
+	}
+	if (currTime == GameConfig::GAME_TIME) {
+		timeStamp = GameConfig::GAME_TIME + 1;
+	}
 	bool res = false;
 	if (cmdInterrupt()) {
 		currAction = (char)GameConfig::eKeys::ESC;
 		res = true;
 	}
-	else if (timeStamp == currTime)
+	else if (timeStamp == currTime) {
 		res = true;
+	}
 	else if (timeStamp > currTime) {
 		string line;
 		getline(rfp.getFile(), line);
 		std::sscanf(line.c_str(), "%d %d", &currAction, &timeStamp);
+		if (timeStamp == currTime)
+			res = true;
 	}
 	return res;
 }

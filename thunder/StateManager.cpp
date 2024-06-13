@@ -74,13 +74,16 @@ void StateManager::startGame()
 		{
 			try {
 				game.prepareToStart();
-				while (game.getState()!=GameState::WIN and game.getState()!= GameState::LOSE and !toExit) {
+				while (game.getState()!=GameState::RESULT_DIFF and game.getState()!=GameState::WIN and game.getState()!= GameState::LOSE and !toExit) {
 					game.gameLoop();
 					if (game.getState() == GameState::PAUSE) {
 						if (game.getMode() != GameMode::SILENT_LOAD_FROM_FILE)
 							pauseMenu();
 						if (!toExit)
 							game.setStateToRunning();
+					}
+					if (game.getState() == GameState::RESULT_DIFF) {
+						throw std::exception("Results unmatch");
 					}
 				}
 			}

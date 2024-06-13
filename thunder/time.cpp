@@ -15,7 +15,7 @@ void Time::setTimeSettings(const size_t totalTime, const bool isColor)
 bool Time::checkAndupdateTime()
 {
 	timeLeft--;
-	if (timeLeft <= 0)
+	if (timeLeft <= 1)
 	{
 		resetTime();
 		return true;

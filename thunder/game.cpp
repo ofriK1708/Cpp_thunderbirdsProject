@@ -78,6 +78,11 @@ void Game::ShipAction()
 		gameState = GameState::WIN;
 		if (getMode() == GameMode::SAVE_TO_FILE)
 			resultIO.writeEvent(time.getTimeLeft(), Events::FINISH_LEVEL);
+		else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) {
+			if (!resultIO.cmpEvents(time.getTimeLeft(), Events::FINISH_LEVEL)) {
+				gameState = GameState::RESULT_DIFF;
+			}
+		}
 		gameFinish();
 	}
 	else
@@ -124,8 +129,15 @@ void Game::play() {
 
 void Game::afterDeath() 
 {
-	if(getMode() == GameMode::SAVE_TO_FILE)
+	if (getMode() == GameMode::SAVE_TO_FILE) {
 		resultIO.writeEvent(time.getTimeLeft(), Events::DEATH);
+		stepsOutPut->writeStep('0', 0);
+	}
+	else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) {
+		if (!resultIO.cmpEvents(time.getTimeLeft(), Events::DEATH)) {
+			gameState = GameState::RESULT_DIFF;
+		}
+	}
 	if (health.getlivesLeft() > 1)
 	{
 		 clrscr();

@@ -1,10 +1,14 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "ResultIO.h"
 #include "GameSleep.h"
+
+#include "string"
 
 
 void ResultIO::writeEvent(int timeLeft, Events event) {
 	string message;
-
+	/*
 	switch (event) {
 	case Events::DEATH:
 		message = "death";
@@ -15,10 +19,10 @@ void ResultIO::writeEvent(int timeLeft, Events event) {
 	default:
 		message = "unknown";
 		break;
-	}
-	message.append(" ");
+	}*/
 	message.append(std::to_string(timeLeft));
-
+	message.append(" ");
+	message.append(std::to_string((int)event));
 	wfp.getFile() << message << std::endl;
 }
 
@@ -31,8 +35,6 @@ void ResultIO::setMode(FileMode _mode) {
 void ResultIO::loadFileByMode() {
 	if (currLevel != level) {
 		currLevel = level;
-		timeStamp = GameConfig::GAME_TIME + 1;
-
 		switch (mode) {
 		case FileMode::write:
 			rfp.close();
@@ -53,3 +55,18 @@ void ResultIO::loadFileByMode() {
 	}
 }
 
+
+bool ResultIO::cmpEvents(int _timeLeft, Events _event) {
+	bool res = false;
+	string line;
+	size_t event, timeLeft;
+
+	loadFileByMode();
+	getline(rfp.getFile(), line);
+	std::sscanf(line.c_str(), "%d %d", &timeLeft, &event);
+
+	if (timeLeft == _timeLeft and event == (size_t)_event) {
+		res = true;
+	}
+	return res;
+}
