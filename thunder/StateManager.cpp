@@ -1,10 +1,11 @@
 #include "StateManager.h"
+#include "GameSleep.h"
+#include "GamePrint.h"
 
 #include <conio.h>
 #include <iostream>
 #include <string>
 
-using std::cout;
 using std::endl;
 using std::to_string;
 using std::exception;
@@ -36,6 +37,7 @@ void StateManager::setMode(int argc, char* argv[]) {
 	case 3:
 		if (!strcmp(argv[1], "-load") and !strcmp(argv[2], "-silent")) {
 			game.setMode(GameMode::SILENT_LOAD_FROM_FILE, &stepsIO, nullptr);
+			GameSleep::silentMode = GamePrint::silentMode = true;
 		}
 		else if (!strcmp(argv[1], "-save") and !strcmp(argv[2], "-silent")) {
 			game.setMode(GameMode::SAVE_TO_FILE, &keyboardStepsInput ,&stepsIO);
@@ -56,27 +58,33 @@ void StateManager::setMode(int argc, char* argv[]) {
 void StateManager::exceptionHandler(const exception& e) {
 	toExit = true;
 	clrscr();
-	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
-	cout << "Exception: " << e.what() << endl;
-	cout << "Exiting game ...";
-	Sleep(GameConfig::LONG_SLEEP);
+	GamePrint::print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*");
+	GamePrint::print("Exception: " + (string)e.what());
+	GamePrint::print("Exiting game ...");
+	GameSleep::longSleep();
 }
 
 
 void StateManager::startGame()
 {
 	if (!toExit) {
-		mainMenu();
+		if(game.getMode() != GameMode::SILENT_LOAD_FROM_FILE and game.getMode() != GameMode::LOAD_FROM_FILE)
+			mainMenu();
 		if (!toExit)
 		{
 			try {
 				game.prepareToStart();
-				while (game.getState()!=GameState::WIN and game.getState()!= GameState::LOSE and !toExit) {
+				while (game.getState()!=GameState::RESULT_DIFF and game.getState()!=GameState::WIN and game.getState()!= GameState::LOSE and !toExit) {
 					game.gameLoop();
 					if (game.getState() == GameState::PAUSE) {
-						pauseMenu();
+						if (game.getMode() != GameMode::SILENT_LOAD_FROM_FILE)
+							pauseMenu();
 						if (!toExit)
 							game.setStateToRunning();
+					}
+					if (game.getState() == GameState::RESULT_DIFF) {
+						clrscr();
+						cout << "Test Failed: results unmatched" << endl;
 					}
 				}
 			}
@@ -85,54 +93,57 @@ void StateManager::startGame()
 			}
 		}
 	}
+	if (game.getMode()==GameMode::SILENT_LOAD_FROM_FILE and game.getState()!=GameState::RESULT_DIFF) {
+		clrscr();
+		cout << "Test Success: results matched" << endl;
+	}
 }
 
 
 void StateManager::mainMenu()
 {
 	unsigned short userChoice;
-	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
+	GamePrint::print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Thunderbirds: Escape from the Egyptian Tomb *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 	do {
-		cout << "Please enter your choice" << endl;
-		cout << "1: Start a new game" << endl;
-		cout << "2: Set color ON/OFF (the default value is on)" << endl;
-		cout << "3: load a specific map" << endl;
-		cout << "8: Instructions and keys" << endl;
-		cout << "9: Exit" << endl;
+		GamePrint::print("Please enter your choice");
+		GamePrint::print("1: Start a new game");
+		GamePrint::print("2: Set color ON/OFF (the default value is on)");
+		GamePrint::print("3: load a specific map");
+		GamePrint::print("8: Instructions and keys");
+		GamePrint::print("9: Exit");
 		cin >> userChoice;
 		switch (userChoice)
 		{
 		case 1:
-			cout << "Great, setting up the game, have fun!! :D";
+			GamePrint::print("Great, setting up the game, have fun!! :D");
 			break;
 		case 2:
 			colorSet = !colorSet;
-			colorSet ? cout << "color is now set on" : cout << "color is now set off";
-			cout << endl;
+			colorSet ? GamePrint::print("color is now set on") : GamePrint::print("color is now set off");
+			GamePrint::print("");
 			break;
 		case 3:
-			cout << "No problem, when you will start a new game, you will choose the map :)" << endl;
+			GamePrint::print("No problem, when you will start a new game, you will choose the map :)");
 			mapChoose = true;
 			break;
 		case 8:
-			cout << endl;
-			cout << "Objective :" << endl << "Escape the ancient Egyptian tomb by maneuvering the two trapped ships, a big ship(2x2) and a small ship(2x1), through obstacles and reaching the exit before time runs out" << endl << endl;
-			cout << "Controls: " << endl << "Use WASD to move the active ship" << endl;
-			cout << "W - Up" << endl << "A - Left" << endl << "S - Down" << endl << "D - Right" << endl;
-			cout << "Press 'B' or 'S' to switch control between the big and small ships" << endl << "Press 'ESC' to pause the game." << endl << endl;
+			GamePrint::print("\nObjective :\nEscape the ancient Egyptian tomb by maneuvering the two trapped ships, a big ship(2x2) and a small ship(2x1), through obstacles and reaching the exit before time runs out\n");
+			GamePrint::print("Controls:\nUse WASD to move the active ship");
+			GamePrint::print("W - Up\nA - Left\nX - Down\nD - Right");
+			GamePrint::print("Press 'B' or 'S' to switch control between the big and small ships\nPress 'ESC' to pause the game.");
 			break;
 		case 9:
 			clrscr();
-			cout << "Exiting the game, please come back when you can :D";
-			Sleep(GameConfig::SHORT_SLEEP);
+			GamePrint::print("Exiting the game, please come back when you can :D");
+			GameSleep::shortSleep();
 			toExit = true;
 			break;
 		default:
-			cout << "invalid choice, please try again" << endl;
+			GamePrint::print("invalid choice, please try again");
 			break;
 		}
 	} while (userChoice != 1 && !toExit);
-	Sleep(GameConfig::SHORT_SLEEP);
+	GameSleep::shortSleep();
 	clrscr();
 }
 
@@ -142,18 +153,18 @@ void StateManager::pauseMenu() {
 	bool illigalChoice = true;
 	char userInput;
 
-	cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*" << endl;
-	cout << "Press ESC again to continue or 9 to Exit" << endl;
+	GamePrint::print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*");
+	GamePrint::print("Press ESC again to continue or 9 to Exit");
 	while (illigalChoice) {
 		while (!_kbhit())
-			Sleep(GameConfig::MIN_SLEEP);
+			GameSleep::systemOprSleep();
 		userInput = _getch();
 		switch (userInput)
 		{
 		case (int)GameConfig::eKeys::ESC:
 			clrscr();
-			cout << "Returning to the game, get ready" << endl;;
-			Sleep(GameConfig::SHORT_SLEEP);
+			GamePrint::print("Returning to the game, get ready");
+			GameSleep::shortSleep();
 			clrscr();
 			game.printScreen();
 			illigalChoice = false;

@@ -12,6 +12,7 @@
 #include "stepsIO.h"
 #include "StepInput.h"
 #include "KeyboardInput.h"
+#include "ResultIO.h"
 
 using namespace std;
 
@@ -21,7 +22,8 @@ enum class GameState {
 	RUNNING = 0, //The game shall run 
 	PAUSE, //puase the game
 	WIN, //the game is finished and the player won
-	LOSE //the game is finished and the player lost
+	LOSE, //the game is finished and the player lost
+	RESULT_DIFF //there is a difference between the curr result and the recorded one
 };
 
 enum class GameMode {
@@ -38,8 +40,9 @@ class Game
 	size_t level = 1;
 	StepInput* stepInput = nullptr;
 	StepsIO* stepsOutPut = nullptr;
+	ResultIO resultIO;
 
-	//game pieces
+	//game pieceresultIOs
 	Health health;
 	Time time;
 	Ship* ships;
@@ -47,7 +50,6 @@ class Game
 
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
-	int gameSpeed = GameConfig::MIN_SLEEP; // for sleep function
 	
 	//data global indicators
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	
@@ -68,7 +70,9 @@ class Game
 	void gameFinish();
 
 public:
+	Game():resultIO(level) {};
 	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
+	GameMode getMode() { return mode; }
 	void prepareToStart();
 	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }

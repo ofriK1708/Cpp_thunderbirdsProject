@@ -1,6 +1,7 @@
 #include "board.h"
 #include "gameConfig.h"
 #include "utils.h"
+#include "GamePrint.h"
 
 #include <set>
 
@@ -40,10 +41,10 @@ void Board::printScreen()
 {
 	GameConfig::Color color = GameConfig::WHITE;
 	for (size_t j = 0; j < GameConfig::MIN_Y; j++)
-		std::cout << endl;
+		GamePrint::print("");
 	for (int i = 0; i < HEIGHT; i++) {
 		for (size_t j = 0; j < GameConfig::MIN_X; j++)
-			std::cout << " ";
+			GamePrint::printChar(' ');
 		for (size_t j = 0; j < WIDTH; j++)
 		{
 			char currSymbol = board[i][j];
@@ -75,15 +76,15 @@ void Board::printScreen()
 			setTextColor(color);
 			if(currSymbol == GameConfig::FINISH_BIG_SHIP || currSymbol == GameConfig::FINISH_SMALL_SHIP)
 			{
-				std::cout << ' ';
+				GamePrint::printChar(' ');
 			}
 			else
 			{
-				std::cout << currSymbol;
+				GamePrint::printChar(currSymbol);
 			}
 			setTextColor(color = GameConfig::WHITE);
 		}
-		std::cout << std::endl;
+		GamePrint::print("");
 	}
 	
 }

@@ -1,6 +1,8 @@
 #include "game.h"
 #include "mapsfiles.h"
 #include "utils.h"
+#include "GameSleep.h"
+#include "GamePrint.h"
 
 #include <stdlib.h>
 #include <iostream>
@@ -14,11 +16,14 @@ void Game::setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut
 	case GameMode::SIMPLE:
 		break;
 	case GameMode::SAVE_TO_FILE:
+		resultIO.setMode(ResultIO::FileMode::write);
 		stepsOutPut = _stepsOutPut;
-		stepsOutPut->setMode(FileMode::write);
+		stepsOutPut->setMode(StepsIO::FileMode::write);
 		break;
 	case GameMode::LOAD_FROM_FILE:
+		break;
 	case GameMode::SILENT_LOAD_FROM_FILE:
+		resultIO.setMode(ResultIO::FileMode::read);
 		break;
 	default:
 		throw std::exception("Game mode is invalid");
@@ -55,15 +60,15 @@ void Game::resetBoard()
 void Game::gameFinish()
 {
 	clrscr();
-	cout << "*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << endl;
+	GamePrint::print("*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 	printCredits();
 
 }
 
 void Game::printCredits()
 {
-	cout << "Finished game, Thank you for playing :D" << endl;;
-	cout << "*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*" << endl << endl;
+	GamePrint::print("Finished game, Thank you for playing :D");
+	GamePrint::print("*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*\n");
 }
 
 void Game::ShipAction() 
@@ -71,6 +76,13 @@ void Game::ShipAction()
 	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
 	{
 		gameState = GameState::WIN;
+		if (getMode() == GameMode::SAVE_TO_FILE)
+			resultIO.writeEvent(time.getTimeLeft(), Events::FINISH_LEVEL);
+		else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) {
+			if (!resultIO.cmpEvents(time.getTimeLeft(), Events::FINISH_LEVEL)) {
+				gameState = GameState::RESULT_DIFF;
+			}
+		}
 		gameFinish();
 	}
 	else
@@ -117,13 +129,22 @@ void Game::play() {
 
 void Game::afterDeath() 
 {
+	if (getMode() == GameMode::SAVE_TO_FILE) {
+		resultIO.writeEvent(time.getTimeLeft(), Events::DEATH);
+		stepsOutPut->writeStep('0', 0);
+	}
+	else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) {
+		if (!resultIO.cmpEvents(time.getTimeLeft(), Events::DEATH)) {
+			gameState = GameState::RESULT_DIFF;
+		}
+	}
 	if (health.getlivesLeft() > 1)
 	{
 		 clrscr();
-		 cout << "!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!" << endl;
+		 GamePrint::print("!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!");
 		 health.decreaseLife();
 		 this->timeOver = false;
-		 Sleep(GameConfig::LONG_SLEEP);
+		 GameSleep::longSleep();
 		 clrscr();
 	
 		 resetBoard();
@@ -134,7 +155,7 @@ void Game::afterDeath()
 	else
 	{
 		clrscr();
-		cout << "!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-! GAME OVER !-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!" << endl;
+		GamePrint::print("!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-! GAME OVER !-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!");
 		printCredits();
 		gameState = GameState::LOSE;
 	}
@@ -150,22 +171,29 @@ void Game::gameLoop()
 
 	while (gameState==GameState::RUNNING and !timeOver and health.isAlive())
 	{
-		if (stepInput->hasInput()) {
-			setKey(stepInput->getAction());
-			if (mode == GameMode::SAVE_TO_FILE) {
-				stepsOutPut->writeStep(keyPressed, time.getTimeLeft());
+		try {
+			if (stepInput->hasInput()) {
+				setKey(stepInput->getAction());
+				if (mode == GameMode::SAVE_TO_FILE) {
+					stepsOutPut->writeStep(keyPressed, time.getTimeLeft());
+				}
 			}
+			ShipAction();
+			if (gameState == GameState::RUNNING)
+			{
+				play();
+				timeOver = time.checkAndupdateTime();
+				health.printHealth();
+			}
+
+			GameSleep::gameOprSleep();
+			if (timeOver)
+				afterDeath();
 		}
-		ShipAction();
-		if (gameState == GameState::RUNNING)
-		{
-			play();
-			timeOver = time.checkAndupdateTime();
-			health.printHealth();
+		catch (const std::ios_base::failure& e) {
+			time.reverse();
+			setKey((int)GameConfig::eKeys::ESC);
 		}
-		Sleep(gameSpeed);
-		if (timeOver)
-			afterDeath();
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }
