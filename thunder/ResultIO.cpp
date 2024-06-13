@@ -59,7 +59,7 @@ void ResultIO::loadFileByMode() {
 bool ResultIO::cmpEvents(int _timeLeft, Events _event) {
 	bool res = false;
 	string line;
-	size_t event, timeLeft;
+	int event, timeLeft;
 
 	loadFileByMode();
 	getline(rfp.getFile(), line);

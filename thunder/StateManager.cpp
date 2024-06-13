@@ -83,7 +83,8 @@ void StateManager::startGame()
 							game.setStateToRunning();
 					}
 					if (game.getState() == GameState::RESULT_DIFF) {
-						throw std::exception("Results unmatch");
+						clrscr();
+						cout << "Test Failed: results unmatched" << endl;
 					}
 				}
 			}
@@ -91,6 +92,10 @@ void StateManager::startGame()
 				exceptionHandler(e);
 			}
 		}
+	}
+	if (game.getMode()==GameMode::SILENT_LOAD_FROM_FILE and game.getState()!=GameState::RESULT_DIFF) {
+		clrscr();
+		cout << "Test Success: results matched" << endl;
 	}
 }
 

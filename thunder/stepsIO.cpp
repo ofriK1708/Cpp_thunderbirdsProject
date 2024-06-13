@@ -57,9 +57,6 @@ bool cmdInterrupt() {
 
 bool StepsIO::hasInput() {
 	loadFileByMode();
-	if (currTime == 27) {
-		int i = 0;
-	}
 	if (currTime == GameConfig::GAME_TIME) {
 		timeStamp = GameConfig::GAME_TIME + 1;
 	}
