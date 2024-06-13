@@ -13,7 +13,7 @@ using std::endl;
 using std::cin;
 using std::string;
 
-void Mapsfiles::loadMapLevels()
+void Mapsfiles::loadMapLevels(size_t& levels)
 {
 	for(const auto& file : std::filesystem::directory_iterator(filesPath))
 	{
@@ -29,6 +29,7 @@ void Mapsfiles::loadMapLevels()
 	 }
 	}
 	std::sort(filesNames.begin(), filesNames.end());// sorting the fileNames lexicographically
+	levels = filesNames.size();
 	mapsLoaded = true;
 }
 

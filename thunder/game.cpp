@@ -34,6 +34,7 @@ void Game::setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut
 void Game::prepareToStart()
 {
 	resetBoard();
+	levels = board.getNumOfLevels();
 	if (mapfileLoaded) {
 		health = board.getHealth();
 	}
@@ -60,8 +61,18 @@ void Game::resetBoard()
 void Game::gameFinish()
 {
 	clrscr();
-	GamePrint::print("*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-	printCredits();
+	if(level < levels)
+	{
+		level++;
+		resetBoard();
+		health.printHealth();
+		freezeSips = true;
+		keyPressed = 0;
+	}
+	else {
+		GamePrint::print("*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*  YOU WON!!!!!  *-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+		printCredits();
+	}
 
 }
 
@@ -75,7 +86,8 @@ void Game::ShipAction()
 {
 	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
 	{
-		gameState = GameState::WIN;
+		if(level == levels) // if we are at the last level and win 
+			gameState = GameState::WIN;
 		if (getMode() == GameMode::SAVE_TO_FILE)
 			resultIO.writeEvent(time.getTimeLeft(), Events::FINISH_LEVEL);
 		else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) {

@@ -22,7 +22,7 @@ void Board::init(bool colorSet, bool mapChoose)
 	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
 		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_CARRY_WEIGHT[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
 	if (!maps.getMapsLoadedstatus())
-		maps.loadMapLevels();
+		maps.loadMapLevels(levels);
 
 	if(maps.getMap(original_board,mapChoose))
 	{

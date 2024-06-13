@@ -38,6 +38,7 @@ class Game
 	Board board;
 	Point timelocation;
 	size_t level = 1;
+	size_t levels;
 	StepInput* stepInput = nullptr;
 	StepsIO* stepsOutPut = nullptr;
 	ResultIO resultIO;

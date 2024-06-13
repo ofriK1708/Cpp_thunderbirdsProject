@@ -31,7 +31,8 @@ class Mapsfiles
 	void loadNextMap();
 	
 public:
-	void loadMapLevels();
+	void loadMapLevels(size_t& levels);
+	Mapsfiles& operator=(const Mapsfiles& other) = delete;
 	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
 	bool getMapsLoadedstatus() const { return mapsLoaded; }
 	bool getCurrLevelLoadedStatus() const { return currlevelLoaded; }

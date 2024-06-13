@@ -29,6 +29,7 @@ class Board {
 	map<char, Block> blocks;
 	Mapsfiles maps;
 	bool colorSet = false;
+	size_t levels;
 
 public:
 	void loadMapFiles();
@@ -43,4 +44,5 @@ public:
 	Health& getHealth() { return health; }
 	void shipFinishLine(char shipID);
 	bool getMapFileStatus() const { return mapFileLoaded; }
+	size_t getNumOfLevels() const { return levels; }
 };
