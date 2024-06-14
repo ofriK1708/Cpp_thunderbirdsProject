@@ -7,7 +7,6 @@
 #include "time.h"
 #include "health.h"
 #include "utils.h"
-#include "mapsfiles.h"
 
 #include <iostream>
 #include <cstring>
@@ -27,14 +26,11 @@ class Board {
 	Point exit_pos;	
 	Ship ships[GameConfig::NUM_SHIPS];
 	map<char, Block> blocks;
-	Mapsfiles maps;
 	bool colorSet = false;
-	size_t levels;
 
 public:
-	void loadMapFiles();
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
-	void init(bool colorSet, bool mapChoose);
+	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
 	bool checkMove(LocationInfo& objectLoction);
@@ -43,7 +39,6 @@ public:
 	Time& getTime() { return time; }
 	Health& getHealth() { return health; }
 	void shipFinishLine(char shipID);
-	bool getMapFileStatus() const { return mapFileLoaded; }
-	size_t getNumOfLevels() const { return levels; }
-	void loadNextMap() { maps.loadNextMap();}
+	char(&getOriginalBoard())[HEIGHT][WIDTH + 1]{return original_board;}
+	void resetBoard();
 };

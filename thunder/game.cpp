@@ -5,8 +5,8 @@
 #include "GamePrint.h"
 
 #include <stdlib.h>
-#include <iostream>
-#include <Windows.h>
+#include <iostream> 
+#include <Windows.h>  
 
 
 void Game::setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut) {
@@ -33,29 +33,30 @@ void Game::setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut
 
 void Game::prepareToStart()
 {
-	resetBoard();
-	levels = board.getNumOfLevels();
-	if (mapfileLoaded) {
+	if (maps.loadMapLevels(levels)) 
+	{
+		resetBoard();
 		health = board.getHealth();
 	}
-	else {
-		throw std::exception("Could not load game map");
+	else 
+	{
+		throw std::exception("Could not load game maps");
 	}
 }
 
 void Game::resetBoard()
 {
-	board = Board();
-	board.init(colorSet, mapChoose);
-	mapfileLoaded = false;
-	if (board.getMapFileStatus())
+	board.resetBoard();
+	if (!maps.getCurrLevelLoadedStatus())
 	{
-		mapfileLoaded = true;
-		ships = board.getShips();
-		blocks = board.getBlocks();
-		time = board.getTime();
-		time.setTimeSettings(gameTime, colorSet);
-	}
+		maps.getMap(board.getOriginalBoard(), mapChoose);
+	}	
+	board.init(colorSet);
+	ships = board.getShips();
+	blocks = board.getBlocks();
+	time = board.getTime();
+	time.setTimeSettings(gameTime, colorSet);
+	
 }
 
 void Game::gameFinish()
@@ -63,9 +64,9 @@ void Game::gameFinish()
 	clrscr();
 	if(level < levels)
 	{
+		maps.loadNextMap();
 		level++;
 		resetBoard();
-		board.loadNextMap();
 		health.printHealth();
 		freezeSips = true;
 		keyPressed = 0;

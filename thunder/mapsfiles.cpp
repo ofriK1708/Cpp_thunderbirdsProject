@@ -13,8 +13,9 @@ using std::endl;
 using std::cin;
 using std::string;
 
-void Mapsfiles::loadMapLevels(size_t& levels)
+bool Mapsfiles::loadMapLevels(size_t& levels)
 {
+	bool loadedLevels;
 	for(const auto& file : std::filesystem::directory_iterator(filesPath))
 	{
      if(file.is_regular_file()) // check if it's a file and not a dir or something else
@@ -30,7 +31,8 @@ void Mapsfiles::loadMapLevels(size_t& levels)
 	}
 	std::sort(filesNames.begin(), filesNames.end());// sorting the fileNames lexicographically
 	levels = filesNames.size();
-	mapsLoaded = true;
+	levels > 0 ? loadedLevels = true : loadedLevels = false;
+	return loadedLevels;
 }
 
 void Mapsfiles::GetUserFileChoice()
@@ -153,10 +155,6 @@ void Mapsfiles::loadNextMap()
 		fileMap.close();
 	currfileName = filesNames[++fileIndex];
 	currlevelLoaded = false;
-}
-Mapsfiles& Mapsfiles::operator=(const Mapsfiles& other)
-{
-	return *this; // we dont want to change anything here
 }
 
 

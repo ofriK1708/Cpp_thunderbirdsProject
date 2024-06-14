@@ -12,7 +12,7 @@
  * the exit, and the legend position. It then updates the game pieces on the board and
  * prints the initial state of the game screen.
  */
-void Board::init(bool colorSet, bool mapChoose)
+void Board::init(bool colorSet)
 {
 	this->colorSet = colorSet;
 	size_t colorShift = 0;
@@ -21,15 +21,8 @@ void Board::init(bool colorSet, bool mapChoose)
 
 	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
 		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_CARRY_WEIGHT[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
-	if (!maps.getMapsLoadedstatus())
-		maps.loadMapLevels(levels);
-
-	if(maps.getMap(original_board,mapChoose))
-	{
-		mapFileLoaded = true;
-		updateGamePieces();
-		printScreen();
-	}
+	updateGamePieces();
+	printScreen();
 	
 }
 
@@ -198,4 +191,17 @@ void Board::shipFinishLine(char shipID)
 		ships[1].shipFinishLine();
 		break;
 	}
+}
+void Board::resetBoard()
+{
+	health = Health();
+	time = Time();
+	blocks.clear();
+	num_blocks = 0;
+	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
+		ships[i] = Ship();
+	mapFileLoaded = false;
+	life_pos = Point();
+	exit_pos = Point();
+	colorSet = false;
 }

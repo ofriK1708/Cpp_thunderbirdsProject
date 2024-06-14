@@ -13,6 +13,7 @@
 #include "StepInput.h"
 #include "KeyboardInput.h"
 #include "ResultIO.h"
+#include "mapsfiles.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ enum class GameMode {
 class Game
 {
 	Board board;
+	Mapsfiles maps;
 	Point timelocation;
 	size_t level = 1;
 	size_t levels;
