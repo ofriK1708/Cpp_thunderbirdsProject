@@ -24,13 +24,13 @@ void StepsIO::loadFileByMode() {
 		case FileMode::write:
 			rfp.close();
 			wfp.close();
-			GameSleep::systemOprSleep();
+			//GameSleep::systemOprSleep();
 			wfp.open(getFileName());
 			break;
 		case FileMode::read:
 			rfp.close();
 			wfp.close();
-			GameSleep::systemOprSleep();
+			//GameSleep::systemOprSleep();
 			rfp.open(getFileName());
 			break;
 		default:
@@ -48,9 +48,9 @@ void StepsIO::writeStep(size_t step, size_t timeLeft)
 		wfp.getFile() << message << std::endl;;
 }
 
-bool cmdInterrupt() {
+bool cmdInterrupt(bool silent) {
 	bool interrupt = false;
-	if (_kbhit())
+	if (!silent &&_kbhit())
 		if ((GameConfig::eKeys)_getch() == GameConfig::eKeys::ESC)
 			interrupt = true;
 	return interrupt;
@@ -62,7 +62,7 @@ bool StepsIO::hasInput() {
 		timeStamp = GameConfig::GAME_TIME + 1;
 	}
 	bool res = false;
-	if (cmdInterrupt()) {
+	if (cmdInterrupt(is_silent)) {
 		throw std::ios_base::failure("Esc");
 	}
 	else if (timeStamp == currTime) {

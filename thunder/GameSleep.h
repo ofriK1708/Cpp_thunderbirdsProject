@@ -14,15 +14,27 @@ class GameSleep
 
 public:
 	static bool silentMode;
-	static void sleep(size_t milliSec) {
-		if (silentMode)
-			Sleep(minTime);
-		else
+	static void sleep(size_t milliSec) 
+	{
+		if (!silentMode)
 			Sleep(milliSec);
 	}
-	static void longSleep() { sleep(longOprTime); }
-	static void shortSleep() { sleep(shortOprTime); }
-	static void systemOprSleep() { sleep(systemOprTime); }
-	static void gameOprSleep() { sleep(gameSpeed); }
+	static void longSleep() 
+	{
+		sleep(longOprTime);
+	}
+	static void shortSleep()
+	{
+		sleep(shortOprTime);
+	}
+	static void systemOprSleep() 
+	{
+	 	sleep(systemOprTime);	
+	}
+
+	static void gameOprSleep() 
+	{
+		sleep(gameSpeed);
+	}
 };
 

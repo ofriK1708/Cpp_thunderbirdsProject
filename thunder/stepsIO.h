@@ -23,7 +23,7 @@ private:
 	const size_t& currTime, & level;
 	size_t timeStamp = GameConfig::GAME_TIME + 1, currAction = false;
 	size_t currLevel = 0;
-	
+	bool is_silent = false;
 	void loadFileByMode();
 	string getFileName() const {return prefix + std::to_string(level) + stepsEnding; }
 public:
@@ -32,4 +32,5 @@ public:
 	virtual char getAction() const override {return currAction; }
 	virtual bool hasInput() override;
 	void writeStep(size_t step, size_t timeLeft);
+	void setSilent(bool silent) { is_silent = silent; }
 };

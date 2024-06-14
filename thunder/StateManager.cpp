@@ -36,8 +36,10 @@ void StateManager::setMode(int argc, char* argv[]) {
 		break;
 	case 3:
 		if (!strcmp(argv[1], "-load") and !strcmp(argv[2], "-silent")) {
-			game.setMode(GameMode::SILENT_LOAD_FROM_FILE, &stepsIO, nullptr);
 			GameSleep::silentMode = GamePrint::silentMode = true;
+			stepsIO.setSilent(true);
+			game.setMode(GameMode::SILENT_LOAD_FROM_FILE, &stepsIO, nullptr);
+			
 		}
 		else if (!strcmp(argv[1], "-save") and !strcmp(argv[2], "-silent")) {
 			game.setMode(GameMode::SAVE_TO_FILE, &keyboardStepsInput ,&stepsIO);
@@ -58,7 +60,7 @@ void StateManager::setMode(int argc, char* argv[]) {
 void StateManager::exceptionHandler(const exception& e) {
 	toExit = true;
 	clrscr();
-	GamePrint::print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*");
+	GamePrint::print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*- Game Paused *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 	GamePrint::print("Exception: " + (string)e.what());
 	GamePrint::print("Exiting game ...");
 	GameSleep::longSleep();
@@ -95,6 +97,7 @@ void StateManager::startGame()
 	}
 	if (game.getMode()==GameMode::SILENT_LOAD_FROM_FILE and game.getState()!=GameState::RESULT_DIFF) {
 		clrscr();
+		Sleep(1000);
 		cout << "Test Success: results matched" << endl;
 	}
 }
