@@ -1,6 +1,7 @@
 #include "board.h"
 #include "gameConfig.h"
 #include "utils.h"
+#include "GamePrint.h"
 
 #include <set>
 
@@ -11,7 +12,7 @@
  * the exit, and the legend position. It then updates the game pieces on the board and
  * prints the initial state of the game screen.
  */
-void Board::init(bool colorSet, bool mapChoose)
+void Board::init(bool colorSet)
 {
 	this->colorSet = colorSet;
 	size_t colorShift = 0;
@@ -20,15 +21,8 @@ void Board::init(bool colorSet, bool mapChoose)
 
 	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
 		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_CARRY_WEIGHT[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
-	if (!maps.getMapsLoadedstatus())
-		maps.loadMapLevels();
-
-	if(maps.getMap(original_board,mapChoose))
-	{
-		mapFileLoaded = true;
-		updateGamePieces();
-		printScreen();
-	}
+	updateGamePieces();
+	printScreen();
 	
 }
 
@@ -40,10 +34,10 @@ void Board::printScreen()
 {
 	GameConfig::Color color = GameConfig::WHITE;
 	for (size_t j = 0; j < GameConfig::MIN_Y; j++)
-		std::cout << endl;
+		GamePrint::print("");
 	for (int i = 0; i < HEIGHT; i++) {
 		for (size_t j = 0; j < GameConfig::MIN_X; j++)
-			std::cout << " ";
+			GamePrint::printChar(' ');
 		for (size_t j = 0; j < WIDTH; j++)
 		{
 			char currSymbol = board[i][j];
@@ -75,15 +69,15 @@ void Board::printScreen()
 			setTextColor(color);
 			if(currSymbol == GameConfig::FINISH_BIG_SHIP || currSymbol == GameConfig::FINISH_SMALL_SHIP)
 			{
-				std::cout << ' ';
+				GamePrint::printChar(' ');
 			}
 			else
 			{
-				std::cout << currSymbol;
+				GamePrint::printChar(currSymbol);
 			}
 			setTextColor(color = GameConfig::WHITE);
 		}
-		std::cout << std::endl;
+		GamePrint::print("");
 	}
 	
 }
@@ -197,4 +191,17 @@ void Board::shipFinishLine(char shipID)
 		ships[1].shipFinishLine();
 		break;
 	}
+}
+void Board::resetBoard()
+{
+	health = Health();
+	time = Time();
+	blocks.clear();
+	num_blocks = 0;
+	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
+		ships[i] = Ship();
+	mapFileLoaded = false;
+	life_pos = Point();
+	exit_pos = Point();
+	colorSet = false;
 }

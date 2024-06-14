@@ -1,25 +1,19 @@
 #include <iostream>
-#include "game.h"
+
+#include "StateManager.h"
 #include "gameConfig.h"
+#include "GameSleep.h"
+#include "GamePrint.h"
 
 using namespace std;
+bool GameSleep::silentMode = false;
+bool GamePrint::silentMode = false;
 
-void startGame();
 
-int main()
+int main(int argc, char* argv[])
 {
-    startGame();
+    StateManager stateManager(argc, argv);
+    stateManager.startGame();
     return 0;
 }
 
-void startGame()
-{
-    Game theGame;
-    bool pressedExit = theGame.mainMenu();
-    if (!pressedExit) 
-    {
-        theGame.init();
-        if(theGame.getMapFileStatus())
-            theGame.gameLoop();
-    }
-}

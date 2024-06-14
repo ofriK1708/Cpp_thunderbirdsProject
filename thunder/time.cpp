@@ -2,6 +2,7 @@
 #include "iostream"
 #include "utils.h"
 #include "gameConfig.h"
+#include "GamePrint.h"
 
 
 void Time::setTimeSettings(const size_t totalTime, const bool isColor)
@@ -14,7 +15,7 @@ void Time::setTimeSettings(const size_t totalTime, const bool isColor)
 bool Time::checkAndupdateTime()
 {
 	timeLeft--;
-	if (timeLeft <= 0)
+	if (timeLeft <= 1)
 	{
 		resetTime();
 		return true;
@@ -30,20 +31,20 @@ bool Time::checkAndupdateTime()
 void Time::printTime(size_t time)
 {
 	gotoxy(x + GameConfig::MIN_X, y + GameConfig::MIN_Y);
-	cout << "Time Left : ";
+	GamePrint::print("Time Left : ", true);
 	if (isColor)
 		setTextColor(GameConfig::GREEN);
 
 	// Print updated time
 	for (int i = 0; i < time; i++)
 	{
-		std::cout << "|";
+		GamePrint::printChar('|');
 	}
 
 	// Overwrite the remaining characters with spaces
 	for (int i = time; i < (totalTime / 10); i++)
 	{
-		std::cout << " ";
+		GamePrint::printChar(' ');
 	}
 	setTextColor(GameConfig::WHITE);
 	hideCursor();

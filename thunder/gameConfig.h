@@ -29,9 +29,10 @@ public:
 
 	static constexpr size_t LONG_SLEEP = 3000;
 	static constexpr size_t SHORT_SLEEP = 1500;
-	static constexpr size_t SYSTEM_OPR_SLEEP = 150;
-	static constexpr size_t MIN_SLEEP = 80;
-	static constexpr size_t GAME_TIME = 60;
+	static constexpr size_t SYSTEM_OPR_SLEEP = 80;
+	static constexpr size_t GAME_SPEED = 80;
+	static constexpr size_t MIN_TIME = 1;
+	static constexpr size_t GAME_TIME = 400;
 	static constexpr size_t LIVES = 3;
 	
 	static bool isShipControlMove(GameConfig::eKeys key);

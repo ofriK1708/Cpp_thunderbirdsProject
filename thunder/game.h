@@ -12,58 +12,82 @@
 #include "stepsIO.h"
 #include "StepInput.h"
 #include "KeyboardInput.h"
+#include "ResultIO.h"
+#include "mapsfiles.h"
 
 using namespace std;
 
 class Ship;
 
+enum class GameState {
+	RUNNING = 0, //The game shall run 
+	PAUSE, //puase the game
+	WIN, //the game is finished and the player won
+	LOSE, //the game is finished and the player lost
+	RESULT_DIFF //there is a difference between the curr result and the recorded one
+};
+
+enum class GameMode {
+	SIMPLE = 0,
+	SAVE_TO_FILE,
+	LOAD_FROM_FILE,
+	SILENT_LOAD_FROM_FILE
+};
+
 class Game
 {
-		
 	Board board;
+	Mapsfiles maps;
 	Point timelocation;
+	size_t level = 1;
+	size_t levels;
+	StepInput* stepInput = nullptr;
+	StepsIO* stepsOutPut = nullptr;
+	ResultIO resultIO;
 
-	//game pieces
+	//game pieceresultIOs
 	Health health;
 	Time time;
 	Ship* ships;
 	map <char, Block>* blocks;
 
-	size_t level = 1;
-
-	StepInput* userInput;
-
 	//configurations
 	int gameTime = GameConfig::GAME_TIME;
-	int gameSpeed = GameConfig::MIN_SLEEP; // for sleep function
 	
-	//data globals
+	//data global indicators
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	
+	bool freezeSips = false;
 	int keyPressed;
-	int userChoice;
 	bool mapfileLoaded;
-	
-	//indicator globas
+	GameState gameState;
+	GameMode mode = GameMode::SIMPLE;
 	bool timeOver = false;
-	bool running = false;
-	bool stopGame = false;
 	bool colorSet = true;
 	bool mapChoose = false;
 
 	void setKey(int key) { keyPressed = tolower(key); }
-	void setGameStatus();
+	void ShipAction();
 	void play();
-	void pauseMenu();
 	void resetBoard();
 	void afterDeath();
 	void gameFinish();
-	void printCredits();
 
 public:
-	void init();
-	bool mainMenu();
+	Game():resultIO(level) {};
+	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
+	GameMode getMode() { return mode; }
+	void prepareToStart();
 	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }
+	void printScreen() { board.printScreen(); }
+	void printCredits();
+	GameState getState() { return gameState; }
+	void setStateToRunning() { gameState = GameState::RUNNING; }
+	const size_t& getTimeLeft() { return time.getTimeLeft(); }
+	const size_t& getLevel() { return level;}
+    void setColorSet(bool colorSet) { this->colorSet = colorSet; }
+	void setMapChoose(bool mapChoose) { this->mapChoose = mapChoose; }
+
 };
 
 #endif

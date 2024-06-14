@@ -2,6 +2,7 @@
 
 #include "stepsIO.h"
 #include "gameConfig.h"
+#include "GameSleep.h"
 
 #include <string>
 #include <conio.h>
@@ -9,8 +10,8 @@
 using std::to_string;
 
 
-StepsIO::StepsIO(Mode mode, const size_t& currTime, size_t& level):
-	mode(mode), currTime(currTime), level(level) {
+void StepsIO::setMode(FileMode _mode) {
+	mode = _mode;
 	loadFileByMode();
 }
 
@@ -20,12 +21,16 @@ void StepsIO::loadFileByMode() {
 		timeStamp = GameConfig::GAME_TIME + 1;
 
 		switch (mode) {
-		case Mode::write:
+		case FileMode::write:
 			rfp.close();
+			wfp.close();
+			//GameSleep::systemOprSleep();
 			wfp.open(getFileName());
 			break;
-		case Mode::read:
+		case FileMode::read:
+			rfp.close();
 			wfp.close();
+			//GameSleep::systemOprSleep();
 			rfp.open(getFileName());
 			break;
 		default:
@@ -37,14 +42,15 @@ void StepsIO::loadFileByMode() {
 
 void StepsIO::writeStep(size_t step, size_t timeLeft)
 {
-	string message = to_string(step) + to_string(' ') + to_string(timeLeft);
-	if (GameConfig::isShipControlMove((GameConfig::eKeys)step))
+	loadFileByMode();
+	string message = to_string(step) + " " + to_string(timeLeft);
+	if (GameConfig::isShipControlMove((GameConfig::eKeys)step) or step==0)
 		wfp.getFile() << message << std::endl;;
 }
 
-bool cmdInterrupt() {
+bool cmdInterrupt(bool silent) {
 	bool interrupt = false;
-	if (_kbhit())
+	if (!silent &&_kbhit())
 		if ((GameConfig::eKeys)_getch() == GameConfig::eKeys::ESC)
 			interrupt = true;
 	return interrupt;
@@ -52,17 +58,22 @@ bool cmdInterrupt() {
 
 bool StepsIO::hasInput() {
 	loadFileByMode();
+	if (currTime == GameConfig::GAME_TIME) {
+		timeStamp = GameConfig::GAME_TIME + 1;
+	}
 	bool res = false;
-	if (cmdInterrupt()) {
-		currAction = (char)GameConfig::eKeys::ESC;
+	if (cmdInterrupt(is_silent)) {
+		throw std::ios_base::failure("Esc");
+	}
+	else if (timeStamp == currTime) {
 		res = true;
 	}
-	else if (timeStamp == currTime)
-		res = true;
 	else if (timeStamp > currTime) {
 		string line;
 		getline(rfp.getFile(), line);
 		std::sscanf(line.c_str(), "%d %d", &currAction, &timeStamp);
+		if (timeStamp == currTime)
+			res = true;
 	}
 	return res;
 }

@@ -29,5 +29,6 @@ void hideCursor()
 
 void clrscr() // clear_screen
 {
+	gotoxy(0, 0);
 	system("cls");
 }

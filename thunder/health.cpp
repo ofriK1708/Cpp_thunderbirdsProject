@@ -1,6 +1,7 @@
 #include "health.h"
 
 #include "utils.h"
+#include "GamePrint.h"
 
 
 
@@ -17,12 +18,12 @@ bool Health::isAlive()
 void Health::printHealth() {
 	gotoxy(x + GameConfig::MIN_X, y + GameConfig::MIN_Y);
 
-	cout << "Remaining Lives: ";
+	GamePrint::print("Remaining Lives: ", true);
 	
 	if (isColor)
 		setTextColor(GameConfig::LIGHTRED);
  
-	std::cout << this->livesLeft;
+	GamePrint::print(to_string(this->livesLeft), true);
 
 	setTextColor(GameConfig::WHITE);
 	hideCursor();

@@ -5,15 +5,17 @@
 #include "Windows.h"
 #include <filesystem>
 #include "gameConfig.h"
+#include "GameSleep.h"
+#include "GamePrint.h"
 
 
-using std::cout;
 using std::endl;
 using std::cin;
 using std::string;
 
-void Mapsfiles::loadMapLevels()
+bool Mapsfiles::loadMapLevels(size_t& levels)
 {
+	bool loadedLevels;
 	for(const auto& file : std::filesystem::directory_iterator(filesPath))
 	{
      if(file.is_regular_file()) // check if it's a file and not a dir or something else
@@ -28,7 +30,9 @@ void Mapsfiles::loadMapLevels()
 	 }
 	}
 	std::sort(filesNames.begin(), filesNames.end());// sorting the fileNames lexicographically
-	mapsLoaded = true;
+	levels = filesNames.size();
+	levels > 0 ? loadedLevels = true : loadedLevels = false;
+	return loadedLevels;
 }
 
 void Mapsfiles::GetUserFileChoice()
@@ -36,10 +40,10 @@ void Mapsfiles::GetUserFileChoice()
 	do
 	{
 		if (fileIndex != 0) // not the first time we entred this loop
-			cout << "invalid choice, try again";
-		cout << "Please Enter your file choice(enter a number): " << endl;
+			GamePrint::print("invalid choice, try again");
+		GamePrint::print("Please Enter your file choice(enter a number):");
 		for (int i = 0; i < filesNames.size(); i++)
-			cout << i + 1 << ": " << filesNames[i] << endl;
+			GamePrint::print(to_string(i + 1) + ": " + (string)filesNames[i]);
 		cin >> fileIndex;
 	} while (fileIndex > filesNames.size() || fileIndex < 1);
 	fileIndex--;
@@ -49,7 +53,7 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 {
 	if (filesNames.size() == 0) 
 	{
-		cout << "couldn't find any maps files, please enter a map file in the diractory - mapFiles" << endl;
+		GamePrint::print("couldn't find any maps files, please enter a map file in the diractory - mapFiles");
 		return false;
 	}
 	if (userChoice)
@@ -58,11 +62,11 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 		return true;
 	}
 	currfileName = filesPath + "/" + filesNames[fileIndex];
-	Sleep(GameConfig::SYSTEM_OPR_SLEEP);
+	GameSleep::systemOprSleep();
 	clrscr();
 	fileMap.open(currfileName);
 	checkFileStatus();
-	
+
 	if (fileStatus)
 	{
 		string line;
@@ -70,18 +74,18 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 		for (size_t i = 0; i < GameConfig::GAME_HEIGHT; i++)
 		{
 			getline(fileMap.getFile(), line);
-			for (j = 0; j < GameConfig::GAME_WIDTH && j<line.length(); j++)
+			for (j = 0; j < GameConfig::GAME_WIDTH && j < line.length(); j++)
 			{
 				map[i][j] = line[j];
 			}
 			for (; j < GameConfig::GAME_WIDTH; j++)
 				map[i][j] = GameConfig::WALL_SYMBOL;
 
-			map[i][j] = '\0';			
+			map[i][j] = '\0';
 		}
-		if(!checkMapAndUpdate(map))
+		if (!checkMapAndUpdate(map))
 		{
-			cout << "couldn't load map,map is not correct, please try to fix it or choose another level" << endl;
+			GamePrint::print("couldn't load map,map is not correct, please try to fix it or choose another level");
 			return false;
 		}
 		currlevelLoaded = true;
@@ -141,15 +145,14 @@ void Mapsfiles::checkFileStatus()
 	}
 	else
 	{
-		cout << "Problem opening file!!!!";
+		GamePrint::print("Problem opening file!!!!");
 		fileStatus = false;
 	}
 }
 void Mapsfiles::loadNextMap()
 {
-/*
 	if (fileMap.is_open())
-		fileMap.close();*/
+		fileMap.close();
 	currfileName = filesNames[++fileIndex];
 	currlevelLoaded = false;
 }
