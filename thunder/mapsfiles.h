@@ -34,6 +34,7 @@ public:
 	bool getMap(char map[][GameConfig::GAME_WIDTH + 1],bool userChoice);
 	bool getCurrLevelLoadedStatus() const { return currlevelLoaded; }
 	void loadNextMap();
+	void getlevel(size_t& index) { index = fileIndex + 1; }
 
 	
 };

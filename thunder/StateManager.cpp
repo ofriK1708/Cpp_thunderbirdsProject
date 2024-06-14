@@ -108,7 +108,7 @@ void StateManager::mainMenu()
 		GamePrint::print("Please enter your choice");
 		GamePrint::print("1: Start a new game");
 		GamePrint::print("2: Set color ON/OFF (the default value is on)");
-		GamePrint::print("3: load a specific map");
+		GamePrint::print("3: Set play a specific map ON/OFF (the default value is off)");
 		GamePrint::print("8: Instructions and keys");
 		GamePrint::print("9: Exit");
 		cin >> userChoice;
@@ -119,18 +119,18 @@ void StateManager::mainMenu()
 			break;
 		case 2:
 			colorSet = !colorSet;
-			colorSet ? GamePrint::print("color is now set on") : GamePrint::print("color is now set off");
-			GamePrint::print("");
+			colorSet ? GamePrint::print("\nColor is now set on\n") : GamePrint::print("\nColor is now set off\n");
 			break;
 		case 3:
-			GamePrint::print("No problem, when you will start a new game, you will choose the map :)");
-			mapChoose = true;
+			mapChoose = !mapChoose;
+			mapChoose ? GamePrint::print("\nYou will choose the map, when starting a new game\n") :
+				GamePrint::print("\nFirst map will be loaded automatically\n");
 			break;
 		case 8:
 			GamePrint::print("\nObjective :\nEscape the ancient Egyptian tomb by maneuvering the two trapped ships, a big ship(2x2) and a small ship(2x1), through obstacles and reaching the exit before time runs out\n");
 			GamePrint::print("Controls:\nUse WASD to move the active ship");
 			GamePrint::print("W - Up\nA - Left\nX - Down\nD - Right");
-			GamePrint::print("Press 'B' or 'S' to switch control between the big and small ships\nPress 'ESC' to pause the game.");
+			GamePrint::print("Press 'B' or 'S' to switch control between the big and small ships\nPress 'ESC' to pause the game.\n");
 			break;
 		case 9:
 			clrscr();
@@ -143,6 +143,8 @@ void StateManager::mainMenu()
 			break;
 		}
 	} while (userChoice != 1 && !toExit);
+	game.setColorSet(colorSet);
+	game.setMapChoose(mapChoose);
 	GameSleep::shortSleep();
 	clrscr();
 }

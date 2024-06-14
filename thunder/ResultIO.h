@@ -29,7 +29,7 @@ private:
 	string getFileName() const { return prefix + std::to_string(level) + stepsEnding; }
 
 public:
-	ResultIO(const size_t& level): level(level) {currLevel = 0; }
+	ResultIO(const size_t& level): level(level) {}
 	void setMode(FileMode _mode);
 	void writeEvent(int timeLeft, Events event);
 	bool cmpEvents(int timeLeft, Events event);

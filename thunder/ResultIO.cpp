@@ -7,22 +7,11 @@
 
 
 void ResultIO::writeEvent(int timeLeft, Events event) {
+	loadFileByMode();
 	string message;
-	/*
-	switch (event) {
-	case Events::DEATH:
-		message = "death";
-		break;
-	case Events::FINISH_LEVEL:
-		message = "finish";
-		break;
-	default:
-		message = "unknown";
-		break;
-	}*/
 	message.append(std::to_string(timeLeft));
 	message.append(" ");
-	message.append(std::to_string((int)event));
+	message.append(std::to_string((int)event)); // 1 is Win, 0 is Death
 	wfp.getFile() << message << std::endl;
 }
 
@@ -32,7 +21,8 @@ void ResultIO::setMode(FileMode _mode) {
 	loadFileByMode();
 }
 
-void ResultIO::loadFileByMode() {
+void ResultIO::loadFileByMode() 
+{
 	if (currLevel != level) {
 		currLevel = level;
 		switch (mode) {

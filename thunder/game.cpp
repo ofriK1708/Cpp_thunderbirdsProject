@@ -50,6 +50,7 @@ void Game::resetBoard()
 	if (!maps.getCurrLevelLoadedStatus())
 	{
 		maps.getMap(board.getOriginalBoard(), mapChoose);
+		maps.getlevel(level);
 	}	
 	board.init(colorSet);
 	ships = board.getShips();
@@ -62,7 +63,7 @@ void Game::resetBoard()
 void Game::gameFinish()
 {
 	clrscr();
-	if(level < levels)
+	if(level < levels && !mapChoose)
 	{
 		maps.loadNextMap();
 		level++;
@@ -88,7 +89,7 @@ void Game::ShipAction()
 {
 	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
 	{
-		if(level == levels) // if we are at the last level and win 
+		if(level == levels || mapChoose) // if we are at the last level and win or the player choose the map
 			gameState = GameState::WIN;
 		if (getMode() == GameMode::SAVE_TO_FILE)
 			resultIO.writeEvent(time.getTimeLeft(), Events::FINISH_LEVEL);
@@ -145,7 +146,7 @@ void Game::afterDeath()
 {
 	if (getMode() == GameMode::SAVE_TO_FILE) {
 		resultIO.writeEvent(time.getTimeLeft(), Events::DEATH);
-		stepsOutPut->writeStep('0', 0);
+		stepsOutPut->writeStep(0, 0);
 	}
 	else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) {
 		if (!resultIO.cmpEvents(time.getTimeLeft(), Events::DEATH)) {

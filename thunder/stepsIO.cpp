@@ -42,8 +42,9 @@ void StepsIO::loadFileByMode() {
 
 void StepsIO::writeStep(size_t step, size_t timeLeft)
 {
+	loadFileByMode();
 	string message = to_string(step) + " " + to_string(timeLeft);
-	if (GameConfig::isShipControlMove((GameConfig::eKeys)step) or step=='0')
+	if (GameConfig::isShipControlMove((GameConfig::eKeys)step) or step==0)
 		wfp.getFile() << message << std::endl;;
 }
 

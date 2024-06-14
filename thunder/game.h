@@ -85,6 +85,8 @@ public:
 	void setStateToRunning() { gameState = GameState::RUNNING; }
 	const size_t& getTimeLeft() { return time.getTimeLeft(); }
 	const size_t& getLevel() { return level;}
+    void setColorSet(bool colorSet) { this->colorSet = colorSet; }
+	void setMapChoose(bool mapChoose) { this->mapChoose = mapChoose; }
 
 };
 
