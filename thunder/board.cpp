@@ -2,9 +2,7 @@
 #include "gameConfig.h"
 #include "utils.h"
 #include "GamePrint.h"
-
 #include <set>
-
 /**
  * Initializes the game board and its components.
  *
@@ -180,6 +178,74 @@ bool Board::checkMove(LocationInfo &ol)
 	return isValid;
 }
 
+bool Board::checkFall(LocationInfo& objLocationInfo,Block* cargoBlock,char keyCargoBlock)
+{
+	int currY, currX;
+	char currSymbol;
+	bool isValid = true;
+	Ship* carryShip;
+	bool isBeingCarried = false;
+	bool addedNewBlockToShip = false;
+	map <char,Block*> obsticals;
+	for (int i = 0; i < objLocationInfo.objSize && isValid; i++)
+	{
+		currY = objLocationInfo.nextPos[i].getY();
+		currX = objLocationInfo.nextPos[i].getX();
+
+		currSymbol = board[currY][currX];
+		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
+			if (currSymbol == GameConfig::WALL_SYMBOL)
+				isValid = false;
+			else if (Block::isBlock(currSymbol))
+				obsticals.insert({ currSymbol,&blocks[currSymbol] });
+			else // we fell on a ship
+			{
+				carryShip = getShipBySymbol(currSymbol);
+				addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &blocks[objLocationInfo.objSymbol]);
+				blocks[objLocationInfo.objSymbol].setCarriedBlock(true);
+				if (cargoBlock != nullptr) {
+					addedNewBlockToShip = carryShip->addToTrunk(keyCargoBlock, cargoBlock);
+					cargoBlock->setCarriedBlock(true);
+				}
+				isBeingCarried = true;
+				if(addedNewBlockToShip)
+				if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
+				{
+					carryShip->setOverLoaded(true);
+				}
+				if(blocks[objLocationInfo.objSymbol].isCarriedBlock())
+					isValid = false;
+			}
+				
+	}
+
+	//check for the whole chunk if it can move
+	for (auto& obs : obsticals) 
+	{
+		if (!isValid)
+			break;
+		if (obs.second->isCarriedBlock())
+			isBeingCarried = true;
+		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
+		{
+			isValid = false;
+		}
+	}
+	if (!isBeingCarried) // if it was carried before and now someone pushed it, we need to remove from the ship it was carried by
+	{
+		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
+		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
+		blocks[objLocationInfo.objSymbol].setCarriedBlock(false);
+	}
+	if (isValid)
+	{
+			//move the whole chunk togther
+			for (auto obs : obsticals)
+				obs.second->move(objLocationInfo.direction, objLocationInfo.carryWeight, true);
+	}
+	return isValid;
+}
+
 void Board::shipFinishLine(char shipID)
 {
 	switch (shipID)
@@ -204,4 +270,16 @@ void Board::resetBoard()
 	life_pos = Point();
 	exit_pos = Point();
 	colorSet = false;
+}
+Ship* Board::getShipBySymbol(char sym)
+{
+	switch (sym)
+	{
+	case GameConfig::BIG_SHIP_S:
+		return &(ships[GameConfig::BIG_SHIP_ID]);
+	case GameConfig::SMALL_SHIP_S:
+		return &(ships[GameConfig::SMALL_SHIP_ID]);
+	default:
+		throw exception("Can't find Ship by symbol");
+	}
 }

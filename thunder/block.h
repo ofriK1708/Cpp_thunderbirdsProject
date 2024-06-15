@@ -10,7 +10,6 @@ class Block
 {
 private:
 	static GameConfig::Color backgroundcolor;
-
 	Board* board;
 	Point pos[GameConfig::MAX_BLOCK_SIZE];
 	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
@@ -18,7 +17,7 @@ private:
 	LocationInfo locationInfo;
 	GameConfig::gamePieceType type = GameConfig::SECONDARY;
 	char symbol = NULL;
-
+	bool isCarried = false;
 	void delTrace();
 
 public:
@@ -36,7 +35,9 @@ public:
 	size_t getSize() const { return size; }
 	Point getPos(size_t i) const { return pos[i]; }
 	bool static isBlock(char ch);
-	
+	bool isCarriedBlock() { return isCarried; }
+	void setCarriedBlock(bool isCarried) { this->isCarried = isCarried; }
+	bool checkFall(Block* blockToCarry = nullptr, char keyCargoBlock = '\0');
 };
 
 #endif

@@ -6,10 +6,10 @@
 #include "string"
 
 
-void ResultIO::writeEvent(int timeLeft, Events event) {
+void ResultIO::writeEvent(size_t timeLeft, Events event) {
 	loadFileByMode();
 	string message;
-	message.append(std::to_string(timeLeft));
+	message.append(std::to_string((int)timeLeft));
 	message.append(" ");
 	message.append(std::to_string((int)event)); // 1 is Win, 0 is Death
 	wfp.getFile() << message << std::endl;
@@ -46,7 +46,7 @@ void ResultIO::loadFileByMode()
 }
 
 
-bool ResultIO::cmpEvents(int _timeLeft, Events _event) {
+bool ResultIO::cmpEvents(size_t _timeLeft, Events _event) {
 	bool res = false;
 	string line;
 	int event, timeLeft;

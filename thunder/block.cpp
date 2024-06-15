@@ -21,7 +21,21 @@ bool Block::isBlock(char ch)
 
 bool Block::move(GameConfig::eKeys direction, int* carryWeight, bool onCommand)
 {		
-	if(onCommand || checkMove(direction, carryWeight)){
+	if (!onCommand) // if we on command to move we dont need to check anything 
+	{
+		if (direction != GameConfig::eKeys::DOWN) 
+		{
+			if (!checkMove(direction, carryWeight)) 
+			{
+				return false;
+			}
+		}
+		else // direction is DOWN
+		{
+			if (!checkFall())
+				return false;
+		}
+	}
 		delTrace();
 		std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 		int currY, currX;
@@ -33,9 +47,7 @@ bool Block::move(GameConfig::eKeys direction, int* carryWeight, bool onCommand)
 			board->board[currY][currX] = symbol;
 		}
 		hideCursor();
-		return true;
-	}
-	return false;	
+		return true;	
 }
 	
 
@@ -53,6 +65,17 @@ bool Block::checkMove(GameConfig::eKeys direction, int* carryWeight) {
 	return canMove;
 }
 
+bool Block::checkFall(Block* blockToCarry, char keyCargoBlock)
+{
+	bool canMove = false;
+	std::copy(std::begin(pos), std::end(pos), std::begin(nextPos));
+	for (size_t i = 0; i < size; i++)
+		nextPos[i].move(GameConfig::eKeys::DOWN);
+	locationInfo = { nextPos, symbol, size, GameConfig::eKeys::DOWN};
+	if (board->checkFall(locationInfo,blockToCarry,keyCargoBlock))
+		canMove = true;
+	return canMove;
+}
 
 void Block::delTrace() {
 	int currY, currX;

@@ -3,8 +3,8 @@ W&                                                                             W
 W                                                                              W
 W                                                                              W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WWWWWWWWWWWWWWW        cc  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW        ##         W
-W          aa  W     c                                         @@   ##         W
+WWWWWWWWWWWWWWW        cc  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                   W
+W          aa  W     ccc                                        @@             W
 WWWWWWWWWWWWWWW  WWWWWWfWWWWWWWWWWWWWWWWWWWWWWWW   eeeee        bb  X          W
 W             WWWWWWW  d                       W  WWWWWWWWWWWWWWWW  WWWWWWWWWWWW
 W                   W  ddd                     W  W              WWWWWWWWWWWWWWW
@@ -18,8 +18,8 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWW   W                                                W
                               W                                                 
                               W                                                 
 W   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W   W                                                                          W
-W   W                                                                          W
-W   W                                                                          W
-W   W                                                                          W
+W   W           k                                                              W
+W   W           ssss                                                           W
+W   W           ##                                                             W
+W   W           ##             qqq                                             W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

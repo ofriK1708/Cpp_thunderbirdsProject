@@ -26,7 +26,20 @@ bool Ship::move(GameConfig::eKeys direction)
 {
 	if (!isFinished) {
 		int carryWeight = maxCarryWeight;
-		if (board->checkMove(checkNextObjLocation(direction, &carryWeight))) {
+		bool carriedBlocksCanMove = true;
+		Block* currBlock = nullptr;
+		if(direction != GameConfig::eKeys::DOWN){
+			for (auto& block : trunk)
+			{
+				currBlock = block.second;
+				int blockCarryWeight = currBlock->getSize();
+				if (!(currBlock->move(direction, &blockCarryWeight)))
+				{
+					carriedBlocksCanMove = false;
+				}
+			}
+		}
+		if (board->checkMove(checkNextObjLocation(direction, &carryWeight)) && carriedBlocksCanMove) {
 			delTrace();
 			std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 			int currY, currX;
@@ -79,4 +92,13 @@ void Ship::shipFinishLine()
 		board->board[currY][currX] = symbol;
 	}
 	hideCursor();
+}
+size_t Ship::getTrunkWeight() const
+{
+	size_t carryWeight = 0;
+	for(const auto& block : trunk)
+	{
+		carryWeight += block.second->getSize();
+	}
+	return carryWeight;
 }
