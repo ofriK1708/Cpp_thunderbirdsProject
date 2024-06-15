@@ -15,6 +15,7 @@ private:
 	Point finishPos[GameConfig::MAX_SHIP_SIZE];
 	size_t size = 0;
 	size_t finishSize = 0;
+
 	char symbol;
 	bool isFinished;
 	bool OverLoaded = false;
@@ -36,7 +37,7 @@ public:
 	void shipFinishLine();
 	bool GetFinishStatus() { return isFinished; }
 	static bool isShip(char ch);
-	auto addToTrunk(const char key, Block* block) { auto result = trunk.insert({ key, block }); return result.second; }
+	bool addToTrunk(const char key, Block* block) { auto result = trunk.insert({ key, block }); return result.second; }
 	void removeFromTrunk(const char key) { trunk.erase(key);}
 	int getMaxCarryWeight() const { return maxCarryWeight; }
 	size_t getTrunkWeight() const;

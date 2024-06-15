@@ -58,7 +58,7 @@ bool Ship::move(GameConfig::eKeys direction)
 					for (auto& block : trunk)
 					{
 						currBlock = block.second;
-						currBlock->move(direction, &carryWeight, true);
+						currBlock->move(direction, &carryWeight,false,true);
 					}
 				}
 				return true;

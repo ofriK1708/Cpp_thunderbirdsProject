@@ -8,15 +8,15 @@ W                                                                              W
 W                                                                              W
 W                                                                              W
 W                                                                              W
-W                                                                             W
+W                                                                              W
+W                                                 @@                           W
 W                                                                              W
 W                                                                              W
 W                                                                              W
 W                                                                              W
-W                                                                              W
-W                  aaa @@                                                      W
-                   a##                                                            
-                   a##                                                      X       
+W                   aaa                                                        W
+                    ##a                                                             
+                    ##                                                      X       
 W                                                                              W
 W                                                                              W
 W                                                                              W

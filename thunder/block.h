@@ -17,6 +17,7 @@ private:
 	
 	char symbol = NULL;
 	bool isCarried = false;
+	char carrierShipID = '\0';
 	void delTrace();
 
 public:
@@ -25,7 +26,7 @@ public:
 	static GameConfig::Color getBackgroundColor() { return backgroundcolor; }
 	static void setColor(GameConfig::Color color) { backgroundcolor = color; }	
 	void addPoint(int x, int y) { pos[size++].set(x, y); }
-	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr, bool onCommand = false);
+	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr, bool onCommand = false,bool useRegMove = false);
 	char getSymbol() const { return symbol; }
 	bool checkMove(GameConfig::eKeys direction, int* carryWeight);
 	size_t getSize() const { return size; }

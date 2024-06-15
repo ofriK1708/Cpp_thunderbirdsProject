@@ -246,6 +246,8 @@ bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
 		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
 			if (currSymbol == GameConfig::WALL_SYMBOL)
 				return false;
+		    else if (currSymbol == GameConfig::FINISH_S)
+				return false;
 		    else if (Block::isBlock(currSymbol))
 				obsticals.insert({ currSymbol, &blocks[currSymbol]});
 	}
