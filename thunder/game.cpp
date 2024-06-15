@@ -69,7 +69,7 @@ void Game::gameFinish()
 		level++;
 		resetBoard();
 		health.printHealth();
-		freezeSips = true;
+		freezeShips = true;
 		keyPressed = 0;
 	}
 	else {
@@ -114,28 +114,28 @@ void Game::ShipAction()
 			if (activeShip == GameConfig::ShipID::SMALL)
 				activeShip = GameConfig::ShipID::BIG;
 			else
-				freezeSips = true;
+				freezeShips = true;
 			break;
 
 		case (int)GameConfig::eKeys::SWITCH_TO_SMALL_S:
 			if (activeShip == GameConfig::ShipID::BIG)
 				activeShip = GameConfig::ShipID::SMALL;
 			else
-				freezeSips = true;
+				freezeShips = true;
 			break;
 
 		case (int)GameConfig::eKeys::UP:
 		case (int)GameConfig::eKeys::DOWN:
 		case (int)GameConfig::eKeys::LEFT:
 		case (int)GameConfig::eKeys::RIGHT:
-			freezeSips = false;
+			freezeShips = false;
 			break;
 		};
 	}
 }
 
 void Game::play() {
-	if(not freezeSips)
+	if(not freezeShips)
 		ships[activeShip].move((GameConfig::eKeys)keyPressed);
 	for(auto & pair: *blocks)
 		pair.second.move();
@@ -144,27 +144,39 @@ void Game::play() {
 
 void Game::afterDeath() 
 {
-	if (getMode() == GameMode::SAVE_TO_FILE) {
+	if (getMode() == GameMode::SAVE_TO_FILE) 
+	{
 		resultIO.writeEvent(time.getTimeLeft(), Events::DEATH);
 		stepsOutPut->writeStep(0, 0);
 	}
-	else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) {
-		if (!resultIO.cmpEvents(time.getTimeLeft(), Events::DEATH)) {
+	else if (getMode() == GameMode::SILENT_LOAD_FROM_FILE) 
+	{
+		if (!resultIO.cmpEvents(time.getTimeLeft(), Events::DEATH)) 
+		{
 			gameState = GameState::RESULT_DIFF;
 		}
 	}
 	if (health.getlivesLeft() > 1)
 	{
 		 clrscr();
-		 GamePrint::print("!-!-!-!-!-!-!-! Sorry for that, try again :) !-!-!-!-!-!-!-!");
+		 GamePrint::moveToMiddle();
+		 if(timeOver)
+		 {
+			GamePrint::print("!-!-!-!-!-!-!-! TIME OVER !-!-!-!-!-!-!-!");
+			timeOver = false;
+		 }
+		 else
+		 {
+			 GamePrint::print("!-!-!-!-!-!-!-! SHIP IS OVERLOADED !-!-!-!-!-!-!-!");
+		 }
+		 GamePrint::moveToMiddle();
+		 GamePrint::print("~~~~~~~~~~~~~~~~ Reloading Level ~~~~~~~~~~~~~~~~~~~");
 		 health.decreaseLife();
-		 this->timeOver = false;
 		 GameSleep::longSleep();
 		 clrscr();
-	
 		 resetBoard();
 		 health.printHealth();
-		 freezeSips = true;
+		 freezeShips = true;
 		 keyPressed = 0;
 	}
 	else
@@ -202,7 +214,7 @@ void Game::gameLoop()
 			}
 
 			GameSleep::gameOprSleep();
-			if (timeOver)
+			if (timeOver || ships[GameConfig::BIG_SHIP_ID].isOverLoaded() || ships[GameConfig::SMALL_SHIP_ID].isOverLoaded())
 				afterDeath();
 		}
 		catch (const std::ios_base::failure& e) {

@@ -183,38 +183,39 @@ bool Board::checkFall(LocationInfo& objLocationInfo,Block* cargoBlock,char keyCa
 	int currY, currX;
 	char currSymbol;
 	bool isValid = true;
+	bool crashedToWall = false;
 	Ship* carryShip;
-	bool isBeingCarried = false;
+	bool stillCarried = false;
 	bool addedNewBlockToShip = false;
 	map <char,Block*> obsticals;
+	isValid = checkIfWallCrash(objLocationInfo);
 	for (int i = 0; i < objLocationInfo.objSize && isValid; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();
 		currX = objLocationInfo.nextPos[i].getX();
-
 		currSymbol = board[currY][currX];
 		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
-			if (currSymbol == GameConfig::WALL_SYMBOL)
-				isValid = false;
-			else if (Block::isBlock(currSymbol))
+			if (Block::isBlock(currSymbol))
 				obsticals.insert({ currSymbol,&blocks[currSymbol] });
 			else // we fell on a ship
 			{
-				carryShip = getShipBySymbol(currSymbol);
-				addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &blocks[objLocationInfo.objSymbol]);
-				blocks[objLocationInfo.objSymbol].setCarriedBlock(true);
-				if (cargoBlock != nullptr) {
-					addedNewBlockToShip = carryShip->addToTrunk(keyCargoBlock, cargoBlock);
-					cargoBlock->setCarriedBlock(true);
-				}
-				isBeingCarried = true;
-				if(addedNewBlockToShip)
-				if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
-				{
-					carryShip->setOverLoaded(true);
-				}
-				if(blocks[objLocationInfo.objSymbol].isCarriedBlock())
+				if (isValid) { // we only put in in the trunk if the move was valid 
+					carryShip = getShipBySymbol(currSymbol);
+					addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &blocks[objLocationInfo.objSymbol]);
+					blocks[objLocationInfo.objSymbol].setCarriedBlock(true);
+					if (cargoBlock != nullptr)
+					{
+						addedNewBlockToShip = carryShip->addToTrunk(keyCargoBlock, cargoBlock);
+						cargoBlock->setCarriedBlock(true);
+					}
+					stillCarried = true;
+					if (addedNewBlockToShip)
+						if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
+						{
+							carryShip->setOverLoaded(true);
+						}
 					isValid = false;
+				}
 			}
 				
 	}
@@ -225,25 +226,41 @@ bool Board::checkFall(LocationInfo& objLocationInfo,Block* cargoBlock,char keyCa
 		if (!isValid)
 			break;
 		if (obs.second->isCarriedBlock())
-			isBeingCarried = true;
+			stillCarried = true;
 		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
 		{
 			isValid = false;
 		}
 	}
-	if (!isBeingCarried) // if it was carried before and now someone pushed it, we need to remove from the ship it was carried by
+	if (blocks[objLocationInfo.objSymbol].isCarriedBlock() && !(stillCarried)) // if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
 	{
 		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
 		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
 		blocks[objLocationInfo.objSymbol].setCarriedBlock(false);
 	}
-	if (isValid)
+	if (isValid) //move the whole chunk togther
 	{
-			//move the whole chunk togther
-			for (auto obs : obsticals)
-				obs.second->move(objLocationInfo.direction, objLocationInfo.carryWeight, true);
+		for (auto &obs : obsticals)
+			obs.second->move(objLocationInfo.direction, objLocationInfo.carryWeight, true);
 	}
 	return isValid;
+}
+
+bool Board::checkIfWallCrash(LocationInfo& objLocationInfo) const
+{
+	int currY, currX;
+	char currSymbol;
+	for (int i = 0; i < objLocationInfo.objSize ; i++)
+	{
+		currY = objLocationInfo.nextPos[i].getY();
+		currX = objLocationInfo.nextPos[i].getX();
+		currSymbol = board[currY][currX];
+		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
+			if (currSymbol == GameConfig::WALL_SYMBOL) 
+				return false;
+		
+	}
+	return true;
 }
 
 void Board::shipFinishLine(char shipID)

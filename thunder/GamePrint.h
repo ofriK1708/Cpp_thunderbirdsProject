@@ -25,4 +25,10 @@ public:
 		if (!silentMode)
 		cout << c;
 	}
+	static void moveToMiddle()
+	{
+		if(!silentMode)
+			for (int i = 1; i <= 34; i++)
+				printChar(' ');
+	}
 };

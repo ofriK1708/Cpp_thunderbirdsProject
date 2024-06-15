@@ -36,12 +36,13 @@ public:
 	void updateGamePieces();
 	bool checkMove(LocationInfo& objectLoction);
 	bool checkFall(LocationInfo& objectLoction, Block* cargoBlock = nullptr, char keyCargoBlock = '\0');
-	Ship* getShips() {return ships;}
+	Ship* getShips()  {return ships;}
 	map <char, Block> * getBlocks() { return &blocks; }
-	Time& getTime() { return time; }
-	Health& getHealth() { return health; }
+	Time& getTime()  { return time; }
+	Health& getHealth()  { return health; }
 	void shipFinishLine(char shipID);
 	char(&getOriginalBoard())[HEIGHT][WIDTH + 1]{return original_board;}
 	void resetBoard();
+	bool checkIfWallCrash(LocationInfo& ol) const;
 	
 };
