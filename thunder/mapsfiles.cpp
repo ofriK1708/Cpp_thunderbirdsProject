@@ -99,6 +99,7 @@ bool Mapsfiles::checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1])
 	unsigned int bigShipSize = 0;
 	unsigned int smallShipSize = 0;
 	unsigned int numOfLegend = 0;
+	unsigned int numOfExitPoint = 0;
 	for(size_t line = 0; line < GameConfig::GAME_HEIGHT;line++)
 	{
 		for(size_t col = 0; col < GameConfig::GAME_WIDTH;col++)
@@ -111,17 +112,20 @@ bool Mapsfiles::checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1])
 			case GameConfig::SMALL_SHIP_S:
 				smallShipSize++;
 				break;
-			case '&':
+			case GameConfig::LEGEND_S:
 				if (numOfLegend == 0)
 					copyHeaderToMap(map, line, col);
 				numOfLegend++;
 				break;
+			case GameConfig::FINISH_S:
+				numOfExitPoint++;
 			}
 		}
 	}
-	if (bigShipSize == 4 && smallShipSize == 2 && numOfLegend == 1)
+	if (bigShipSize == 4 && smallShipSize == 2 && numOfLegend == 1 && numOfExitPoint++)
 		return true;
-	return false;
+	string errorMssage = "failed to load #" + std::to_string(fileIndex + 1) + " Map Please try checking if the map was inserted correctly";
+	throw exception(errorMssage.c_str());
 }
 
 void Mapsfiles::copyHeaderToMap(char map[][GameConfig::GAME_WIDTH + 1],size_t& line, size_t& col)

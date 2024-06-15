@@ -5,7 +5,6 @@
 #include "utils.h"
 
 class Board;
-
 class Block
 {
 private:
@@ -32,8 +31,8 @@ public:
 	size_t getSize() const { return size; }
 	Point getPos(size_t i) const { return pos[i]; }
 	bool static isBlock(char ch);
-	bool isCarriedBlock() const { return isCarried; }
 	void setCarriedBlock(bool isCarried) { this->isCarried = isCarried; }
+	bool isCarriedBlock() const { return isCarried; }
 	bool checkFall(Block* blockToCarry = nullptr, char keyCargoBlock = '\0');
 };
 

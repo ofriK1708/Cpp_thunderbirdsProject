@@ -178,7 +178,7 @@ bool Board::checkMove(LocationInfo &ol)
 	return isValid;
 }
 
-bool Board::checkFall(LocationInfo& objLocationInfo,Block* cargoBlock,char keyCargoBlock)
+bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock,char keyCargoBlock)
 {
 	int currY, currX;
 	char currSymbol;
@@ -188,55 +188,41 @@ bool Board::checkFall(LocationInfo& objLocationInfo,Block* cargoBlock,char keyCa
 	bool stillCarried = false;
 	bool addedNewBlockToShip = false;
 	map <char,Block*> obsticals;
-	isValid = checkIfWallCrash(objLocationInfo);
+	Block& currentBlock = blocks[objLocationInfo.objSymbol];
+	isValid = checkBlockCrash(objLocationInfo,stillCarried);
 	for (int i = 0; i < objLocationInfo.objSize && isValid; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();
 		currX = objLocationInfo.nextPos[i].getX();
 		currSymbol = board[currY][currX];
-		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
-			if (Block::isBlock(currSymbol))
-				obsticals.insert({ currSymbol,&blocks[currSymbol] });
-			else // we fell on a ship
-			{
-				if (isValid) { // we only put in in the trunk if the move was valid 
-					carryShip = getShipBySymbol(currSymbol);
-					addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &blocks[objLocationInfo.objSymbol]);
-					blocks[objLocationInfo.objSymbol].setCarriedBlock(true);
-					if (cargoBlock != nullptr)
-					{
-						addedNewBlockToShip = carryShip->addToTrunk(keyCargoBlock, cargoBlock);
-						cargoBlock->setCarriedBlock(true);
-					}
-					stillCarried = true;
-					if (addedNewBlockToShip)
-						if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
-						{
-							carryShip->setOverLoaded(true);
-						}
-					isValid = false;
-				}
-			}
-				
-	}
-
-	//check for the whole chunk if it can move
-	for (auto& obs : obsticals) 
-	{
-		if (!isValid)
-			break;
-		if (obs.second->isCarriedBlock())
-			stillCarried = true;
-		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
+		if (Block::isBlock(currSymbol))
+			obsticals.insert({ currSymbol,&blocks[currSymbol] });
+		if (Ship::isShip(currSymbol)) 
 		{
+			carryShip = getShipBySymbol(currSymbol);
+			addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+			currentBlock.setCarriedBlock(true);
+			if (cargoBlock != nullptr)
+			{
+				addedNewBlockToShip = carryShip->addToTrunk(keyCargoBlock, cargoBlock);
+				cargoBlock->setCarriedBlock(true);
+			}
+			stillCarried = true;
+			if (addedNewBlockToShip)
+				if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
+				{
+					carryShip->setOverLoaded(true);
+				}
 			isValid = false;
 		}
+				
 	}
-	if (blocks[objLocationInfo.objSymbol].isCarriedBlock() && !(stillCarried)) // if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
+	// if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
+	if (currentBlock.isCarriedBlock() && !(stillCarried) && isValid)
 	{
 		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
 		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
-		blocks[objLocationInfo.objSymbol].setCarriedBlock(false);
+		currentBlock.setCarriedBlock(false);
 	}
 	if (isValid) //move the whole chunk togther
 	{
@@ -246,21 +232,35 @@ bool Board::checkFall(LocationInfo& objLocationInfo,Block* cargoBlock,char keyCa
 	return isValid;
 }
 
-bool Board::checkIfWallCrash(LocationInfo& objLocationInfo) const
+bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
 {
 	int currY, currX;
 	char currSymbol;
+	bool isValid = true;
+	map <char, Block*> obsticals;
 	for (int i = 0; i < objLocationInfo.objSize ; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();
 		currX = objLocationInfo.nextPos[i].getX();
 		currSymbol = board[currY][currX];
 		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
-			if (currSymbol == GameConfig::WALL_SYMBOL) 
+			if (currSymbol == GameConfig::WALL_SYMBOL)
 				return false;
-		
+		    else if (Block::isBlock(currSymbol))
+				obsticals.insert({ currSymbol, &blocks[currSymbol]});
 	}
-	return true;
+	for (auto& obs : obsticals)
+	{
+		if (!isValid)
+			return false;
+		if (obs.second->isCarriedBlock())
+			stillCarried = true;
+		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
+		{
+			isValid = false;
+		}
+	}
+	return isValid;
 }
 
 void Board::shipFinishLine(char shipID)

@@ -24,37 +24,49 @@ bool Ship::isShip(char ch)
 
 bool Ship::move(GameConfig::eKeys direction)
 {
-	if (!isFinished) {
+	if (!isFinished) 
+	{
 		int carryWeight = maxCarryWeight;
 		bool carriedBlocksCanMove = true;
 		Block* currBlock = nullptr;
-		if(direction != GameConfig::eKeys::DOWN){
-			for (auto& block : trunk)
+		for (auto& block : trunk)
+		{
+			currBlock = block.second;
+			int blockCarryWeight = currBlock->getSize();
+			if (!(currBlock->move(direction, &blockCarryWeight)))
 			{
-				currBlock = block.second;
-				int blockCarryWeight = currBlock->getSize();
-				if (!(currBlock->move(direction, &blockCarryWeight)))
+				carriedBlocksCanMove = false;
+			}
+		}
+		if (carriedBlocksCanMove || direction == GameConfig::eKeys::DOWN) 
+		{
+			if (board->checkMove(checkNextObjLocation(direction, &carryWeight))) 
+			{
+				delTrace();
+				std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
+				int currY, currX;
+				for (size_t i = 0; i < size; i++)
 				{
-					carriedBlocksCanMove = false;
+					currY = pos[i].getY();
+					currX = pos[i].getX();
+					pos[i].draw(symbol, backgroundcolor);
+					board->board[currY][currX] = symbol;
 				}
+				hideCursor();
+				if (direction == GameConfig::eKeys::DOWN)
+				{
+					for (auto& block : trunk)
+					{
+						currBlock = block.second;
+						currBlock->move(direction, &carryWeight, true);
+					}
+				}
+				return true;
 			}
 		}
-		if (board->checkMove(checkNextObjLocation(direction, &carryWeight)) && carriedBlocksCanMove) {
-			delTrace();
-			std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
-			int currY, currX;
-			for (size_t i = 0; i < size; i++)
-			{
-				currY = pos[i].getY();
-				currX = pos[i].getX();
-				pos[i].draw(symbol, backgroundcolor);
-				board->board[currY][currX] = symbol;
-			}
-			hideCursor();
-			return true;
-		}
+		return false;
 	}
-	return false;
+	
 }
 
 

@@ -4,20 +4,20 @@ W                                                                              W
 W                                                                              W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W                                                                              W
-W                    bbbb                                                      W
 W                                                                              W
 W                                                                              W
 W                                                                              W
 W                                                                              W
-W                 aaa                                                          W
+W                                                                             W
 W                                                                              W
 W                                                                              W
 W                                                                              W
 W                                                                              W
 W                                                                              W
-                    ##                                                            
-                    ##                            @@                                
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W                  aaa @@                                                      W
+                   a##                                                            
+                   a##                                                      X       
+W                                                                              W
 W                                                                              W
 W                                                                              W
 W                                                                              W
