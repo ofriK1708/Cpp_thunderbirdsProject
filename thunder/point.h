@@ -16,7 +16,7 @@ public:
 	void set(int x, int y);
 	void draw(char symbol, GameConfig::Color backcolor);
 	void move(GameConfig::eKeys key);
-	void getCoordinate(int& x, int& y) {x = this->x; y = this->y;}
+	void getCoordinate(int& x, int& y) const {x = this->x; y = this->y;}
 	int getX() const { return this->x; }
 	int getY() const { return this->y; }
 	bool operator==(const Point& other) const {

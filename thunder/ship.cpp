@@ -79,7 +79,7 @@ bool Ship::move(GameConfig::eKeys direction)
 		}
 		return false;
 	}
-	
+	return false;
 }
 
 
