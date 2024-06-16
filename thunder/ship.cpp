@@ -35,25 +35,20 @@ bool Ship::move(GameConfig::eKeys direction)
 			{
 				currBlock = block.second;
 				int blockCarryWeight = currBlock->getSize();
-				if (direction == GameConfig::eKeys::DOWN)
+				
+				if (direction != GameConfig::eKeys::UP) 
 				{
-					if (!currBlock->checkFall())
-					{
-						carriedBlocksCanMove = false;
-						break;
-					}
-				}
-				else if(direction != GameConfig::eKeys::UP)
 					if (!currBlock->checkMove(direction, &blockCarryWeight))
 					{
 						carriedBlocksCanMove = false;
 						break;
 					}
+				}
 			}
-
-			if (carriedBlocksCanMove || direction == GameConfig::eKeys::DOWN)
+			if (!carriedBlocksCanMove)
 			{
-
+				removeAllBlocksFromTrunk();
+			}
 				delTrace();
 				std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 				int currY, currX;
@@ -75,7 +70,6 @@ bool Ship::move(GameConfig::eKeys direction)
 				}
 				hideCursor();
 				return true;
-			}
 		}
 		return false;
 	}
@@ -135,6 +129,15 @@ void Ship::removeFromTrunk(const char key, Block& block)
 		trunkWeight -= block.getSize();
 		block.removeCarrierShip();
 	}
+}
+void Ship::removeAllBlocksFromTrunk()
+{
+	for (auto& block : trunk)
+	{
+		block.second->removeCarrierShip();
+	}
+	trunk.clear();
+	trunkWeight = 0;
 }
 
  

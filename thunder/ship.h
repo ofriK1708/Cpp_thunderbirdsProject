@@ -24,6 +24,7 @@ private:
 	void delTrace();
 	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction, int* carryWeight);
 	map<const char,Block*> trunk;
+	void removeAllBlocksFromTrunk();
 public:
 	void init(char symbol, int maxCarryWeight, GameConfig::Color color, Board* Board);
 	size_t getSize() const { return size; }
@@ -40,7 +41,6 @@ public:
 	void removeFromTrunk(const char key, Block& block);
 	int getMaxCarryWeight() const { return maxCarryWeight; }
 	bool isOverLoaded() const { return trunkWeight > maxCarryWeight; }
-	
 };
 
 #endif

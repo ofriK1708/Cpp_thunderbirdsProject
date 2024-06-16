@@ -43,6 +43,6 @@ public:
 	void shipFinishLine(char shipID);
 	char(&getOriginalBoard())[HEIGHT][WIDTH + 1]{return original_board;}
 	void resetBoard();
-	bool checkBlockCrash(LocationInfo& ol, bool& stillCarried);
+	bool checkBlockCrash(LocationInfo& ol, bool& stillCarried, map <char, Block*>& obsticals);
 	
 };
