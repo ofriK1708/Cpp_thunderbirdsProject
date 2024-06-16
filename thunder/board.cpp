@@ -2,9 +2,7 @@
 #include "gameConfig.h"
 #include "utils.h"
 #include "GamePrint.h"
-
 #include <set>
-
 /**
  * Initializes the game board and its components.
  *
@@ -149,12 +147,14 @@ bool Board::checkMove(LocationInfo &ol)
 		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
 			if (currSymbol == GameConfig::WALL_SYMBOL)
 				isValid = false;
-			else if(currSymbol == GameConfig::FINISH_S && Ship::isShip(ol.objSymbol))
+			else if (currSymbol == GameConfig::FINISH_S && Ship::isShip(ol.objSymbol))
 				isfinished = true;
-			else if(Block::isBlock(currSymbol))
+			else if (Block::isBlock(currSymbol))
 				obsticals.insert(&blocks[currSymbol]);
-			else 
-				isValid = false; //if collide with other ship
+			else if (Block::isBlock(ol.objSymbol) && blocks[ol.objSymbol].getCarrierShipID() == currSymbol)
+				isValid = true;
+			else
+				isValid = false; //if collide with other ship that is not the carrier
 	}
 
 	//check for the whole chunk if it can move
@@ -175,6 +175,93 @@ bool Board::checkMove(LocationInfo &ol)
 			//move the whole chunk togther
 			for (auto obs : obsticals) 
 				obs->move(ol.direction, ol.carryWeight, true);
+		}
+	}
+	return isValid;
+}
+
+bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char keyCargoBlock)
+{
+	int currY, currX;
+	char currSymbol;
+	bool isValid = true;
+	Ship* carryShip;
+	bool stillCarried = false;
+	map <char,Block*> obsticals;
+	Block& currentBlock = blocks[objLocationInfo.objSymbol];
+	isValid = checkBlockCrash(objLocationInfo,stillCarried);
+	for (int i = 0; i < objLocationInfo.objSize && isValid; i++)
+	{
+		currY = objLocationInfo.nextPos[i].getY();
+		currX = objLocationInfo.nextPos[i].getX();
+		currSymbol = board[currY][currX];
+
+		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol) {
+			if (Block::isBlock(currSymbol))
+				obsticals.insert({ currSymbol,&blocks[currSymbol] });
+			else
+			{
+				carryShip = getShipBySymbol(currSymbol);
+				if(carryShip != currentBlock.getCarrierShip() && currentBlock.isCarriedBlock()) // if we switched ships we remove it from the old ship and add it to the new one
+					currentBlock.getCarrierShip()->removeFromTrunk(objLocationInfo.objSymbol, currentBlock);
+				carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+				stillCarried = true;
+				isValid = false;
+			}
+		}
+	}
+	for (auto& obs : obsticals)
+	{
+		if (!isValid)
+			break;
+		if (obs.second->isCarriedBlock()) // if the block we fell on is carried we add the current block to the ship that carries it
+		{
+			stillCarried = true;
+			carryShip = obs.second->getCarrierShip();
+			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+			isValid = false;
+		}
+	}
+	// if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
+	if (currentBlock.isCarriedBlock() && !(stillCarried) && isValid)
+	{
+		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol,currentBlock);
+		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol,currentBlock);
+	}
+	if (isValid) //move the whole chunk togther
+	{
+		for (auto &obs : obsticals)
+			obs.second->move(objLocationInfo.direction, objLocationInfo.carryWeight, true);
+	}
+	return isValid;
+}
+
+bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
+{
+	int currY, currX;
+	char currSymbol;
+	bool isValid = true;
+	map <char, Block*> obsticals;
+	for (int i = 0; i < objLocationInfo.objSize ; i++)
+	{
+		currY = objLocationInfo.nextPos[i].getY();
+		currX = objLocationInfo.nextPos[i].getX();
+		currSymbol = board[currY][currX];
+		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
+			if (currSymbol == GameConfig::WALL_SYMBOL)
+				return false;
+		    else if (currSymbol == GameConfig::FINISH_S)
+				return false;
+		    else if (Block::isBlock(currSymbol))
+				obsticals.insert({ currSymbol, &blocks[currSymbol]});
+	}
+	for (auto& obs : obsticals)
+	{
+		if (!isValid)
+			return false;
+		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
+		{
+			isValid = false;
 		}
 	}
 	return isValid;
@@ -204,4 +291,16 @@ void Board::resetBoard()
 	life_pos = Point();
 	exit_pos = Point();
 	colorSet = false;
+}
+Ship* Board::getShipBySymbol(char sym)
+{
+	switch (sym)
+	{
+	case GameConfig::BIG_SHIP_S:
+		return &(ships[GameConfig::BIG_SHIP_ID]);
+	case GameConfig::SMALL_SHIP_S:
+		return &(ships[GameConfig::SMALL_SHIP_ID]);
+	default:
+		throw exception("Can't find Ship by symbol");
+	}
 }

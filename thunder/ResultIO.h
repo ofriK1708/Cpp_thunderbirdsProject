@@ -31,6 +31,6 @@ private:
 public:
 	ResultIO(const size_t& level): level(level) {}
 	void setMode(FileMode _mode);
-	void writeEvent(int timeLeft, Events event);
-	bool cmpEvents(int timeLeft, Events event);
+	void writeEvent(size_t timeLeft, Events event);
+	bool cmpEvents(size_t timeLeft, Events event);
 };

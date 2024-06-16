@@ -56,7 +56,7 @@ class Game
 	
 	//data global indicators
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	
-	bool freezeSips = false;
+	bool freezeShips = false;
 	int keyPressed;
 	bool mapfileLoaded;
 	GameState gameState;
@@ -75,13 +75,13 @@ class Game
 public:
 	Game():resultIO(level) {};
 	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
-	GameMode getMode() { return mode; }
+	GameMode getMode() const { return mode; }
 	void prepareToStart();
 	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }
 	void printScreen() { board.printScreen(); }
 	void printCredits();
-	GameState getState() { return gameState; }
+	GameState getState() const { return gameState; }
 	void setStateToRunning() { gameState = GameState::RUNNING; }
 	const size_t& getTimeLeft() { return time.getTimeLeft(); }
 	const size_t& getLevel() { return level;}
