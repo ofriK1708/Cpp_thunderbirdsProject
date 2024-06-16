@@ -19,11 +19,11 @@ bool Block::isBlock(char ch)
 }
 
 
-bool Block::move(GameConfig::eKeys direction, int* carryWeight, bool onCommand,bool useRegMove)
+bool Block::move(GameConfig::eKeys direction, int* carryWeight, bool onCommand)
 {		
 	if (!onCommand) // if we on command to move we dont need to check anything 
 	{
-		if (direction != GameConfig::eKeys::DOWN || useRegMove) 
+		if (direction != GameConfig::eKeys::DOWN) 
 		{
 			if (!checkMove(direction, carryWeight)) 
 			{
@@ -32,8 +32,10 @@ bool Block::move(GameConfig::eKeys direction, int* carryWeight, bool onCommand,b
 		}
 		else // direction is DOWN
 		{
-			if (!checkFall())
+			if (!checkFall()) 
+			{
 				return false;
+			}
 		}
 	}
 		delTrace();

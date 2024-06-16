@@ -6,16 +6,16 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W                                                                              W
 W                                                                              W
 W                                                                              W
-W                                                                              W
+W                   kkkkk                                                      W
 W                                                                              W
 W                                                                              W
 W                                                 @@                           W
 W                                                                              W
 W                                                                              W
-W                                                                              W
-W                                                                              W
-W                   aaa                                                        W
-                    ##a                                                             
+W                    bb                                                        W
+W                  bb                                                          W
+W                   aa                                                         W
+                    ##                                                             
                     ##                                                      X       
 W                                                                              W
 W                                                                              W

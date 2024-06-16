@@ -29,19 +29,31 @@ bool Ship::move(GameConfig::eKeys direction)
 		int carryWeight = maxCarryWeight;
 		bool carriedBlocksCanMove = true;
 		Block* currBlock = nullptr;
-		for (auto& block : trunk)
+		if (board->checkMove(checkNextObjLocation(direction, &carryWeight)))
 		{
-			currBlock = block.second;
-			int blockCarryWeight = currBlock->getSize();
-			if (!(currBlock->move(direction, &blockCarryWeight)))
+			for (auto& block : trunk)
 			{
-				carriedBlocksCanMove = false;
+				currBlock = block.second;
+				int blockCarryWeight = currBlock->getSize();
+				if (direction == GameConfig::eKeys::DOWN)
+				{
+					if (!currBlock->checkFall())
+					{
+						carriedBlocksCanMove = false;
+						break;
+					}
+				}
+				else if(direction != GameConfig::eKeys::UP)
+					if (!currBlock->checkMove(direction, &blockCarryWeight))
+					{
+						carriedBlocksCanMove = false;
+						break;
+					}
 			}
-		}
-		if (carriedBlocksCanMove || direction == GameConfig::eKeys::DOWN) 
-		{
-			if (board->checkMove(checkNextObjLocation(direction, &carryWeight))) 
+
+			if (carriedBlocksCanMove || direction == GameConfig::eKeys::DOWN)
 			{
+
 				delTrace();
 				std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 				int currY, currX;
@@ -52,15 +64,16 @@ bool Ship::move(GameConfig::eKeys direction)
 					pos[i].draw(symbol, backgroundcolor);
 					board->board[currY][currX] = symbol;
 				}
-				hideCursor();
-				if (direction == GameConfig::eKeys::DOWN)
+				if (direction != GameConfig::eKeys::UP) // if the ship went up it already moved the blocks
 				{
 					for (auto& block : trunk)
 					{
 						currBlock = block.second;
-						currBlock->move(direction, &carryWeight,false,true);
+						currBlock->move(direction, &carryWeight, true);
+						addToTrunk(currBlock->getSymbol(), currBlock);
 					}
 				}
+				hideCursor();
 				return true;
 			}
 		}

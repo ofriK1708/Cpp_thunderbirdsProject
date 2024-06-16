@@ -147,12 +147,14 @@ bool Board::checkMove(LocationInfo &ol)
 		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
 			if (currSymbol == GameConfig::WALL_SYMBOL)
 				isValid = false;
-			else if(currSymbol == GameConfig::FINISH_S && Ship::isShip(ol.objSymbol))
+			else if (currSymbol == GameConfig::FINISH_S && Ship::isShip(ol.objSymbol))
 				isfinished = true;
-			else if(Block::isBlock(currSymbol))
+			else if (Block::isBlock(currSymbol))
 				obsticals.insert(&blocks[currSymbol]);
-			else 
-				isValid = false; //if collide with other ship
+			else if (Block::isBlock(ol.objSymbol) && blocks[ol.objSymbol].getCarrierShipID() == currSymbol)
+				isValid = true;
+			else
+				isValid = false; //if collide with other ship that is not the carrier
 	}
 
 	//check for the whole chunk if it can move
@@ -178,12 +180,11 @@ bool Board::checkMove(LocationInfo &ol)
 	return isValid;
 }
 
-bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock,char keyCargoBlock)
+bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char keyCargoBlock)
 {
 	int currY, currX;
 	char currSymbol;
 	bool isValid = true;
-	bool crashedToWall = false;
 	Ship* carryShip;
 	bool stillCarried = false;
 	bool addedNewBlockToShip = false;
@@ -195,27 +196,52 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock,char keyC
 		currY = objLocationInfo.nextPos[i].getY();
 		currX = objLocationInfo.nextPos[i].getX();
 		currSymbol = board[currY][currX];
-		if (Block::isBlock(currSymbol))
-			obsticals.insert({ currSymbol,&blocks[currSymbol] });
-		if (Ship::isShip(currSymbol)) 
-		{
-			carryShip = getShipBySymbol(currSymbol);
-			addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
-			currentBlock.setCarriedBlock(true);
-			if (cargoBlock != nullptr)
+
+		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol) {
+			if (Block::isBlock(currSymbol))
+				obsticals.insert({ currSymbol,&blocks[currSymbol] });
+			else
 			{
-				addedNewBlockToShip = carryShip->addToTrunk(keyCargoBlock, cargoBlock);
-				cargoBlock->setCarriedBlock(true);
+				carryShip = getShipBySymbol(currSymbol);
+				addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+				currentBlock.setCarriedBlock(true);
+				currentBlock.setCarrierShipID(carryShip->getSymbol());
+				currentBlock.setCarrierShip(carryShip);
+				stillCarried = true;
+				if (addedNewBlockToShip)
+					if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
+					{
+						carryShip->setOverLoaded(true);
+					}
+				isValid = false;
 			}
+		}
+	}
+	for (auto& obs : obsticals)
+	{
+		if (!isValid)
+			break;
+		if (obs.second->isCarriedBlock()) {
 			stillCarried = true;
+			carryShip = obs.second->getCarrierShip();
+			addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
 			if (addedNewBlockToShip)
 				if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
 				{
 					carryShip->setOverLoaded(true);
 				}
+				else
+				{
+					currentBlock.setCarriedBlock(true);
+					currentBlock.setCarrierShip(carryShip);
+					currentBlock.setCarrierShipID(carryShip->getSymbol());
+				}
+			    isValid = false;
+		}
+		else if (!obs.second->checkFall(&currentBlock, objLocationInfo.objSymbol))
+		{
 			isValid = false;
 		}
-				
 	}
 	// if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
 	if (currentBlock.isCarriedBlock() && !(stillCarried) && isValid)
@@ -223,6 +249,7 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock,char keyC
 		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
 		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
 		currentBlock.setCarriedBlock(false);
+		currentBlock.setCarrierShipID('\0');
 	}
 	if (isValid) //move the whole chunk togther
 	{
@@ -236,8 +263,8 @@ bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
 {
 	int currY, currX;
 	char currSymbol;
-	bool isValid = true;
-	map <char, Block*> obsticals;
+	//bool isValid = true;
+	//map <char, Block*> obsticals;
 	for (int i = 0; i < objLocationInfo.objSize ; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();
@@ -248,21 +275,22 @@ bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
 				return false;
 		    else if (currSymbol == GameConfig::FINISH_S)
 				return false;
-		    else if (Block::isBlock(currSymbol))
-				obsticals.insert({ currSymbol, &blocks[currSymbol]});
+		    //else if (Block::isBlock(currSymbol))
+				//obsticals.insert({ currSymbol, &blocks[currSymbol]});
 	}
-	for (auto& obs : obsticals)
-	{
-		if (!isValid)
-			return false;
-		if (obs.second->isCarriedBlock())
-			stillCarried = true;
-		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
-		{
-			isValid = false;
-		}
-	}
-	return isValid;
+	return true;
+	//for (auto& obs : obsticals)
+	//{
+		//if (!isValid)
+			//return false;
+		//if (obs.second->isCarriedBlock())
+			//stillCarried = true;
+		//if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
+		//{
+			//isValid = false;
+		//}
+	//}
+	//return isValid;
 }
 
 void Board::shipFinishLine(char shipID)
