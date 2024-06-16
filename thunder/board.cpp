@@ -202,6 +202,8 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 			else
 			{
 				carryShip = getShipBySymbol(currSymbol);
+				if(carryShip != currentBlock.getCarrierShip() && currentBlock.isCarriedBlock()) // if we switched ships we remove it from the old ship and add it to the new one
+					currentBlock.getCarrierShip()->removeFromTrunk(objLocationInfo.objSymbol, currentBlock);
 				carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
 				stillCarried = true;
 				isValid = false;
@@ -217,10 +219,6 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 			stillCarried = true;
 			carryShip = obs.second->getCarrierShip();
 			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
-			isValid = false;
-		}
-		else if (!obs.second->checkFall(&currentBlock, objLocationInfo.objSymbol))
-		{
 			isValid = false;
 		}
 	}
@@ -242,8 +240,8 @@ bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
 {
 	int currY, currX;
 	char currSymbol;
-	//bool isValid = true;
-	//map <char, Block*> obsticals;
+	bool isValid = true;
+	map <char, Block*> obsticals;
 	for (int i = 0; i < objLocationInfo.objSize ; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();
@@ -254,22 +252,19 @@ bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
 				return false;
 		    else if (currSymbol == GameConfig::FINISH_S)
 				return false;
-		    //else if (Block::isBlock(currSymbol))
-				//obsticals.insert({ currSymbol, &blocks[currSymbol]});
+		    else if (Block::isBlock(currSymbol))
+				obsticals.insert({ currSymbol, &blocks[currSymbol]});
 	}
-	return true;
-	//for (auto& obs : obsticals)
-	//{
-		//if (!isValid)
-			//return false;
-		//if (obs.second->isCarriedBlock())
-			//stillCarried = true;
-		//if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
-		//{
-			//isValid = false;
-		//}
-	//}
-	//return isValid;
+	for (auto& obs : obsticals)
+	{
+		if (!isValid)
+			return false;
+		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
+		{
+			isValid = false;
+		}
+	}
+	return isValid;
 }
 
 void Board::shipFinishLine(char shipID)
