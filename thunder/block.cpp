@@ -89,3 +89,9 @@ void Block::delTrace() {
 		board->board[currY][currX] = ' ';
 	}
 }
+char Block::getCarrierShipID() const
+{
+	if (carrierShip != nullptr)
+		return carrierShip->getSymbol();
+	return '\0';
+}

@@ -13,11 +13,11 @@ private:
 	Board* board;
 	Point pos[GameConfig::MAX_BLOCK_SIZE];
 	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
-	size_t size = 0;
+	unsigned int size = 0;
 	LocationInfo locationInfo;
-	char carrierShipID = '\0';	
+	//char carrierShipID = '\0';	
 	char symbol = NULL;
-	bool isCarried = false;
+	//bool isCarried = false;
 	Ship* carrierShip = nullptr;
 	void delTrace();
 
@@ -30,15 +30,18 @@ public:
 	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr, bool onCommand = false);
 	char getSymbol() const { return symbol; }
 	bool checkMove(GameConfig::eKeys direction, int* carryWeight);
-	size_t getSize() const { return size; }
+	unsigned int getSize() const { return size; }
 	Point getPos(size_t i) const { return pos[i]; }
 	bool static isBlock(char ch);
-	void setCarriedBlock(bool isCarried) { this->isCarried = isCarried; }
-	bool isCarriedBlock() const { return isCarried; }
+	
+	
+	//void setCarrierShipID(char carrierShipID) { this->carrierShipID = carrierShipID; }
+	char getCarrierShipID() const;
 	bool checkFall(Block* blockToCarry = nullptr, char keyCargoBlock = '\0');
-	void setCarrierShipID(char carrierShipID) { this->carrierShipID = carrierShipID; }
-	char getCarrierShipID() const { return carrierShipID; }
+	//void setCarriedBlock(bool isCarried) { this->isCarried = isCarried; }
+	bool isCarriedBlock() const { return carrierShip != nullptr; }
 	void setCarrierShip(Ship* carrierShip) { this->carrierShip = carrierShip; }
+	void removeCarrierShip() { carrierShip = nullptr; }
 	Ship* getCarrierShip() const { return carrierShip; }
 };
 

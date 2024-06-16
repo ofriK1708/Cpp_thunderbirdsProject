@@ -118,12 +118,23 @@ void Ship::shipFinishLine()
 	}
 	hideCursor();
 }
-size_t Ship::getTrunkWeight() const
+void Ship::addToTrunk(const char key, Block* block)
 {
-	size_t carryWeight = 0;
-	for(const auto& block : trunk)
+	auto result = trunk.insert({ key, block });
+	if(result.second)
 	{
-		carryWeight += block.second->getSize();
+		trunkWeight += block->getSize();
+		block->setCarrierShip(this);
 	}
-	return carryWeight;
 }
+void Ship::removeFromTrunk(const char key, Block& block)
+{
+	bool isRemoved = trunk.erase(key);
+	if (isRemoved)
+	{
+		trunkWeight -= block.getSize();
+		block.removeCarrierShip();
+	}
+}
+
+ 

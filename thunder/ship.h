@@ -15,12 +15,11 @@ private:
 	Point finishPos[GameConfig::MAX_SHIP_SIZE];
 	size_t size = 0;
 	size_t finishSize = 0;
-
-	char symbol;
-	bool isFinished;
-	bool OverLoaded = false;
-	int maxCarryWeight;
-	GameConfig::Color backgroundcolor;
+	char symbol = '\0';
+	bool isFinished = false;
+	unsigned int maxCarryWeight;
+	unsigned int trunkWeight = 0;
+	GameConfig::Color backgroundcolor = GameConfig::WHITE;
 	LocationInfo shipLocationinfo;
 	void delTrace();
 	LocationInfo& checkNextObjLocation(GameConfig::eKeys direction, int* carryWeight);
@@ -35,15 +34,12 @@ public:
 	void addFinishPoint(int x, int y) { finishPos[finishSize++].set(x, y); }
 	bool move(GameConfig::eKeys direction);
 	void shipFinishLine();
-	bool GetFinishStatus() { return isFinished; }
+	bool GetFinishStatus() const { return isFinished; }
 	static bool isShip(char ch);
-	bool addToTrunk(const char key, Block* block) { auto result = trunk.insert({ key, block }); return result.second; }
-	void removeFromTrunk(const char key) { trunk.erase(key);}
+	void addToTrunk(const char key, Block* block);
+	void removeFromTrunk(const char key, Block& block);
 	int getMaxCarryWeight() const { return maxCarryWeight; }
-	size_t getTrunkWeight() const;
-	void setOverLoaded(bool state) { OverLoaded = true; }
-	bool isOverLoaded() const { return OverLoaded; }
-		
+	bool isOverLoaded() const { return trunkWeight > maxCarryWeight; }
 	
 };
 

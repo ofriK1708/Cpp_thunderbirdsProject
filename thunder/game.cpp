@@ -135,10 +135,12 @@ void Game::ShipAction()
 }
 
 void Game::play() {
+	for (auto& pair : *blocks)
+		pair.second.move();
 	if(not freezeShips)
 		ships[activeShip].move((GameConfig::eKeys)keyPressed);
-	for(auto & pair: *blocks)
-		pair.second.move();
+	//for(auto & pair: *blocks)
+		//pair.second.move();
 }
 
 
@@ -178,6 +180,7 @@ void Game::afterDeath()
 		 health.printHealth();
 		 freezeShips = true;
 		 keyPressed = 0;
+		 activeShip = GameConfig::BIG_SHIP_ID;
 	}
 	else
 	{

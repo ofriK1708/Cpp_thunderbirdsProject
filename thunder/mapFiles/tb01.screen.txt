@@ -6,14 +6,14 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W                                                                              W
 W                                                                              W
 W                                                                              W
-W                   kkkkk                                                      W
-W                                                                              W
+W                                                  bb   cc   dd   ee   ff      W
+W                                                 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W                                                                              W
 W                                                 @@                           W
 W                                                                              W
 W                                                                              W
-W                    bb                                                        W
-W                  bb                                                          W
+W                   hh                                                         W
+W                   gg                                                         W
 W                   aa                                                         W
                     ##                                                             
                     ##                                                      X       

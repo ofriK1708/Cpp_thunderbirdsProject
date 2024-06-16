@@ -187,7 +187,6 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 	bool isValid = true;
 	Ship* carryShip;
 	bool stillCarried = false;
-	bool addedNewBlockToShip = false;
 	map <char,Block*> obsticals;
 	Block& currentBlock = blocks[objLocationInfo.objSymbol];
 	isValid = checkBlockCrash(objLocationInfo,stillCarried);
@@ -203,16 +202,8 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 			else
 			{
 				carryShip = getShipBySymbol(currSymbol);
-				addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
-				currentBlock.setCarriedBlock(true);
-				currentBlock.setCarrierShipID(carryShip->getSymbol());
-				currentBlock.setCarrierShip(carryShip);
+				carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
 				stillCarried = true;
-				if (addedNewBlockToShip)
-					if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
-					{
-						carryShip->setOverLoaded(true);
-					}
 				isValid = false;
 			}
 		}
@@ -221,22 +212,12 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 	{
 		if (!isValid)
 			break;
-		if (obs.second->isCarriedBlock()) {
+		if (obs.second->isCarriedBlock()) // if the block we fell on is carried we add the current block to the ship that carries it
+		{
 			stillCarried = true;
 			carryShip = obs.second->getCarrierShip();
-			addedNewBlockToShip = carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
-			if (addedNewBlockToShip)
-				if (carryShip->getMaxCarryWeight() < carryShip->getTrunkWeight())
-				{
-					carryShip->setOverLoaded(true);
-				}
-				else
-				{
-					currentBlock.setCarriedBlock(true);
-					currentBlock.setCarrierShip(carryShip);
-					currentBlock.setCarrierShipID(carryShip->getSymbol());
-				}
-			    isValid = false;
+			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+			isValid = false;
 		}
 		else if (!obs.second->checkFall(&currentBlock, objLocationInfo.objSymbol))
 		{
@@ -246,10 +227,8 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 	// if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
 	if (currentBlock.isCarriedBlock() && !(stillCarried) && isValid)
 	{
-		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
-		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol);
-		currentBlock.setCarriedBlock(false);
-		currentBlock.setCarrierShipID('\0');
+		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol,currentBlock);
+		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol,currentBlock);
 	}
 	if (isValid) //move the whole chunk togther
 	{
