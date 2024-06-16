@@ -221,9 +221,11 @@ void Game::gameLoop()
 				afterDeath();
 		}
 		catch (const std::ios_base::failure& e) {
+			std::cerr << "I/O operation failed: " << e.what() << std::endl;
 			time.reverse();
 			setKey((int)GameConfig::eKeys::ESC);
 		}
+
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }

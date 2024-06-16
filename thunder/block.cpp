@@ -81,7 +81,7 @@ bool Block::checkFall(Block* blockToCarry, char keyCargoBlock)
 
 void Block::delTrace() {
 	int currY, currX;
-	for (int i = 0; i < size; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		currY = pos[i].getY();
 		currX = pos[i].getX();
