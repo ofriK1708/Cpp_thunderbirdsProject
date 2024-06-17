@@ -59,6 +59,7 @@ class Game
 	bool freezeShips = false;
 	int keyPressed;
 	bool mapfileLoaded;
+	bool pressedPausedInLoadMode = false;
 	GameState gameState;
 	GameMode mode = GameMode::SIMPLE;
 	bool timeOver = false;
@@ -87,6 +88,7 @@ public:
 	const size_t& getLevel() { return level;}
     void setColorSet(bool colorSet) { this->colorSet = colorSet; }
 	void setMapChoose(bool mapChoose) { this->mapChoose = mapChoose; }
+	void freezeTheShips() { freezeShips = true; }
 
 };
 

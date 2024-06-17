@@ -9,17 +9,18 @@ class StateManager
 
 	bool mapChoose = false;
 	bool colorSet = true;
-	bool toExit = false;
+	static bool toExit;
 	
 	void mainMenu();
 	void pauseMenu();
-	void exceptionHandler(const exception& e);
+	
 	void setMode(int argc, char* argv[]);
 
 
 	
 public:
 	StateManager(int argc, char* argv[]);
+	static void exceptionHandler(const exception& e);
 	void startGame();
 };
 

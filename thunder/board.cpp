@@ -195,19 +195,14 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 		currY = objLocationInfo.nextPos[i].getY();
 		currX = objLocationInfo.nextPos[i].getX();
 		currSymbol = board[currY][currX];
-
-		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol) {
-			if (Block::isBlock(currSymbol))
-				obsticals.insert({ currSymbol,&blocks[currSymbol] });
-			else
-			{
-				carryShip = getShipBySymbol(currSymbol);
-				if(carryShip != currentBlock.getCarrierShip() && currentBlock.isCarriedBlock()) // if we switched ships we remove it from the old ship and add it to the new one
-					currentBlock.getCarrierShip()->removeFromTrunk(objLocationInfo.objSymbol, currentBlock);
-				carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
-				stillCarried = true;
-				isValid = false;
-			}
+		if(Ship::isShip(currSymbol))
+		{
+			carryShip = getShipBySymbol(currSymbol);
+			if(carryShip != currentBlock.getCarrierShip() && currentBlock.isCarriedBlock()) // if we switched ships we remove it from the old ship and add it to the new one
+				currentBlock.getCarrierShip()->removeFromTrunk(objLocationInfo.objSymbol, currentBlock);
+			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+			stillCarried = true;
+			isValid = false;
 		}
 	}
 	for (auto& obs : obsticals)

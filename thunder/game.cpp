@@ -40,7 +40,7 @@ void Game::prepareToStart()
 	}
 	else 
 	{
-		throw std::exception("Could not load game maps");
+		throw std::exception("Could not load game maps from mapsfiles, check that you placed the maps in mapfiles directory");
 	}
 }
 
@@ -197,8 +197,9 @@ void Game::afterDeath()
  */
 void Game::gameLoop()
 {
-	keyPressed = 0;
-
+	if(!pressedPausedInLoadMode)
+		keyPressed = 0;
+	pressedPausedInLoadMode = false;
 	while (gameState==GameState::RUNNING and !timeOver and health.isAlive())
 	{
 		try {
@@ -220,10 +221,12 @@ void Game::gameLoop()
 			if (timeOver || ships[GameConfig::BIG_SHIP_ID].isOverLoaded() || ships[GameConfig::SMALL_SHIP_ID].isOverLoaded())
 				afterDeath();
 		}
-		catch (const std::ios_base::failure& e) {
-			std::cerr << "I/O operation failed: " << e.what() << std::endl;
+		catch(exception& e) // if the user pressed ESC during load mode
+		{
 			time.reverse();
-			setKey((int)GameConfig::eKeys::ESC);
+			clrscr();
+			gameState = GameState::PAUSE;
+			pressedPausedInLoadMode = true;
 		}
 
 	}

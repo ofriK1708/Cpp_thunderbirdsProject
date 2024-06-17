@@ -10,7 +10,7 @@ using std::endl;
 using std::to_string;
 using std::exception;
 
-
+bool StateManager::toExit = false;
 
 StateManager::StateManager(int argc, char* argv[]): stepsIO(game.getTimeLeft(), game.getLevel()){
 	setMode(argc, argv);
@@ -65,7 +65,6 @@ void StateManager::exceptionHandler(const exception& e) {
 	GamePrint::print("Exiting game ...");
 	GameSleep::longSleep();
 }
-
 
 void StateManager::startGame()
 {
@@ -173,6 +172,7 @@ void StateManager::pauseMenu() {
 			clrscr();
 			game.printScreen();
 			illigalChoice = false;
+			game.freezeTheShips();
 			break;
 		case (int)GameConfig::eKeys::EXIT:
 			clrscr();

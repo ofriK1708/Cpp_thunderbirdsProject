@@ -3,23 +3,23 @@ W&                                                                             W
 W                                                                              W
 W                                                                              W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WWWWWWWWWWWWWWW                                                                W
-W@@                                                                          X W
+W      qqqqqq       qqqqqq     W                                           W  XW
+W      WWWWWW       WWWWWW     W                                          cc   W
+W              pppp            W                                          ff   W
+W           W  WWWW  W         W                                          bb   W
+W           WWWWWWWWWW         W                                           WW  W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                                           W   W
+W                              W                                           W   W
+W                                                                          W   W
+Wrrrr                                                                      W   W
+W  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW   W
 W                                                                              W
-W             WWWWWWW                          W  WWWWWWWWWWWWWWWW  WWWWWWWWWWWW
-W                   W                          W  W              WWWWWWWWWWWWWWW
-W        www   www  WWWWWWW                    W  WWW            WWWWWWWWWWWWWWW
-W          W   W          W                    W   W                           W
-W            W            W                    W   W                           W
-W        W       W        W   WWWWWWWWWWWWWWWWWW   WWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W         WWWWWWW         W   W                                                W
-W                         W   W                                                W
-WWWWWWWWWWWWWWWWWWWWWWWWWWW   W                                                W
-                              W                                                 
-                              W                                                 
-W                                                          aa                  W
-W                                                         bb                   W
-W                                                        cc                    W
-W                                                       ##                     W
-W                                                       ##                     W
+W     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W                                                                              W 
+W                                                                              W 
+W                                                                 aa       ##  W
+W                                                                 a        ##  W
+W                                                                 a            W
+W     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWaWWWWWWWWWWWWW
+W     ee                                                          a         @@ W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
