@@ -10,3 +10,6 @@ Additionals:
 	You can easily turn off colors in the main menu for a simpler look.
 3.  we added a bit of physics to the blocks, you can push blocks off the ship's "back"
     if you push them to a wall or if another ship pushes them (given that the other ship can push them).
+
+*‪*‬
+please note that the maps of the game are stored in a directory called "mapFiles"
