@@ -9,22 +9,6 @@ void SmartWriteFile::close() {
 	}
 }
 
-SmartWriteFile& SmartWriteFile::operator=(const SmartWriteFile& other)
-{
-	if (this != &other)
-	{
-		if (other.file.is_open())
-		{
-			throw std::exception("cannot assign with opened file");
-		}
-		if (file.is_open())
-		{
-			file.close();
-		}
-	}
-	return *this;
-}
-
 void SmartWriteFile::open(const std::string& fileName)
 {
 	std::string errorMassage = fileName;

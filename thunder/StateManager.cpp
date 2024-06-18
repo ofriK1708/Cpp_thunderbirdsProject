@@ -16,6 +16,7 @@ StateManager::StateManager(int argc, char* argv[]): stepsIO(game.getTimeLeft(), 
 	setMode(argc, argv);
 }
 
+// this function sets the game mode based on the command line arguments
 void StateManager::setMode(int argc, char* argv[]) {
 	string errorMessage = "Game Mode not avaliable: ";
 	switch (argc) {
@@ -172,7 +173,7 @@ void StateManager::pauseMenu() {
 			clrscr();
 			game.printScreen();
 			illigalChoice = false;
-			game.freezeTheShips();
+			game.SetfreezeShipsOn();
 			break;
 		case (int)GameConfig::eKeys::EXIT:
 			clrscr();

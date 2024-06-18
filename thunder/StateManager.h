@@ -3,17 +3,19 @@
 
 class StateManager
 {
-	Game game;
-	StepsIO stepsIO;
-	KeyboardInput keyboardStepsInput;
-
+	// StateManager Details
 	bool mapChoose = false;
 	bool colorSet = true;
 	static bool toExit;
 	
+	// stateManger objects
+	Game game;
+	StepsIO stepsIO;
+	KeyboardInput keyboardStepsInput;
+
+	// private functions (helper functions)
 	void mainMenu();
 	void pauseMenu();
-	
 	void setMode(int argc, char* argv[]);
 
 

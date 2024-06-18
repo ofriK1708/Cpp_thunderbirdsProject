@@ -3,7 +3,7 @@ W&                                                                             W
 W                                                                              W
 W                                                                              W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W      qqqqqq       qqqqqq     W                                           W  XW
+W      qqqqqq       ssssss     W                                           W  XW
 W      WWWWWW       WWWWWW     W                                          cc   W
 W              pppp            W                                          ff   W
 W           W  WWWW  W         W                                          bb   W
@@ -14,12 +14,12 @@ W                                                                          W   W
 Wrrrr                                                                      W   W
 W  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW   W
 W                                                                              W
-W     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W                                                               WWWWWWWWWWWWWWWW
 W                                                                              W 
 W                                                                              W 
 W                                                                 aa       ##  W
 W                                                                 a        ##  W
-W                                                                 a            W
-W     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWaWWWWWWWWWWWWW
-W     ee                                                          a         @@ W
+W                                                               WWa            W
+W                                                               WWaWWWWWWWWWWWWW
+W                                                                 a    ee   @@ W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

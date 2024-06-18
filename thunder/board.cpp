@@ -189,7 +189,7 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 	bool stillCarried = false;
 	map <char,Block*> obsticals;
 	Block& currentBlock = blocks[objLocationInfo.objSymbol];
-	isValid = checkBlockCrash(objLocationInfo,stillCarried,obsticals);
+	isValid = checkBlockCrash(objLocationInfo,stillCarried,obsticals); // check if the block can move without crashing into other blocks or walls
 	for (int i = 0; i < objLocationInfo.objSize && isValid; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();

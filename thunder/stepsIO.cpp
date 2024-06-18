@@ -48,6 +48,7 @@ void StepsIO::writeStep(size_t step, size_t timeLeft)
 		wfp.getFile() << message << std::endl;;
 }
 
+// if ESC was pressed, the function will return true
 bool cmdInterrupt(bool silent) {
 	bool interrupt = false;
 	if (!silent &&_kbhit())
@@ -56,6 +57,7 @@ bool cmdInterrupt(bool silent) {
 	return interrupt;
 }
 
+// this function checks if there is an new input in the file according to the current time
 bool StepsIO::hasInput() {
 	loadFileByMode();
 	if (currTime == GameConfig::GAME_TIME) {

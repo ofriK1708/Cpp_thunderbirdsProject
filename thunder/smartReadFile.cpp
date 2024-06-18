@@ -2,28 +2,15 @@
 #include "StateManager.h"
 #include <string>
 
-void smartReadFile::close() {
-	if (file.is_open()) {
+
+void smartReadFile::close() 
+{
+	if (file.is_open()) 
+	{
 		file.close();
 	}
 }
 
-
-smartReadFile& smartReadFile::operator=(const smartReadFile& other) 
-{
-	if (this != &other) 
-	{
-		if (other.file.is_open()) 
-		{
-			throw std::exception("cannot assign with opened file");
-		}
-		if (file.is_open()) 
-		{
-			file.close();
-		}
-	}
-	return *this;
-}
 void smartReadFile::open(const std::string& fileName)
 {
 	std::string errorMassage = fileName;
