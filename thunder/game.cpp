@@ -8,7 +8,7 @@
 #include <iostream> 
 #include <Windows.h>  
 
-
+// handles files accoording to the mode given 
 void Game::setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut) {
 	mode = _mode;
 	stepInput = _stepsInput;
@@ -40,7 +40,7 @@ void Game::prepareToStart()
 	}
 	else 
 	{
-		throw std::exception("Could not load game maps");
+		throw std::exception("Could not load game maps from mapsfiles, check that you placed the maps in mapfiles directory");
 	}
 }
 
@@ -59,7 +59,7 @@ void Game::resetBoard()
 	time.setTimeSettings(gameTime, colorSet);
 	
 }
-
+// In charge of the game finish, if the player finished the level or the entire game
 void Game::gameFinish()
 {
 	clrscr();
@@ -70,6 +70,7 @@ void Game::gameFinish()
 		resetBoard();
 		health.printHealth();
 		freezeShips = true;
+		activeShip = GameConfig::BIG_SHIP_ID;
 		keyPressed = 0;
 	}
 	else {
@@ -84,10 +85,10 @@ void Game::printCredits()
 	GamePrint::print("Finished game, Thank you for playing :D");
 	GamePrint::print("*-*-*-*-*-*-*-* Ofri & Or *-*-*-*-*-*-*-*\n");
 }
-
+// In charge of the ship actions, if the player finished the level or if the player pressed ESC
 void Game::ShipAction() 
 {
-	if(ships[0].GetFinishStatus() && ships[1].GetFinishStatus()) // if the player sussecfuly finished the level 
+	if(ships[0].getFinishStatus() && ships[1].getFinishStatus()) // if the player sussecfuly finished the level 
 	{
 		if(level == levels || mapChoose) // if we are at the last level and win or the player choose the map
 			gameState = GameState::WIN;
@@ -137,13 +138,11 @@ void Game::ShipAction()
 void Game::play() {
 	for (auto& pair : *blocks)
 		pair.second.move();
-	if(not freezeShips)
+	if(not freezeShips && !ships[activeShip].isOverLoaded())
 		ships[activeShip].move((GameConfig::eKeys)keyPressed);
-	//for(auto & pair: *blocks)
-		//pair.second.move();
 }
 
-
+// In charge of after Death actions, if its by time or by overload
 void Game::afterDeath() 
 {
 	if (getMode() == GameMode::SAVE_TO_FILE) 
@@ -197,8 +196,9 @@ void Game::afterDeath()
  */
 void Game::gameLoop()
 {
-	keyPressed = 0;
-
+	if(!pressedPausedInLoadMode)
+		keyPressed = 0;
+	pressedPausedInLoadMode = false;
 	while (gameState==GameState::RUNNING and !timeOver and health.isAlive())
 	{
 		try {
@@ -212,7 +212,7 @@ void Game::gameLoop()
 			if (gameState == GameState::RUNNING)
 			{
 				play();
-				timeOver = time.checkAndupdateTime();
+				timeOver = time.checkAndUpdateTime();
 				health.printHealth();
 			}
 
@@ -220,10 +220,14 @@ void Game::gameLoop()
 			if (timeOver || ships[GameConfig::BIG_SHIP_ID].isOverLoaded() || ships[GameConfig::SMALL_SHIP_ID].isOverLoaded())
 				afterDeath();
 		}
-		catch (const std::ios_base::failure& e) {
+		catch(exception& e) // if the user pressed ESC during load mode
+		{
 			time.reverse();
-			setKey((int)GameConfig::eKeys::ESC);
+			clrscr();
+			gameState = GameState::PAUSE;
+			pressedPausedInLoadMode = true;
 		}
+
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GameConfig::WHITE);
 }

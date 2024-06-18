@@ -45,7 +45,6 @@ void ResultIO::loadFileByMode()
 	}
 }
 
-
 bool ResultIO::cmpEvents(size_t _timeLeft, Events _event) {
 	bool res = false;
 	string line;

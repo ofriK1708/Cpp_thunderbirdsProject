@@ -131,6 +131,8 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="gameConfig.cpp" />
+    <ClCompile Include="GamePrint.cpp" />
+    <ClCompile Include="GameSleep.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapsfiles.cpp" />
@@ -168,11 +170,16 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="mapFiles\tb01.screen.txt" />
     <Text Include="mapFiles\tb02.screen.txt" />
     <Text Include="mapFiles\tb03.screen.txt" />
     <Text Include="readme.txt" />
-    <Text Include="mapFiles\tb01.screen.txt" />
+    <Text Include="tb01.result.txt" />
     <Text Include="tb01.steps.txt" />
+    <Text Include="tb02.result.txt" />
+    <Text Include="tb02.steps.txt" />
+    <Text Include="tb03.result.txt" />
+    <Text Include="tb03.steps.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

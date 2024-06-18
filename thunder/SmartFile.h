@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-
+// this is an abstract class, smart file, which is used to open and close files. smartRead and smartWrite are derived from this class
 class SmartFile
 {
 public:

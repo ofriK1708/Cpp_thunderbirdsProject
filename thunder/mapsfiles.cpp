@@ -13,6 +13,8 @@ using std::endl;
 using std::cin;
 using std::string;
 
+// this function is in charge of loading the map files from mapsFiles directory, and sorting them lexicographically, 
+// returning the number of levels and returning if it was successful
 bool Mapsfiles::loadMapLevels(size_t& levels)
 {
 	bool loadedLevels;
@@ -35,6 +37,7 @@ bool Mapsfiles::loadMapLevels(size_t& levels)
 	return loadedLevels;
 }
 
+// this function is in charge of getting the user choice of the file he wants to play
 void Mapsfiles::GetUserFileChoice()
 {
 	do
@@ -49,6 +52,8 @@ void Mapsfiles::GetUserFileChoice()
 	fileIndex--;
 	
 }
+
+// this function is in charge of getting the map from the file and updating the map with the legend
 bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 {
 	if (filesNames.size() == 0) 
@@ -94,6 +99,7 @@ bool Mapsfiles::getMap(char map[][GameConfig::GAME_WIDTH + 1], bool userChoice)
 	return false;
 }
 
+// this function is in charge of checking if the map is correct and updating the map with the legend
 bool Mapsfiles::checkMapAndUpdate(char map[][GameConfig::GAME_WIDTH + 1])
 {
 	unsigned int bigShipSize = 0;

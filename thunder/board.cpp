@@ -171,10 +171,10 @@ bool Board::checkMove(LocationInfo &ol)
 			isValid = false; // there is no reason to move after we finished 
 		}
 		else {
+				//move the whole chunk togther
+				for (auto obs : obsticals)
+					obs->move(ol.direction, ol.carryWeight, true);
 			
-			//move the whole chunk togther
-			for (auto obs : obsticals) 
-				obs->move(ol.direction, ol.carryWeight, true);
 		}
 	}
 	return isValid;
@@ -189,37 +189,29 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 	bool stillCarried = false;
 	map <char,Block*> obsticals;
 	Block& currentBlock = blocks[objLocationInfo.objSymbol];
-	isValid = checkBlockCrash(objLocationInfo,stillCarried);
+	isValid = checkBlockCrash(objLocationInfo,stillCarried,obsticals); // check if the block can move without crashing into other blocks or walls
 	for (int i = 0; i < objLocationInfo.objSize && isValid; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();
 		currX = objLocationInfo.nextPos[i].getX();
 		currSymbol = board[currY][currX];
-
-		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol) {
-			if (Block::isBlock(currSymbol))
-				obsticals.insert({ currSymbol,&blocks[currSymbol] });
-			else
-			{
-				carryShip = getShipBySymbol(currSymbol);
-				if(carryShip != currentBlock.getCarrierShip() && currentBlock.isCarriedBlock()) // if we switched ships we remove it from the old ship and add it to the new one
-					currentBlock.getCarrierShip()->removeFromTrunk(objLocationInfo.objSymbol, currentBlock);
-				carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
-				stillCarried = true;
-				isValid = false;
-			}
+		if(Ship::isShip(currSymbol))
+		{
+			carryShip = getShipBySymbol(currSymbol);
+			if(carryShip != currentBlock.getCarrierShip() && currentBlock.isCarriedBlock()) // if we switched ships we remove it from the old ship and add it to the new one
+				currentBlock.getCarrierShip()->removeFromTrunk(objLocationInfo.objSymbol, currentBlock);
+			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+			stillCarried = true;
+			isValid = false;
 		}
 	}
 	for (auto& obs : obsticals)
 	{
-		if (!isValid)
-			break;
 		if (obs.second->isCarriedBlock()) // if the block we fell on is carried we add the current block to the ship that carries it
 		{
 			stillCarried = true;
 			carryShip = obs.second->getCarrierShip();
 			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
-			isValid = false;
 		}
 	}
 	// if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
@@ -236,12 +228,12 @@ bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char key
 	return isValid;
 }
 
-bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
+bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried, map <char, Block*>& obsticals)
 {
 	int currY, currX;
 	char currSymbol;
 	bool isValid = true;
-	map <char, Block*> obsticals;
+	
 	for (int i = 0; i < objLocationInfo.objSize ; i++)
 	{
 		currY = objLocationInfo.nextPos[i].getY();
@@ -259,6 +251,7 @@ bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried)
 	{
 		if (!isValid)
 			return false;
+
 		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
 		{
 			isValid = false;

@@ -10,12 +10,13 @@ using std::endl;
 using std::to_string;
 using std::exception;
 
-
+bool StateManager::toExit = false;
 
 StateManager::StateManager(int argc, char* argv[]): stepsIO(game.getTimeLeft(), game.getLevel()){
 	setMode(argc, argv);
 }
 
+// this function sets the game mode based on the command line arguments
 void StateManager::setMode(int argc, char* argv[]) {
 	string errorMessage = "Game Mode not avaliable: ";
 	switch (argc) {
@@ -65,7 +66,6 @@ void StateManager::exceptionHandler(const exception& e) {
 	GamePrint::print("Exiting game ...");
 	GameSleep::longSleep();
 }
-
 
 void StateManager::startGame()
 {
@@ -173,6 +173,7 @@ void StateManager::pauseMenu() {
 			clrscr();
 			game.printScreen();
 			illigalChoice = false;
+			game.SetfreezeShipsOn();
 			break;
 		case (int)GameConfig::eKeys::EXIT:
 			clrscr();

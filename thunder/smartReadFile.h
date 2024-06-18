@@ -5,11 +5,11 @@
 class smartReadFile: public SmartFile {
 	std::ifstream file;
 public:
-	~smartReadFile() override{
+	~smartReadFile() override
+	{
 		if (file.is_open())
 			file.close();
 	}
-	smartReadFile& operator=(const smartReadFile& other);
 	smartReadFile() {}  
 	void open(const std::string& fileName) override;
 	void open(const char* fileName) override;

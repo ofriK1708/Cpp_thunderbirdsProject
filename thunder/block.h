@@ -9,40 +9,43 @@ class Ship;
 class Block
 {
 private:
-	static GameConfig::Color backgroundcolor;
 	Board* board;
-	Point pos[GameConfig::MAX_BLOCK_SIZE];
-	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
+	void delTrace();
+	
+	// Block Details
+	static GameConfig::Color backgroundcolor;
 	unsigned int size = 0;
 	LocationInfo locationInfo;
-	//char carrierShipID = '\0';	
-	char symbol = NULL;
-	//bool isCarried = false;
+	Point pos[GameConfig::MAX_BLOCK_SIZE];
+	Point nextPos[GameConfig::MAX_BLOCK_SIZE];
+	char symbol;
 	Ship* carrierShip = nullptr;
-	void delTrace();
+
 
 public:
 	Block(){};
 	Block(char symbol, Board* board) : symbol(symbol), board(board) {};
-	static GameConfig::Color getBackgroundColor() { return backgroundcolor; }
-	static void setColor(GameConfig::Color color) { backgroundcolor = color; }	
-	void addPoint(int x, int y) { pos[size++].set(x, y); }
-	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr, bool onCommand = false);
-	char getSymbol() const { return symbol; }
-	bool checkMove(GameConfig::eKeys direction, int* carryWeight);
+	
+	// getters
 	unsigned int getSize() const { return size; }
 	Point getPos(size_t i) const { return pos[i]; }
+	static GameConfig::Color getBackgroundColor() { return backgroundcolor; }
 	bool static isBlock(char ch);
-	
-	
-	//void setCarrierShipID(char carrierShipID) { this->carrierShipID = carrierShipID; }
 	char getCarrierShipID() const;
-	bool checkFall(Block* blockToCarry = nullptr, char keyCargoBlock = '\0');
-	//void setCarriedBlock(bool isCarried) { this->isCarried = isCarried; }
 	bool isCarriedBlock() const { return carrierShip != nullptr; }
+	Ship* getCarrierShip() const { return carrierShip; }
+	
+	// setters
+	static void setColor(GameConfig::Color color) { backgroundcolor = color; }	
+	char getSymbol() const { return symbol; }
 	void setCarrierShip(Ship* carrierShip) { this->carrierShip = carrierShip; }
 	void removeCarrierShip() { carrierShip = nullptr; }
-	Ship* getCarrierShip() const { return carrierShip; }
+	
+	// modifiers and checkers
+	void addPoint(int x, int y) { pos[size++].set(x, y); }
+	bool move(GameConfig::eKeys direction = GameConfig::eKeys::DOWN, int* carryWeight = nullptr, bool onCommand = false);
+	bool checkMove(GameConfig::eKeys direction, int* carryWeight);
+	bool checkFall(Block* blockToCarry = nullptr, char keyCargoBlock = '\0');
 };
 
 #endif

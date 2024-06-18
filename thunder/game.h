@@ -36,36 +36,40 @@ enum class GameMode {
 
 class Game
 {
+	//game piece, resultIOs, stepsIOs
 	Board board;
 	Mapsfiles maps;
 	Point timelocation;
-	size_t level = 1;
-	size_t levels;
 	StepInput* stepInput = nullptr;
 	StepsIO* stepsOutPut = nullptr;
 	ResultIO resultIO;
-
-	//game pieceresultIOs
 	Health health;
 	Time time;
 	Ship* ships;
 	map <char, Block>* blocks;
 
-	//configurations
-	int gameTime = GameConfig::GAME_TIME;
 	
-	//data global indicators
+	
+	//data global indicators and Details
 	int activeShip = 0; // 0 - Big Ship, 1 - Small Ship	
 	bool freezeShips = false;
+	int gameTime = GameConfig::GAME_TIME;
+	size_t level = 1;
+	size_t levels;
 	int keyPressed;
 	bool mapfileLoaded;
+	bool pressedPausedInLoadMode = false;
 	GameState gameState;
 	GameMode mode = GameMode::SIMPLE;
 	bool timeOver = false;
 	bool colorSet = true;
 	bool mapChoose = false;
 
+	// private functions of game
+	
+	// setters
 	void setKey(int key) { keyPressed = tolower(key); }
+	// modifiers and checkers
 	void ShipAction();
 	void play();
 	void resetBoard();
@@ -73,20 +77,28 @@ class Game
 	void gameFinish();
 
 public:
+
 	Game():resultIO(level) {};
-	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
+	
+	// getters
 	GameMode getMode() const { return mode; }
-	void prepareToStart();
-	void gameLoop();
 	bool getMapFileStatus() const { return mapfileLoaded; }
-	void printScreen() { board.printScreen(); }
-	void printCredits();
 	GameState getState() const { return gameState; }
-	void setStateToRunning() { gameState = GameState::RUNNING; }
 	const size_t& getTimeLeft() { return time.getTimeLeft(); }
 	const size_t& getLevel() { return level;}
+
+	// setters
+	void setMode(GameMode _mode, StepInput* _stepsInput, StepsIO* _stepsOutPut);
+	void setStateToRunning() { gameState = GameState::RUNNING; }
     void setColorSet(bool colorSet) { this->colorSet = colorSet; }
 	void setMapChoose(bool mapChoose) { this->mapChoose = mapChoose; }
+	void SetfreezeShipsOn() { freezeShips = true; }
+	
+	// modifiers and checkers
+	void prepareToStart();
+	void gameLoop();
+	void printScreen() { board.printScreen(); }
+	void printCredits();
 
 };
 

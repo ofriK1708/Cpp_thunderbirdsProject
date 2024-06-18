@@ -12,7 +12,7 @@ void Time::setTimeSettings(const size_t totalTime, const bool isColor)
 	printTime(totalTime / 10);
 }
 
-bool Time::checkAndupdateTime()
+bool Time::checkAndUpdateTime()
 {
 	timeLeft--;
 	if (timeLeft <= 1)

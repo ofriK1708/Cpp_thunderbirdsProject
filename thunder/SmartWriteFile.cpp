@@ -1,5 +1,5 @@
 #include "SmartWriteFile.h"
-
+#include "StateManager.h"
 #include <string>
 
 
@@ -9,29 +9,30 @@ void SmartWriteFile::close() {
 	}
 }
 
-SmartWriteFile& SmartWriteFile::operator=(const SmartWriteFile& other)
-{
-	if (this != &other)
-	{
-		if (other.file.is_open())
-		{
-			throw std::exception("cannot assign with opened file");
-		}
-		if (file.is_open())
-		{
-			file.close();
-		}
-	}
-	return *this;
-}
-
 void SmartWriteFile::open(const std::string& fileName)
 {
-	if (file.is_open())
-		throw std::exception("shouldnt open opened file");
-	file.open(fileName, std::ios::out | std::ios::trunc);
-	if ((not file.is_open()) or file.bad())
-		throw std::exception("could not open the file");
+	std::string errorMassage = fileName;
+	try {
+		if (file.is_open())
+		{
+			errorMassage += " is open, shouldnt open opened file";
+			throw std::exception(errorMassage.c_str());
+		}
+		file.open(fileName, std::ios::in);
+		if (!file.is_open())
+		{
+			errorMassage += " cannot be opened, check the file please";
+			throw std::exception(errorMassage.c_str());
+		}
+		else if (file.bad())
+		{
+			errorMassage += " is corrupted or damaged, check the file please";
+			throw std::exception(errorMassage.c_str());
+		}
+	}
+	catch (const exception& e) {
+		StateManager::exceptionHandler(e);
+	}
 }
 
 void SmartWriteFile::open(const char* fileName)

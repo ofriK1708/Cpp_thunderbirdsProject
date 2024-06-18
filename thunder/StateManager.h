@@ -3,23 +3,26 @@
 
 class StateManager
 {
+	// StateManager Details
+	bool mapChoose = false;
+	bool colorSet = true;
+	static bool toExit;
+	
+	// stateManger objects
 	Game game;
 	StepsIO stepsIO;
 	KeyboardInput keyboardStepsInput;
 
-	bool mapChoose = false;
-	bool colorSet = true;
-	bool toExit = false;
-	
+	// private functions (helper functions)
 	void mainMenu();
 	void pauseMenu();
-	void exceptionHandler(const exception& e);
 	void setMode(int argc, char* argv[]);
 
 
 	
 public:
 	StateManager(int argc, char* argv[]);
+	static void exceptionHandler(const exception& e);
 	void startGame();
 };
 

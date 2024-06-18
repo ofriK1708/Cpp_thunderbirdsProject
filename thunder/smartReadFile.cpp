@@ -1,38 +1,40 @@
 #include "smartReadFile.h"
-
+#include "StateManager.h"
 #include <string>
 
-void smartReadFile::close() {
-	if (file.is_open()) {
+
+void smartReadFile::close() 
+{
+	if (file.is_open()) 
+	{
 		file.close();
 	}
 }
 
-
-smartReadFile& smartReadFile::operator=(const smartReadFile& other) 
-{
-	if (this != &other) 
-	{
-		if (other.file.is_open()) 
-		{
-			throw std::exception("cannot assign with opened file");
-		}
-		if (file.is_open()) 
-		{
-			file.close();
-		}
-	}
-	return *this;
-}
 void smartReadFile::open(const std::string& fileName)
 {
-	if (file.is_open())
-		throw std::exception("shouldnt open opened file");
-	file.open(fileName, std::ios::in);
-	if (!file.is_open())
-		throw std::exception("could not open the file");
-	else if(file.bad())
-		throw std::exception("file is corrputed or damaged");
+	std::string errorMassage = fileName;
+	try {
+		if (file.is_open()) 
+		{
+			errorMassage += " is open, shouldnt open opened file";
+			throw std::exception(errorMassage.c_str());
+		}
+		file.open(fileName, std::ios::in);
+		if (!file.is_open()) 
+		{
+			errorMassage += " cannot be opened, check the file please";
+			throw std::exception(errorMassage.c_str());
+		}
+		else if (file.bad())
+		{
+			errorMassage += " is corrupted or damaged, check the file please";
+			throw std::exception(errorMassage.c_str());
+		}
+	}
+	catch (const exception& e) {
+		StateManager::exceptionHandler(e);
+	}
 }
 
 void smartReadFile::open(const char* fileName)

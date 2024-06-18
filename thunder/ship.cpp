@@ -21,7 +21,7 @@ bool Ship::isShip(char ch)
 	return false;
 }
 
-
+// this function is in charge of moving the ship and the blocks that are on it (if there are any)
 bool Ship::move(GameConfig::eKeys direction)
 {
 	if (!isFinished) 
@@ -29,31 +29,27 @@ bool Ship::move(GameConfig::eKeys direction)
 		int carryWeight = maxCarryWeight;
 		bool carriedBlocksCanMove = true;
 		Block* currBlock = nullptr;
-		if (board->checkMove(checkNextObjLocation(direction, &carryWeight)))
+		if (board->checkMove(checkNextObjLocation(direction, &carryWeight))) // first we check if the ship can move
 		{
-			for (auto& block : trunk)
+			for (auto& block : trunk) // then we check if the blocks can move
 			{
 				currBlock = block.second;
 				int blockCarryWeight = currBlock->getSize();
-				if (direction == GameConfig::eKeys::DOWN)
+				
+				if (direction != GameConfig::eKeys::UP) 
 				{
-					if (!currBlock->checkFall())
-					{
-						carriedBlocksCanMove = false;
-						break;
-					}
-				}
-				else if(direction != GameConfig::eKeys::UP)
 					if (!currBlock->checkMove(direction, &blockCarryWeight))
 					{
 						carriedBlocksCanMove = false;
 						break;
 					}
+				}
 			}
-
-			if (carriedBlocksCanMove || direction == GameConfig::eKeys::DOWN)
+			if (!carriedBlocksCanMove) // if the blocks can't move but the ship, can we remove all the blocks from the ship
 			{
-
+				removeAllBlocksFromTrunk();
+			}
+			    // moving the ship and the blocks
 				delTrace();
 				std::copy(std::begin(nextPos), std::end(nextPos), std::begin(pos));
 				int currY, currX;
@@ -75,11 +71,10 @@ bool Ship::move(GameConfig::eKeys direction)
 				}
 				hideCursor();
 				return true;
-			}
 		}
 		return false;
 	}
-	
+	return false;
 }
 
 
@@ -103,6 +98,7 @@ void Ship::delTrace() {
 	}
 }
 
+// moving the ship to the finish position and marking it as finished
 void Ship::shipFinishLine()
 {
 	isFinished = true;
@@ -118,6 +114,8 @@ void Ship::shipFinishLine()
 	}
 	hideCursor();
 }
+
+
 void Ship::addToTrunk(const char key, Block* block)
 {
 	auto result = trunk.insert({ key, block });
@@ -127,6 +125,7 @@ void Ship::addToTrunk(const char key, Block* block)
 		block->setCarrierShip(this);
 	}
 }
+
 void Ship::removeFromTrunk(const char key, Block& block)
 {
 	bool isRemoved = trunk.erase(key);
@@ -135,6 +134,16 @@ void Ship::removeFromTrunk(const char key, Block& block)
 		trunkWeight -= block.getSize();
 		block.removeCarrierShip();
 	}
+}
+
+void Ship::removeAllBlocksFromTrunk()
+{
+	for (auto& block : trunk)
+	{
+		block.second->removeCarrierShip();
+	}
+	trunk.clear();
+	trunkWeight = 0;
 }
 
  

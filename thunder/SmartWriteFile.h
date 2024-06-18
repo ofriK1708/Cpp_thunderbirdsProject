@@ -9,7 +9,6 @@ public:
 		if (file.is_open())
 			file.close();
 	}
-	SmartWriteFile& operator=(const SmartWriteFile& other);
 	SmartWriteFile() {}
 	void open(const std::string& fileName) override;
 	void open(const char* fileName) override;
