@@ -170,6 +170,7 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="file_format.txt" />
     <Text Include="mapFiles\tb01.screen.txt" />
     <Text Include="mapFiles\tb02.screen.txt" />
     <Text Include="mapFiles\tb03.screen.txt" />
