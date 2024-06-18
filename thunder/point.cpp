@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include "utils.h"
 #include "gameConfig.h"
+#include "GamePrint.h"
 
 
 void Point::set(int x, int y)
@@ -23,7 +24,7 @@ void Point::draw(char symbol,GameConfig::Color backcolor)
 {
 	setTextColor(backcolor);
 	gotoxy(x + GameConfig::MIN_X, y + GameConfig::MIN_Y);
-	cout << symbol;
+	GamePrint::printChar(symbol);
 	setTextColor(GameConfig::WHITE);
 }
 

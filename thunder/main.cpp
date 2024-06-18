@@ -1,24 +1,10 @@
-#include <iostream>
-#include "game.h"
-#include "gameConfig.h"
+#include "StateManager.h"
 
-using namespace std;
 
-void startGame();
-
-int main()
+int main(int argc, char* argv[])
 {
-    startGame();
+    StateManager stateManager(argc, argv);
+    stateManager.startGame();
     return 0;
 }
 
-void startGame()
-{
-    Game theGame;
-    bool pressedExit = theGame.mainMenu();
-    if (!pressedExit) 
-    {
-        theGame.init();
-        theGame.gameLoop();
-    }
-}

@@ -11,60 +11,47 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <map>
 
 
 class Board {
+	// Board Details 
 	constexpr static size_t WIDTH = GameConfig::GAME_WIDTH;
 	constexpr static size_t HEIGHT = GameConfig::GAME_HEIGHT;
-	size_t num_blocks = 0;
-	// the original board that will be copied to the actual board
-	char original_board[HEIGHT][WIDTH + 1] = {
-		//   01234567890123456789012345678901234567890123456789012345678901234567890123456789
-			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 0
-			"W T                                                       WWWW            W    W", // 1
-			"W                                                         WBBW           WSW   W", // 2
-			"W L                                                       WBBW           WSW   W", // 3
-			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 4
-			"WWWWWWWWWWWWWWW        33  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                   W", // 5
-			"W@@          11  W     3                                                       W", // 7
-			"WWWWWWWWWWWWWWW  WWWWWW0WWWWWWWWWWWWWWWWWWWWWWWW   55555        22  X          W", // 8
-			"W             WWWWWWW  4                       W  WWWWWWWWWWWWWWWW  WWWWWWWWWWWW", // 9
-			"W                   W  444                     W  W              WWWWWWWWWWWWWWW", // 10
-			"W                   WWWWWWW                    W  WWW            WWWWWWWWWWWWWWW", // 11
-			"W          W   W          W                    W   W                           W", // 12
-			"W            W            W                    W   W                           W", // 13
-			"W        W       W        W   WWWWWWWWWWWWWWWWWW   WWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 14
-			"W         WWWWWWW         W   W                                                W", // 15
-			"W                         W   W                                                W", // 16
-			"WWWWWWWWWWWWWWWWWWWWWWWWWWW   W                                                W", // 17
-			"                              W                                                 ", // 6
-			"                              W                                                 ", // 18
-			"W   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", // 19
-			"W   W                                                                          W", // 20
-			"W   W                                                                          W", // 21
-			"W## W                                                                          W", // 22
-			"W## W                                                                          W", // 23
-			"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"  // 24
-	};
+	bool colorSet = false;
+	char original_board[HEIGHT][WIDTH + 1];
+	bool mapFileLoaded = false;
+
+	// Board Pieces
 	Time time;
 	Health health;
 	Point life_pos;
 	Point exit_pos;	
 	Ship ships[GameConfig::NUM_SHIPS];
-	Block blocks[GameConfig::MAX_NUM_BLOCKS];
-	bool colorSet = false;
+	map<char, Block> blocks;
+	size_t num_blocks = 0;
 
-	void addObstacle(vector <Block*>& obs, char currSymbol, Coord coord);
+
+	Ship* getShipBySymbol(char sym);
 
 public:
 	char board[HEIGHT][WIDTH + 1];  // the actual board that will be modified
-	void init(bool colorSet);
+	
+	// getters
+	Ship* getShips()  {return ships;}
+	map <char, Block> * getBlocks() { return &blocks; }
+	Time& getTime()  { return time; }
+	Health& getHealth()  { return health; }
+	char(&getOriginalBoard())[HEIGHT][WIDTH + 1]{return original_board;}
+
+    // modifiers and checkers
+ 	void init(bool colorSet);
 	void printScreen();
 	void updateGamePieces();
 	bool checkMove(LocationInfo& objectLoction);
-	Ship* getShips() {return ships;}
-	Block* getBlocks() { return blocks; }
-	Time& getTime() { return time; }
-	Health& getHealth() { return health; }
+	bool checkFall(LocationInfo& objectLoction,Block* cargoBlock = nullptr, char keyCargoBlock = '\0');
 	void shipFinishLine(char shipID);
+	void resetBoard();
+	bool checkBlockCrash(LocationInfo& ol, bool& stillCarried, map <char, Block*>& obsticals);
+	
 };

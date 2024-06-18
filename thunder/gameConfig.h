@@ -17,6 +17,7 @@ public:
 	static constexpr char BIG_SHIP_S = '#';
 	static constexpr char SMALL_SHIP_S = '@';
 	static constexpr char FINISH_S = 'X';
+	static constexpr char LEGEND_S = '&';
 	static constexpr char FINISH_BIG_SHIP = 'B';
 	static constexpr char FINISH_SMALL_SHIP = 'S';
 	static constexpr char TIME_SYMBOL = 'T';
@@ -27,13 +28,15 @@ public:
 	static constexpr int SMALL_SHIP_ID = 1;
 
 
-	static constexpr size_t LONG_SLEEP = 3000;
+	static constexpr size_t LONG_SLEEP = 4000;
 	static constexpr size_t SHORT_SLEEP = 1500;
-	static constexpr size_t MIN_SLEEP = 80;
+	static constexpr size_t SYSTEM_OPR_SLEEP = 80;
+	static constexpr size_t GAME_SPEED = 80; 
+	static constexpr size_t MIN_TIME = 1;
 	static constexpr size_t GAME_TIME = 400;
 	static constexpr size_t LIVES = 3;
 	
-
+	static bool isShipControlMove(GameConfig::eKeys key);
 
 	enum Color
 	{
@@ -79,9 +82,13 @@ public:
 	};
 	
 
-	static constexpr size_t MAX_NUM_BLOCKS = 10;
-	static constexpr size_t MAX_BLOCK_SIZE = 6;
-	static const char BLOCK_SYMBOLS[MAX_NUM_BLOCKS];
+	static constexpr size_t MAX_NUM_BLOCKS = 26;
+	static constexpr size_t MAX_BLOCK_SIZE = 10;
 	static const Color BLOCK_COLOR = BROWN;
+
+	enum ErrorCode {
+		Success = 0,
+		Failed = 1
+	};
 };
 #endif

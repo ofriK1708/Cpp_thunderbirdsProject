@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,27 +131,55 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="gameConfig.cpp" />
+    <ClCompile Include="GamePrint.cpp" />
+    <ClCompile Include="GameSleep.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapsfiles.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="ResultIO.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="smartReadFile.cpp" />
+    <ClCompile Include="SmartWriteFile.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="stepsIO.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="GamePrint.h" />
+    <ClInclude Include="GameSleep.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="gameConfig.h" />
+    <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="mapsfiles.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="ResultIO.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="SmartFile.h" />
+    <ClInclude Include="smartReadFile.h" />
+    <ClInclude Include="SmartWriteFile.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="stepsIO.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="StepInput.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="mapFiles\tb01.screen.txt" />
+    <Text Include="mapFiles\tb02.screen.txt" />
+    <Text Include="mapFiles\tb03.screen.txt" />
     <Text Include="readme.txt" />
+    <Text Include="tb01.result.txt" />
+    <Text Include="tb01.steps.txt" />
+    <Text Include="tb02.result.txt" />
+    <Text Include="tb02.steps.txt" />
+    <Text Include="tb03.result.txt" />
+    <Text Include="tb03.steps.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,9 +1,8 @@
 #include "board.h"
 #include "gameConfig.h"
 #include "utils.h"
-
-bool isBlock(char ch);
-
+#include "GamePrint.h"
+#include <set>
 /**
  * Initializes the game board and its components.
  *
@@ -20,28 +19,9 @@ void Board::init(bool colorSet)
 
 	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
 		ships[i].init(GameConfig::SHIPS_SYMBOLS[i], GameConfig::SHIPS_CARRY_WEIGHT[i], GameConfig::SHIPS_COLORS[colorShift][i], this);
-
 	updateGamePieces();
 	printScreen();
-}
-
-bool isBlock(char ch) 
-{
-	if(ch >= '0' && ch <= '9')
-	{
-		return true;
-	}
-	return false;
-}
-
-
-bool isShip(char ch)
-{
-	if(ch == GameConfig::BIG_SHIP_S || ch == GameConfig::SMALL_SHIP_S)
-	{
-		return true;
-	}
-	return false;
+	
 }
 
 
@@ -52,10 +32,10 @@ void Board::printScreen()
 {
 	GameConfig::Color color = GameConfig::WHITE;
 	for (size_t j = 0; j < GameConfig::MIN_Y; j++)
-		std::cout << endl;
+		GamePrint::print("");
 	for (int i = 0; i < HEIGHT; i++) {
 		for (size_t j = 0; j < GameConfig::MIN_X; j++)
-			std::cout << " ";
+			GamePrint::printChar(' ');
 		for (size_t j = 0; j < WIDTH; j++)
 		{
 			char currSymbol = board[i][j];
@@ -77,26 +57,25 @@ void Board::printScreen()
 					break;
 				case GameConfig::HEALTH_SYMBOL:
 					health.setColor(colorSet);
+					break;
 				default:
-					if (isBlock(currSymbol))
-					{
-						color = blocks[0].getBackgroundColor();
-					}
+					if (Block::isBlock(currSymbol))
+						color = Block::getBackgroundColor();
 					break;
 				}
 			}
 			setTextColor(color);
 			if(currSymbol == GameConfig::FINISH_BIG_SHIP || currSymbol == GameConfig::FINISH_SMALL_SHIP)
 			{
-				std::cout << ' ';
+				GamePrint::printChar(' ');
 			}
 			else
 			{
-				std::cout << currSymbol;
+				GamePrint::printChar(currSymbol);
 			}
 			setTextColor(color = GameConfig::WHITE);
 		}
-		std::cout << std::endl;
+		GamePrint::print("");
 	}
 	
 }
@@ -110,7 +89,8 @@ void Board::printScreen()
 void Board::updateGamePieces()
 {
 	std::memcpy(board, original_board, sizeof(original_board));
-	GameConfig::Color blockColor = colorSet ? GameConfig::BLOCK_COLOR : GameConfig::WHITE;
+	if(!colorSet)
+		Block::setColor(GameConfig::WHITE);
 	for (int i = 0; i < HEIGHT; i++) 
 	{
 		for (int j = 0; j < WIDTH; j++) 
@@ -140,14 +120,10 @@ void Board::updateGamePieces()
 					ships[1].addFinishPoint(j, i);
 					break;
                 default:
-                    if (isBlock(currSymbol))
+                    if (Block::isBlock(currSymbol))
 					{
-                        size_t block_index = currSymbol - '0';
-                        if (!blocks[block_index].getSymbol()) 
-						{
-                            blocks[block_index].init(currSymbol, blockColor, this);
-                        }
-                        blocks[block_index].addPoint(j, i);
+						blocks.insert({ currSymbol, {currSymbol, this}}); //check in dbug if there is a copy ctor involved
+                        blocks[currSymbol].addPoint(j, i);
                     }
                     break;
             }
@@ -161,7 +137,7 @@ bool Board::checkMove(LocationInfo &ol)
 	int currY, currX;
 	char currSymbol;
 	bool isValid = true,isfinished = false;
-	vector <Block*> obsticals;
+	set <Block*> obsticals;
 	for(int i=0; i<ol.objSize && isValid; i++)
 	{
 		currY = ol.nextPos[i].getY();
@@ -171,22 +147,23 @@ bool Board::checkMove(LocationInfo &ol)
 		if (currSymbol != ' ' && currSymbol != ol.objSymbol)
 			if (currSymbol == GameConfig::WALL_SYMBOL)
 				isValid = false;
-			else if(currSymbol == GameConfig::FINISH_S && isShip(ol.objSymbol))
-			{
+			else if (currSymbol == GameConfig::FINISH_S && Ship::isShip(ol.objSymbol))
 				isfinished = true;
-			}
-			else if(isBlock(currSymbol)){ 
-				addObstacle(obsticals, currSymbol, { currX, currY }); 
-			}
-			else {
-				isValid = false; //if collide with other ship
-			}
+			else if (Block::isBlock(currSymbol))
+				obsticals.insert(&blocks[currSymbol]);
+			else if (Block::isBlock(ol.objSymbol) && blocks[ol.objSymbol].getCarrierShipID() == currSymbol)
+				isValid = true;
+			else
+				isValid = false; //if collide with other ship that is not the carrier
 	}
 
-	for (int i = 0; i < obsticals.size() && isValid; i++) {
-		if (!(obsticals.at(i)->checkMove(ol.direction, ol.carryWeight)))
-			isValid = false;
+	//check for the whole chunk if it can move
+	for (auto obs : obsticals) {
+		if (!isValid)
+			break;
+		isValid = obs->checkMove(ol.direction, ol.carryWeight);
 	}
+	
 	if(isValid)
 	{
 		if (isfinished) {
@@ -194,9 +171,90 @@ bool Board::checkMove(LocationInfo &ol)
 			isValid = false; // there is no reason to move after we finished 
 		}
 		else {
-			for (int i = 0; i < obsticals.size() && isValid; i++) {
-				obsticals.at(i)->move(ol.direction, ol.carryWeight, true);
-			}
+				//move the whole chunk togther
+				for (auto obs : obsticals)
+					obs->move(ol.direction, ol.carryWeight, true);
+			
+		}
+	}
+	return isValid;
+}
+
+bool Board::checkFall(LocationInfo& objLocationInfo, Block* cargoBlock, char keyCargoBlock)
+{
+	int currY, currX;
+	char currSymbol;
+	bool isValid = true;
+	Ship* carryShip;
+	bool stillCarried = false;
+	map <char,Block*> obsticals;
+	Block& currentBlock = blocks[objLocationInfo.objSymbol];
+	isValid = checkBlockCrash(objLocationInfo,stillCarried,obsticals); // check if the block can move without crashing into other blocks or walls
+	for (int i = 0; i < objLocationInfo.objSize && isValid; i++)
+	{
+		currY = objLocationInfo.nextPos[i].getY();
+		currX = objLocationInfo.nextPos[i].getX();
+		currSymbol = board[currY][currX];
+		if(Ship::isShip(currSymbol))
+		{
+			carryShip = getShipBySymbol(currSymbol);
+			if(carryShip != currentBlock.getCarrierShip() && currentBlock.isCarriedBlock()) // if we switched ships we remove it from the old ship and add it to the new one
+				currentBlock.getCarrierShip()->removeFromTrunk(objLocationInfo.objSymbol, currentBlock);
+			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+			stillCarried = true;
+			isValid = false;
+		}
+	}
+	for (auto& obs : obsticals)
+	{
+		if (obs.second->isCarriedBlock()) // if the block we fell on is carried we add the current block to the ship that carries it
+		{
+			stillCarried = true;
+			carryShip = obs.second->getCarrierShip();
+			carryShip->addToTrunk(objLocationInfo.objSymbol, &currentBlock);
+		}
+	}
+	// if it was carried before and now someone pushed it, we need to remove it from the ship it was carried by
+	if (currentBlock.isCarriedBlock() && !(stillCarried) && isValid)
+	{
+		ships[GameConfig::BIG_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol,currentBlock);
+		ships[GameConfig::SMALL_SHIP_ID].removeFromTrunk(objLocationInfo.objSymbol,currentBlock);
+	}
+	if (isValid) //move the whole chunk togther
+	{
+		for (auto &obs : obsticals)
+			obs.second->move(objLocationInfo.direction, objLocationInfo.carryWeight, true);
+	}
+	return isValid;
+}
+
+bool Board::checkBlockCrash(LocationInfo& objLocationInfo,bool& stillCarried, map <char, Block*>& obsticals)
+{
+	int currY, currX;
+	char currSymbol;
+	bool isValid = true;
+	
+	for (int i = 0; i < objLocationInfo.objSize ; i++)
+	{
+		currY = objLocationInfo.nextPos[i].getY();
+		currX = objLocationInfo.nextPos[i].getX();
+		currSymbol = board[currY][currX];
+		if (currSymbol != ' ' && currSymbol != objLocationInfo.objSymbol)
+			if (currSymbol == GameConfig::WALL_SYMBOL)
+				return false;
+		    else if (currSymbol == GameConfig::FINISH_S)
+				return false;
+		    else if (Block::isBlock(currSymbol))
+				obsticals.insert({ currSymbol, &blocks[currSymbol]});
+	}
+	for (auto& obs : obsticals)
+	{
+		if (!isValid)
+			return false;
+
+		if (!obs.second->checkFall(&blocks[objLocationInfo.objSymbol], objLocationInfo.objSymbol))
+		{
+			isValid = false;
 		}
 	}
 	return isValid;
@@ -214,17 +272,28 @@ void Board::shipFinishLine(char shipID)
 		break;
 	}
 }
-
-void Board::addObstacle(vector <Block*> &obs, char currSymbol, Coord coord) {
-	//check if it is a new obsticle or not
-	bool newObstacle = true;
-	Block *currBlock;
-	currBlock = &blocks[board[coord.y][coord.x] - '0'];
-	for (int i = 0; i < obs.size() && newObstacle; i++) {
-
-		if (currBlock == obs.at(i))
-			newObstacle = false;
+void Board::resetBoard()
+{
+	health = Health();
+	time = Time();
+	blocks.clear();
+	num_blocks = 0;
+	for (size_t i = 0; i < GameConfig::NUM_SHIPS; i++)
+		ships[i] = Ship();
+	mapFileLoaded = false;
+	life_pos = Point();
+	exit_pos = Point();
+	colorSet = false;
+}
+Ship* Board::getShipBySymbol(char sym)
+{
+	switch (sym)
+	{
+	case GameConfig::BIG_SHIP_S:
+		return &(ships[GameConfig::BIG_SHIP_ID]);
+	case GameConfig::SMALL_SHIP_S:
+		return &(ships[GameConfig::SMALL_SHIP_ID]);
+	default:
+		throw exception("Can't find Ship by symbol");
 	}
-	if (newObstacle)
-		obs.push_back(currBlock);
 }
